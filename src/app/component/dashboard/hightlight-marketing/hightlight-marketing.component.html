@@ -1,0 +1,24 @@
+<app-file-drag-and-drop [isMultiple]="false" [acceptMIMETypes]="imageMIMETypes" (uploadFiles)="handleFilesUploaded($event)"></app-file-drag-and-drop>
+@if(hightlightMarketing){
+  <div class="media-info">
+    <h2>Thông tin</h2>
+    <div class="media-item">
+      <div class="media-title">Ảnh:</div>
+      <div class="media-value">
+        <img [src]="hightlightMarketing.thumbnailUrl | prefixBackendStatic" alt="">
+      </div>
+    </div>
+    <div class="media-item">
+      <div class="media-title">Tên:</div>
+      <div class="media-value">{{ hightlightMarketing.name }}</div>
+    </div>
+    <div class="media-item">
+      <div class="media-title">Tên thay thế:</div>
+      <div class="media-value">{{ hightlightMarketing.alternateName }}</div>
+    </div>
+    <div class="media-item">
+      <div class="media-title">Mô tả:</div>
+      <div class="media-value">{{ hightlightMarketing.description }}</div>
+    </div>
+  </div>
+}

@@ -1,0 +1,81 @@
+.center {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  ngx-file-drop {
+    width: 100%;
+    max-width: 700px;
+
+    .drop-zone-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+
+      .drop-zone-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        mat-icon {
+          width: 72px;
+          height: 72px;
+          font-size: 72px;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep .ngx-file-drop__drop-zone {
+  height: unset !important;
+}
+
+::ng-deep .ngx-file-drop__content {
+  height: unset !important;
+}
+
+.file-drop-container,
+.upload-table-container {
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  max-width: 700px;
+}
+
+.upload-table-container {
+  form{
+    display: flex;
+    flex-direction: column;
+  }
+  table {
+    width: 100%;
+    table-layout: fixed;
+
+    td {
+      font-style: italic;
+      img,
+      video {
+        max-width: 100px;
+      }
+    }
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    justify-content: space-between;
+  }
+}
+
+.warning-exceed-quantity {
+  color: red;
+  font-weight: bold;
+}

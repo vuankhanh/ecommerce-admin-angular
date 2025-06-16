@@ -1,0 +1,29 @@
+<div role="main" class="container" [class.example-is-mobile]="breakpointDetection$ | async">
+  <mat-toolbar color="primary" class="example-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <h1 class="example-app-name">{{ title$ | async }}</h1>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #snav [mode]="(breakpointDetection$ | async) ? 'over' : 'side'" [fixedInViewport]="true"
+      fixedTopGap="64">
+      @if (userInformation$|async; as user) {
+        <app-menu-header [user]="user"></app-menu-header>
+      }
+      <mat-nav-list>
+        <mat-list-item role="listitem" *ngFor="let nav of menu" [routerLink]="nav.route" (click)="snav.close()">
+          {{ nav.name }}
+        </mat-list-item>
+        <div class="bottom-container">
+          <mat-list-item (click)="logout()">Đăng xuất</mat-list-item>
+        </div>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="content-container">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

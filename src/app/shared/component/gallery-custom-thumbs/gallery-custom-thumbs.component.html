@@ -1,0 +1,29 @@
+<gallery appLongPress [pressDuration]="500" [objectFit]="'contain'" [items]="items" [thumbs]="false"
+  (itemClick)="onItemGallerySelection($event)" (longTouch)="onGalleryLongTouch($event)"
+  (longPress)="onGalleryLongPress($event)">sdfsdfsd</gallery>
+
+<div #thumbsElement cdkDropList cdkDropListOrientation="horizontal" class="thumbs-container"
+  (cdkDropListDropped)="drop($event)">
+  @for (item of items; let i = $index; track item;) {
+  <div class="thumb-item" cdkDrag (click)="thumbsClick(i)" [cdkDragStartDelay]="1000"
+    [ngClass]="{'selected': selectedIndex === i}">
+    <img [src]="item.thumbSrc" alt="Thumbnail">
+  </div>
+  }
+</div>
+
+<!-- an hidden div is created to set the position of appearance of the menu-->
+<div style="visibility: hidden; position: fixed;" [style.left]="menuTopLeftPosition.x"
+  [style.top]="menuTopLeftPosition.y" [matMenuTriggerFor]="rightMenu"></div>
+
+<!-- standard material menu -->
+<mat-menu #rightMenu="matMenu">
+  <button mat-menu-item (click)="itemTemporaryDeletion()">
+    Xóa tạm thời
+    <mat-icon>delete</mat-icon>
+  </button>
+  <button mat-menu-item (click)="setHighLight()">
+    {{items[selectedIndex].isHighlight ? 'Đặt là bình thường' : 'Đặt là highlight'}}
+    <mat-icon>{{items[selectedIndex].isHighlight ? 'circle' : 'flag'}}</mat-icon>
+  </button>
+</mat-menu>

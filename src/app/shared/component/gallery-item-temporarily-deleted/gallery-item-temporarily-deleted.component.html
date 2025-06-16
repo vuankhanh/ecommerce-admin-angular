@@ -1,0 +1,24 @@
+<div class="thumbs-container">
+  @for (item of galleryItemTemporarilyDeleted; let i = $index; track item;) {
+  <div class="thumb-item" (contextmenu)="onTemporaryDeletionGalleryRightClick($event, i)">
+    <img [src]="item.thumbSrc" alt="Thumbnail">
+  </div>
+  }
+</div>
+
+<!-- an hidden div is created to set the position of appearance of the menu-->
+<div style="visibility: hidden; position: fixed;" [style.left]="menuTopLeftPosition.x"
+  [style.top]="menuTopLeftPosition.y" [matMenuTriggerFor]="rightMenu"></div>
+
+<!-- standard material menu -->
+<mat-menu #rightMenu="matMenu">
+  <ng-template matMenuContent let-itemIndex="itemIndex" let-data="data">
+    {{data}}
+    {{itemIndex}}
+    <button mat-menu-item (click)="restoreItemTemporaryDeletion(data.itemIndex)">
+      Khôi phục
+      <mat-icon>restore</mat-icon>
+    </button>
+  </ng-template>
+
+</mat-menu>

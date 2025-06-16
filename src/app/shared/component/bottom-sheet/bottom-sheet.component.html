@@ -1,0 +1,17 @@
+<div class="bottom-sheet" [ngClass]="{ 'open': isOpen }">
+  <div class="bottom-sheet-content">
+    <div class="thank-you-for-the-payment-container">
+      <div class="img-container">
+        <img src="assets/media/tom-and-jerry.png" alt="">
+      </div>
+      <div class="message-container">
+        <h3>Cảm ơn bạn đã chuyển</h3>
+        @if (paymentData && paymentData.amount) {
+          <div class="amount-text">{{ paymentData.amount | vndCurrency }}</div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-sheet-backdrop" [ngClass]="{ 'open': isOpen }" (click)="close()"></div>

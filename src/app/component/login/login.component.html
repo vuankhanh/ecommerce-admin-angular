@@ -1,0 +1,16 @@
+<div class="container">
+  <h1>Đăng nhập</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="submit()" class="vertical-container">
+    <mat-form-field appearance="outline">
+      <mat-label>Tên người dùng(bắt buộc)</mat-label>
+      <input matInput placeholder="Nhập tên người dùng/Email" formControlName="email" autocomplete="email">
+      <mat-error>Hãy nhập tên người dùng hợp lệ</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Mật khẩu</mat-label>
+      <input matInput placeholder="Nhập mật khẩu" type="password" formControlName="password" autocomplete="current-password">
+      <mat-error>Hãy nhập mật khẩu hợp lệ</mat-error>
+    </mat-form-field>
+    <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Đăng nhập</button>
+  </form>
+</div>

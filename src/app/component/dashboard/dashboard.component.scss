@@ -1,0 +1,24 @@
+.container {
+  position: relative;
+  height: 100%;
+
+  mat-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    height: 64px;
+  }
+}
+
+.sidenav-container {
+  height: calc(100% - 64px);
+  mat-sidenav{
+    .bottom-container{
+      position: absolute;
+      bottom: 0;
+    }
+  }
+  .content-container{
+    padding: 15px;
+  }
+}
