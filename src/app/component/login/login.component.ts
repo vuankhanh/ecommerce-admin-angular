@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -19,6 +19,7 @@ import { LocalStorageKey } from '../../shared/constant/local_storage.constant';
   ]
 })
 export class LoginComponent {
+  hide = signal(true);
   loginForm!: FormGroup;
   subscription: Subscription = new Subscription();
   constructor(
@@ -41,13 +42,19 @@ export class LoginComponent {
     })
   }
 
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
+  }
+
   submit() {
     if (this.loginForm.valid) {
       const email = this.loginForm.controls['email'].value;
       const password = this.loginForm.controls['password'].value;
       this.subscription.add(
         this.authService.login(email, password).subscribe(token => {
-          this.localStorageService.set(LocalStorageKey.TOKEN, token);
+          this.localStorageService.set(LocalStorageKey.ACCESSTOKEN, token.accessToken);
+          this.localStorageService.set(LocalStorageKey.REFRESHTOKEN, token.refreshToken);
           this.router.navigate(['']);
         })
       )

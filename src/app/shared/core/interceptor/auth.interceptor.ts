@@ -9,6 +9,8 @@ import {
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { AuthStateService } from '../../../service/auth_state.service';
 import { AuthService } from '../../../service/api/auth.service';
+import { LocalStorageService } from '../../../service/local-storage.service';
+import { LocalStorageKey } from '../../constant/local_storage.constant';
 
 const methods = ['POST', 'PUT', 'PATCH', 'DELETE'];
 
@@ -17,12 +19,13 @@ export class AuthInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   constructor(
     private authStateService: AuthStateService,
-    private authService: AuthService
+    private authService: AuthService,
+    private readonly localStorageService: LocalStorageService
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (methods.includes(request.method) && !request.url.includes('/login')) {
-      const accessToken = localStorage.getItem("accessToken");
+      const accessToken = this.localStorageService.get(LocalStorageKey.ACCESSTOKEN);
       if (accessToken) {
         const cloned = request.clone({
           headers: request.headers.set("authorization", "Bearer " + accessToken)
@@ -45,13 +48,13 @@ export class AuthInterceptor implements HttpInterceptor {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
 
-      const refreshToken = localStorage.getItem('refreshToken');
+      const refreshToken = this.localStorageService.get(LocalStorageKey.REFRESHTOKEN);
       const isLogin = this.authStateService.isLogin;
       if (isLogin) {
         const refreshTokenRequest = this.authService.refreshToken(refreshToken!)
         return refreshTokenRequest.pipe(
           switchMap(accessToken => {
-            localStorage.setItem('accessToken', accessToken);
+            this.localStorageService.set(LocalStorageKey.ACCESSTOKEN, accessToken);
             this.isRefreshing = false;
             const cloned = request.clone({
               headers: request.headers.set("authorization", "Bearer " + accessToken)

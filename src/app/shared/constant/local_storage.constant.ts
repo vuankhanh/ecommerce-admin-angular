@@ -1,4 +1,5 @@
 export enum LocalStorageKey {
-  TOKEN = 'ecommerce-token',
+  ACCESSTOKEN = 'ecommerce-token-access',
+  REFRESHTOKEN = 'ecommerce-token-refresh',
   CART = 'ecommerce-cart'
 }

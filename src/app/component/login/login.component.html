@@ -6,9 +6,17 @@
       <input matInput placeholder="Nhập tên người dùng/Email" formControlName="email" autocomplete="email">
       <mat-error>Hãy nhập tên người dùng hợp lệ</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <mat-label>Mật khẩu</mat-label>
-      <input matInput placeholder="Nhập mật khẩu" type="password" formControlName="password" autocomplete="current-password">
+      <input
+        matInput
+        placeholder="Nhập mật khẩu"
+        [type]="hide() ? 'password' : 'text'"
+        formControlName="password"
+        autocomplete="current-password">
+      <button type="button" matIconButton matSuffix (click)="clickEvent($event)">
+        <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
       <mat-error>Hãy nhập mật khẩu hợp lệ</mat-error>
     </mat-form-field>
     <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Đăng nhập</button>
