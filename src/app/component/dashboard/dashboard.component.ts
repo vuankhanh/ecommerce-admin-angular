@@ -8,10 +8,10 @@ import { BreakpointDetectionService } from '../../service/breakpoint-detection.s
 import { AuthStateService } from '../../service/auth_state.service';
 import { RouterEventService } from '../../service/router-event.service';
 import { AuthService } from '../../service/api/auth.service';
-import { CustomerMenu } from '../../shared/mock-data/menu';
 import { MatAccordion } from '@angular/material/expansion';
 import { IJwtDecoded } from '../../shared/interface/user_information.interface';
 import { MenuHeaderComponent } from '../../shared/component/menu-header/menu-header.component';
+import { Menu } from '../../shared/constant/menu.constant';
 
 
 @Component({
@@ -34,15 +34,9 @@ export class DashboardComponent implements OnInit {
   @ViewChild('accordion') accordion?: MatAccordion;
   @ViewChild('userAccordion') userAccordion?: MatAccordion;
   breakpointDetection$: Observable<boolean> = of(false);
-  menu = [
-    { name: 'Logo', route: 'logo' },
-    { name: 'Trình chiếu ảnh', route: 'slide-show' },
-    { name: 'Ảnh Marketing', route: 'hightlight-marketing' },
-    { name: 'Thông báo', route: 'notification' },
-  ]
+  menu = Menu;
 
   title$ = this.routerEventService.getRouteTitle$();
-  customerMenu = CustomerMenu;
 
   private readonly bUserInformation: BehaviorSubject<IJwtDecoded | null> = new BehaviorSubject<IJwtDecoded | null>(null);
   userInformation$ = this.bUserInformation.asObservable();

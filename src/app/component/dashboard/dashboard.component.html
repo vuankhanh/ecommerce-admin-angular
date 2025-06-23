@@ -12,10 +12,15 @@
       }
       <mat-nav-list>
         <mat-list-item role="listitem" *ngFor="let nav of menu" [routerLink]="nav.route" (click)="snav.close()">
+          <mat-icon matListItemIcon>{{nav.icon}}</mat-icon>
           {{ nav.name }}
         </mat-list-item>
         <div class="bottom-container">
-          <mat-list-item (click)="logout()">Đăng xuất</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item (click)="logout()">
+            <mat-icon matListItemIcon>logout</mat-icon>
+            Đăng xuất
+          </mat-list-item>
         </div>
       </mat-nav-list>
     </mat-sidenav>

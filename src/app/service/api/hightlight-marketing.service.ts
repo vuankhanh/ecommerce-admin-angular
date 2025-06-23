@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Success } from '../../shared/interface/success.interface';
+import { ISuccess } from '../../shared/interface/success.interface';
 import { IImage } from '../../shared/interface/media.interface';
 import { environment } from '../../../environments/environment.development';
 import { IBasicService } from '../../shared/interface/basic_service.interface';
@@ -59,7 +59,7 @@ export class HightlightMarketingService implements IBasicService<IImage> {
   }
 }
 
-export interface HightlightMarketingResponse extends Success {
+export interface HightlightMarketingResponse extends ISuccess {
   metaData: MetaData
 }
 

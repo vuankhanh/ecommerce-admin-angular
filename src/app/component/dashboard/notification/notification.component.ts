@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { NotificationService } from '../../../../service/api/notification.service';
+import { NotificationService } from '../../../service/api/notification.service';
 import { Subscription } from 'rxjs';
 
 @Component({

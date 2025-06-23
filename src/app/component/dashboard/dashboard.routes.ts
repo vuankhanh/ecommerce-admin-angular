@@ -13,8 +13,13 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'logo',
+        redirectTo: 'product',
         pathMatch: 'full'
+      },
+      {
+        path: 'product',
+        title: 'Sản phẩm',
+        loadChildren: () => import('./product/product.routes').then(m => m.routes)
       },
       {
         path: 'logo',

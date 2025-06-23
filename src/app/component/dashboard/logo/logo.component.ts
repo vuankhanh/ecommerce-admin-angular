@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FileDragAndDropComponent } from '../../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
-import { LogoService } from '../../../../service/api/logo.service';
+import { FileDragAndDropComponent } from '../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
+import { LogoService } from '../../../service/api/logo.service';
 import { Subscription } from 'rxjs';
-import { IImage } from '../../../../shared/interface/media.interface';
-import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
-import { IRequestParamsWithFiles } from '../../../../shared/interface/request.interface';
+import { IImage } from '../../../shared/interface/media.interface';
+import { PrefixBackendStaticPipe } from '../../../shared/pipe/prefix-backend.pipe';
+import { IRequestParamsWithFiles } from '../../../shared/interface/request.interface';
 
 @Component({
   selector: 'app-logo',

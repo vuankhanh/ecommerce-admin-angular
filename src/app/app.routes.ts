@@ -12,7 +12,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    loadChildren: () => import('./component/dashboard/dashboard.routes').then(m => m.routes),
     canActivate: [permissionGuard],
     resolve: { user: jwtPayloadResolver }
   },

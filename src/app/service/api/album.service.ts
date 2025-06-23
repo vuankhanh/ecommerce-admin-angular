@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Success } from '../../shared/interface/success.interface';
+import { ISuccess } from '../../shared/interface/success.interface';
 import { HttpClient } from '@angular/common/http';
 import { filter, map, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
@@ -93,7 +93,7 @@ export class AlbumService implements IBasicService<MediaMetaData> {
 }
 
 // mongodb schema
-export interface AlbumResponse extends Success {
+export interface AlbumResponse extends ISuccess {
   metaData: MediaMetaData;
 }
 

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Success } from '../../shared/interface/success.interface';
+import { ISuccess } from '../../shared/interface/success.interface';
 import { map, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { IImage } from '../../shared/interface/media.interface';
@@ -58,7 +58,7 @@ export class LogoService implements IBasicService<IImage> {
   }
 }
 
-export interface LogoResponse extends Success {
+export interface LogoResponse extends ISuccess {
   metaData: MetaData
 }
 

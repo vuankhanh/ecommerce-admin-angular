@@ -1,6 +1,6 @@
-import { Success } from "./success.interface";
+import { ISuccess } from "./success.interface";
 
-export interface IWeatherResponse extends Success {
+export interface IWeatherResponse extends ISuccess {
   metaData: TWeatherData;
 }
 
