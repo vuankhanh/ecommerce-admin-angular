@@ -8,13 +8,41 @@
     <mat-sidenav #snav [mode]="(breakpointDetection$ | async) ? 'over' : 'side'" [fixedInViewport]="true"
       fixedTopGap="64">
       @if (userInformation$|async; as user) {
-        <app-menu-header [user]="user"></app-menu-header>
+      <app-menu-header [user]="user"></app-menu-header>
       }
       <mat-nav-list>
-        <mat-list-item role="listitem" *ngFor="let nav of menu" [routerLink]="nav.route" (click)="snav.close()">
+        @for (nav of menu; track $index) {
+        @if (!!nav.children?.length) {
+          <mat-expansion-panel hideToggle #expansionPanel>
+            <mat-expansion-panel-header>
+              <mat-list-item>
+                <mat-icon matListItemIcon>{{nav.icon}}</mat-icon>
+                {{ nav.name }}
+                <div matListItemMeta>
+                  <mat-icon>{{expansionPanel.expanded ? 'expand_less' : 'expand_more'}}</mat-icon>
+                </div>
+              </mat-list-item>
+            </mat-expansion-panel-header>
+
+            <mat-form-field>
+              <mat-label>First name</mat-label>
+              <input matInput />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Age</mat-label>
+              <input matInput type="number" min="1" />
+            </mat-form-field>
+          </mat-expansion-panel>
+        }@else {
+        <mat-list-item role="listitem" [routerLink]="nav.route" (click)="snav.close()">
           <mat-icon matListItemIcon>{{nav.icon}}</mat-icon>
           {{ nav.name }}
         </mat-list-item>
+        }
+        }
+
+        <!-- Logout -->
         <div class="bottom-container">
           <mat-divider></mat-divider>
           <mat-list-item (click)="logout()">

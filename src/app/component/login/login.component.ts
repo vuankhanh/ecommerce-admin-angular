@@ -21,7 +21,7 @@ import { LocalStorageKey } from '../../shared/constant/local_storage.constant';
 export class LoginComponent {
   hide = signal(true);
   loginForm!: FormGroup;
-  subscription: Subscription = new Subscription();
+  private readonly subscription: Subscription = new Subscription();
   constructor(
     private readonly router: Router,
     private readonly formBuilder: FormBuilder,

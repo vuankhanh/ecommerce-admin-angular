@@ -12,14 +12,26 @@
 
 .sidenav-container {
   height: calc(100% - 64px);
-  mat-sidenav{
-    .bottom-container{
+
+  mat-sidenav {
+    .bottom-container {
       position: absolute;
       bottom: 0;
       width: 100%;
     }
   }
-  .content-container{
+
+  .content-container {
     padding: 15px;
   }
+}
+
+::ng-deep mat-expansion-panel {
+  mat-expansion-panel-header {
+    padding: 0 !important;
+  }
+}
+
+::ng-deep .mat-content-hide-toggle {
+  margin-right: 0 !important;
 }

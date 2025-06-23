@@ -1,15 +1,15 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FileDragAndDropComponent } from '../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
+import { FileDragAndDropComponent } from '../../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
 import { forkJoin, Observable, Subscription, switchMap } from 'rxjs';
-import { AlbumService, MediaMetaData } from '../../../service/api/album.service';
+import { AlbumService, MediaMetaData } from '../../../../service/api/album.service';
 import { CommonModule } from '@angular/common';
-import { PrefixBackendStaticPipe } from '../../../shared/pipe/prefix-backend.pipe';
-import { IRequestParamsWithFiles } from '../../../shared/interface/request.interface';
-import { IImage, IVideo } from '../../../shared/interface/media.interface';
+import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
+import { IRequestParamsWithFiles } from '../../../../shared/interface/request.interface';
+import { IImage, IVideo } from '../../../../shared/interface/media.interface';
 import { GalleryComponent } from '@daelmaak/ngx-gallery';
-import { GalleryCustomThumbsComponent } from '../../../shared/component/gallery-custom-thumbs/gallery-custom-thumbs.component';
-import { GalleryItemTemporarilyDeletedComponent } from '../../../shared/component/gallery-item-temporarily-deleted/gallery-item-temporarily-deleted.component';
-import { IGalleryItem } from '../../../shared/interface/gallery.interface';
+import { GalleryCustomThumbsComponent } from '../../../../shared/component/gallery-custom-thumbs/gallery-custom-thumbs.component';
+import { GalleryItemTemporarilyDeletedComponent } from '../../../../shared/component/gallery-item-temporarily-deleted/gallery-item-temporarily-deleted.component';
+import { IGalleryItem } from '../../../../shared/interface/gallery.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
