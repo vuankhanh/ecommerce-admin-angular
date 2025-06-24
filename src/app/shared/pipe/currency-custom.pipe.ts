@@ -5,10 +5,12 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true
 })
 export class CurrencyCustomPipe implements PipeTransform {
+
   transform(value: number): string {
     if (value != null) {
-      return value.toLocaleString('vi-VN').replace(/\./g, ',') + ' VND';
+      return value.toLocaleString('vi-VN') + ' ₫';
     }
     return '';
   }
+
 }

@@ -2,21 +2,20 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ISuccess } from '../../shared/interface/success.interface';
-import { IImage } from '../../shared/interface/media.interface';
 import { environment } from '../../../environments/environment.development';
-import { IBasicService } from '../../shared/interface/basic_service.interface';
+import { TMediaModel } from '../../shared/interface/album.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class HightlightMarketingService implements IBasicService<IImage> {
+export class HightlightMarketingService {
   private urlHightlightMarketing: string = environment.backendApi + '/hightlight-marketing';
 
   constructor(
     private httpClient: HttpClient
   ) { }
 
-  get(): Observable<IImage>{
+  get(): Observable<TMediaModel>{
     return this.httpClient.get<HightlightMarketingResponse>(this.urlHightlightMarketing).pipe(
       map(res=>res.metaData)
     );
@@ -26,7 +25,7 @@ export class HightlightMarketingService implements IBasicService<IImage> {
     alternateName: string,
     description: string,
     file: Blob
-  ): Observable<IImage> {
+  ): Observable<TMediaModel> {
     const formData = new FormData();
     formData.append('alternateName', alternateName);
     formData.append('description', description);
@@ -41,7 +40,7 @@ export class HightlightMarketingService implements IBasicService<IImage> {
     alternateName?: string,
     description?: string,
     file?: Blob
-  ): Observable<IImage> {
+  ): Observable<TMediaModel> {
     const formData = new FormData();
     if(alternateName) formData.append('alternateName', alternateName);
     if(description) formData.append('description', description);
@@ -52,7 +51,7 @@ export class HightlightMarketingService implements IBasicService<IImage> {
     );
   }
 
-  delete(): Observable<IImage> {
+  delete(): Observable<TMediaModel> {
     return this.httpClient.delete<HightlightMarketingResponse>(this.urlHightlightMarketing).pipe(
       map(res=>res.metaData)
     );
@@ -60,9 +59,5 @@ export class HightlightMarketingService implements IBasicService<IImage> {
 }
 
 export interface HightlightMarketingResponse extends ISuccess {
-  metaData: MetaData
-}
-
-type MetaData = IImage & {
-  relativePath: string;
+  metaData: TMediaModel
 }

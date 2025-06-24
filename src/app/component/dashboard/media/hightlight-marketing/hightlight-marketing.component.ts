@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FileDragAndDropComponent } from '../../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
-import { IImage } from '../../../../shared/interface/media.interface';
 import { Subscription } from 'rxjs';
 import { HightlightMarketingService } from '../../../../service/api/hightlight-marketing.service';
 import { IRequestParamsWithFiles } from '../../../../shared/interface/request.interface';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
+import { TMediaModel } from '../../../../shared/interface/album.interface';
 
 @Component({
   selector: 'app-hightlight-marketing',
@@ -18,7 +18,7 @@ import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.
 })
 export class HightlightMarketingComponent implements OnInit, OnDestroy {
   @ViewChild(FileDragAndDropComponent) childComponentRef!: FileDragAndDropComponent;
-  hightlightMarketing?: IImage;
+  hightlightMarketing?: TMediaModel;
 
   imageMIMETypes: Array<string> = ['image/png', 'image/jpeg', 'image/jpg'];
 

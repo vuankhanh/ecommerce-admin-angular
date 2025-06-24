@@ -1,9 +1,5 @@
 import { Routes } from "@angular/router";
 import { DashboardComponent } from "./dashboard.component";
-import { LogoComponent } from "./media/logo/logo.component";
-import { HightlightMarketingComponent } from "./media/hightlight-marketing/hightlight-marketing.component";
-import { SlideShowComponent } from "./media/slide-show/slide-show.component";
-import { NotificationComponent } from "./notification/notification.component";
 
 export const routes: Routes = [
   {
@@ -20,6 +16,11 @@ export const routes: Routes = [
         path: 'product',
         title: 'Sản phẩm',
         loadChildren: () => import('./product/product.routes').then(m => m.routes)
+      },
+      {
+        path: 'product-category',
+        title: 'Danh mục sản phẩm',
+        loadChildren: () => import('./product-category/product-category.routes').then(m => m.routes)
       },
       {
         path: 'media',

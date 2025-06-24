@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.development';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { IProduct, TProductModel } from '../../shared/interface/product.interface';
@@ -63,8 +63,8 @@ export class ProductService {
 }
 
 export type TProduct = {
-  data: TProductModel;
-  pagination: IPagination;
+  data: TProductModel[];
+  paging: IPagination;
 }
 
 export interface IProductResponse extends ISuccess {

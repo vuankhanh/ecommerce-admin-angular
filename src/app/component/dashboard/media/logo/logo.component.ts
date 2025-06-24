@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FileDragAndDropComponent } from '../../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
 import { LogoService } from '../../../../service/api/logo.service';
 import { Subscription } from 'rxjs';
-import { IImage } from '../../../../shared/interface/media.interface';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
 import { IRequestParamsWithFiles } from '../../../../shared/interface/request.interface';
+import { TMediaModel } from '../../../../shared/interface/album.interface';
 
 @Component({
   selector: 'app-logo',
@@ -18,7 +18,7 @@ import { IRequestParamsWithFiles } from '../../../../shared/interface/request.in
 })
 export class LogoComponent implements OnInit, OnDestroy {
   @ViewChild(FileDragAndDropComponent) childComponentRef!: FileDragAndDropComponent;
-  logo?: IImage;
+  logo?: TMediaModel;
 
   imageMIMETypes: Array<string> = ['image/png', 'image/jpeg', 'image/jpg'];
 

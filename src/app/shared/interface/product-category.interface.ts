@@ -1,5 +1,4 @@
-import { IPagination } from "./pagination.interface";
-import { ISuccess } from "./success.interface";
+import { IMongodbDocument } from "./mongo.interface";
 
 export interface IProductCategory {
   name: string;
@@ -10,15 +9,4 @@ export interface IProductCategory {
   metaKeywords?: string[];  // SEO
 }
 
-export type TProductCategory = {
-  data: IProductCategory[];
-  pagination: IPagination;
-}
-
-export  interface IProductCategoryResponse extends ISuccess {
-  metaData: TProductCategory;
-}
-
-export interface IProductCategoryDetailResponse extends ISuccess {
-  metaData: IProductCategory;
-}
+export type TProductCategoryModel = IProductCategory & IMongodbDocument;

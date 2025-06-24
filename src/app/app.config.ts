@@ -6,17 +6,28 @@ import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AuthInterceptor } from './shared/core/interceptor/auth.interceptor';
 import { LoadingInterceptor } from './shared/core/interceptor/loading.interceptor';
-import { IMAGE_CONFIG } from '@angular/common';
+import { DatePipe, IMAGE_CONFIG } from '@angular/common';
 import { CurrencyCustomPipe } from './shared/pipe/currency-custom.pipe';
+import { provideIconConfig } from './shared/provider/icon-config.provider';
+import { PrefixBackendStaticPipe } from './shared/pipe/prefix-backend.pipe';
+import { AddressPipe } from './shared/pipe/address.pipe';
+import { ReplaceNewLinePipe } from './shared/pipe/replace-new-line.pipe';
+import { ToastrService } from 'ngx-toastr';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding()),
     importProvidersFrom(HttpClientModule),
     provideAnimationsAsync(),
+    provideIconConfig(),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     { provide: IMAGE_CONFIG, useValue: { disableImageSizeWarning: true, disableImageLazyLoadWarning: true } },
-    CurrencyCustomPipe
+    ToastrService,
+    PrefixBackendStaticPipe,
+    CurrencyCustomPipe,
+    AddressPipe,
+    ReplaceNewLinePipe,
+    DatePipe
   ]
 };

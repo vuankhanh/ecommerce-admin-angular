@@ -1,1 +1,70 @@
-<p>product-form works!</p>
+<div class="container">
+  @if(formGroup){
+  <mat-card>
+    <mat-card-header class="horizontal-container">
+      <div class="button-group-header">
+        <button mat-icon-button color="primary" (click)="goBackProducDetail()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <div class="horizontal-container">
+        <h3>{{ product?._id ? 'Chỉnh sửa sản phẩm' : 'Tạo sản phẩm' }}</h3>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="horizontal-container">
+        <form [formGroup]="formGroup" class="vertical-container">
+          <div>Tên sản phẩm: <b>{{formGroup.get('name')?.value}}</b></div>
+          <mat-form-field class="example-full-width">
+            <mat-label>Tên</mat-label>
+            <input matInput placeholder="Tên sản phẩm" formControlName="name" required>
+          </mat-form-field>
+  
+          <mat-form-field class="example-full-width">
+            <mat-label>Giá</mat-label>
+            <input matInput type="number" placeholder="Giá sản phẩm" formControlName="price" required>
+          </mat-form-field>
+  
+          <mat-form-field class="example-full-width">
+            <mat-label>Đơn vị</mat-label>
+            <input matInput placeholder="Đơn vị" formControlName="unit" required>
+          </mat-form-field>
+
+          <section>
+            <mat-slide-toggle formControlName="availability">
+              Tình trạng: {{ formGroup.get('availability')?.value ? 'Còn hàng' : 'Hết hàng' }}</mat-slide-toggle>
+          </section>
+  
+          <mat-form-field class="example-full-width">
+            <mat-label>Mô tả sản phẩm</mat-label>
+            <textarea matInput placeholder="Mô tả sản phẩm" formControlName="description" cdkTextareaAutosize
+              cdkAutosizeMinRows="3" cdkAutosizeMaxRows="9"></textarea>
+          </mat-form-field>
+  
+          <mat-form-field class="example-full-width">
+            <mat-label>Hướng dẫn sử dụng</mat-label>
+            <textarea matInput placeholder="Hướng dẫn sử dụng" formControlName="usageInstructions" cdkTextareaAutosize
+              cdkAutosizeMinRows="3" cdkAutosizeMaxRows="9"></textarea>
+          </mat-form-field>
+        </form>
+        <section class="album-container">
+          @if(album && galleryItems && galleryItems.length){
+          <div>Tên album: <b>{{album.name}}</b></div>
+          <gallery [objectFit]="'contain'" [items]="galleryItems"></gallery>
+          }
+          <button mat-raised-button (click)="openAlbumDialog()">
+            <mat-icon>photo_library</mat-icon>
+            {{ album ? 'Chọn lại' : 'Chọn album' }}
+          </button>
+        </section>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="button" (click)="onSubmit()"
+        [disabled]="formGroup.invalid || !isFormChanged()">
+        {{ product?._id ? 'Lưu' : 'Tạo' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  }
+</div>

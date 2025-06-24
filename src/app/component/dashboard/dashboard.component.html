@@ -13,30 +13,30 @@
       <mat-nav-list>
         @for (nav of menu; track $index) {
         @if (!!nav.children?.length) {
-          <mat-expansion-panel hideToggle #expansionPanel>
-            <mat-expansion-panel-header>
-              <mat-list-item>
-                <mat-icon matListItemIcon>{{nav.icon}}</mat-icon>
-                {{ nav.name }}
-                <div matListItemMeta>
-                  <mat-icon>{{expansionPanel.expanded ? 'expand_less' : 'expand_more'}}</mat-icon>
-                </div>
-              </mat-list-item>
-            </mat-expansion-panel-header>
+        <mat-expansion-panel hideToggle #expansionPanel>
+          <mat-expansion-panel-header>
+            <mat-list-item>
+              @if (!!nav.icon?.fontSet && !!nav.icon?.fontIcon) {
+              <mat-icon [fontSet]="nav.icon!.fontSet" [fontIcon]="nav.icon!.fontIcon" matListItemIcon></mat-icon>
+              }
+              {{ nav.name }}
+              <div matListItemMeta>
+                <mat-icon>{{expansionPanel.expanded ? 'expand_less' : 'expand_more'}}</mat-icon>
+              </div>
+            </mat-list-item>
+          </mat-expansion-panel-header>
 
-            <mat-form-field>
-              <mat-label>First name</mat-label>
-              <input matInput />
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Age</mat-label>
-              <input matInput type="number" min="1" />
-            </mat-form-field>
-          </mat-expansion-panel>
+          @for (child of nav.children; track $index) {
+          <mat-list-item role="listitem" [routerLink]="child.route" (click)="snav.close()">
+            {{ child.name }}
+          </mat-list-item>
+          }
+        </mat-expansion-panel>
         }@else {
         <mat-list-item role="listitem" [routerLink]="nav.route" (click)="snav.close()">
-          <mat-icon matListItemIcon>{{nav.icon}}</mat-icon>
+          @if (!!nav.icon?.fontSet && !!nav.icon?.fontIcon) {
+          <mat-icon [fontSet]="nav.icon!.fontSet" [fontIcon]="nav.icon!.fontIcon" matListItemIcon></mat-icon>
+          }
           {{ nav.name }}
         </mat-list-item>
         }

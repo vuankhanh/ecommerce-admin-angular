@@ -6,12 +6,9 @@ import { environment } from '../../../environments/environment.development';
   standalone: true
 })
 export class PrefixBackendStaticPipe implements PipeTransform {
-  private readonly prefix: string = environment.backendStatic
-  transform(url: string, ...args: unknown[]): string {
-    if (!url) {
-      return '';
-    }
-    return this.prefix + '/' + url;
+  private backend: string = environment.backendStatic;
+  transform(url: string): string {
+    return this.backend + '/'+ url;
   }
 
 }

@@ -1,42 +1,49 @@
-import { IMenu } from "../interface/menu.interface";
+import { TMenu } from "../interface/menu.interface";
 
-export const Menu: IMenu[] = [
+export const Menu: TMenu[] = [
   {
     name: 'Trang chủ',
-    icon: 'home',
+    icon: {
+      fontSet: 'fa-solid',
+      fontIcon: 'fa-house'
+    },
     route: ''
   },
   {
     name: 'Sản phẩm',
-    icon: 'category',
-    route: '/dashboard/product',
+    icon: {
+      fontSet: 'fa-brands',
+      fontIcon: 'fa-product-hunt'
+    },
     children: [
       {
         name: 'Sản phẩm',
-        route: ''
+        route: '/dashboard/product'
       },
       {
         name: 'Danh mục sản phẩm',
-        route: 'product-category'
+        route: '/dashboard/product-category'
       }
     ]
   },
   {
     name: 'Media',
-    icon: 'image',
-    route: '/dashboard/media',
+    icon: {
+      fontSet: 'fa-solid',
+      fontIcon: 'fa-images'
+    },
     children: [
       {
         name: 'Slide show',
-        route: 'slide-show'
+        route: '/dashboard/media/slide-show'
       },
       {
         name: 'Logo',
-        route: 'logo'
+        route: '/dashboard/media/logo'
       },
       {
         name: 'Hightlight marketing',
-        route: 'hightlight-marketing'
+        route: '/dashboard/media/hightlight-marketing'
       }
     ]
   }

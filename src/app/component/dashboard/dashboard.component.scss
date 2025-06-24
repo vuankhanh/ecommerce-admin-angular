@@ -14,6 +14,9 @@
   height: calc(100% - 64px);
 
   mat-sidenav {
+    mat-icon {
+      font-size: 21px;
+    }
     .bottom-container {
       position: absolute;
       bottom: 0;
