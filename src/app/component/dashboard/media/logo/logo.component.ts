@@ -1,60 +1,27 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FileDragAndDropComponent } from '../../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
 import { LogoService } from '../../../../service/api/logo.service';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
-import { IRequestParamsWithFiles } from '../../../../shared/interface/request.interface';
 import { TMediaModel } from '../../../../shared/interface/album.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-logo',
   standalone: true,
   imports: [
-    PrefixBackendStaticPipe,
-    FileDragAndDropComponent
+    CommonModule,
+    
+    PrefixBackendStaticPipe
   ],
   templateUrl: './logo.component.html',
   styleUrl: './logo.component.scss'
 })
-export class LogoComponent implements OnInit, OnDestroy {
+export class LogoComponent {
   @ViewChild(FileDragAndDropComponent) childComponentRef!: FileDragAndDropComponent;
-  logo?: TMediaModel;
 
-  imageMIMETypes: Array<string> = ['image/png', 'image/jpeg', 'image/jpg'];
-
-  subscription: Subscription = new Subscription();
+  mainLogo$: Observable<TMediaModel> = this.logoService.getMain();
   constructor(
     private logoService: LogoService
   ) {}
-
-  ngOnInit(): void {
-    this.subscription.add(
-      this.logoService.get().subscribe((logo) => {
-        this.logo = logo;
-      })
-    )
-  }
-
-  handleFilesUploaded(params: IRequestParamsWithFiles): void {
-    console.log(params);
-    const api = this.logo ? this.updateRequest(params) : this.createRequest(params);
-    this.subscription.add(
-      api.subscribe((logo) => {
-        this.childComponentRef.isEditing = true;
-        this.logo = logo;
-      })
-    )
-  }
-
-  private createRequest(params: IRequestParamsWithFiles){
-    return this.logoService.create(params.alternateName, params.description, params.files[0]);
-  }
-
-  private updateRequest(params: IRequestParamsWithFiles){
-    return this.logoService.update(params.alternateName, params.description, params.files[0]);
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
 }

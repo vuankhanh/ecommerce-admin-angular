@@ -1,33 +1,32 @@
-import { Injectable } from '@angular/core';
+import { inject } from '@angular/core';
 import {
   HttpRequest,
-  HttpHandler,
+  HttpHandlerFn,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptorFn
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { LoaderService } from '../../../service/loader.service';
 
-@Injectable()
-export class LoadingInterceptor implements HttpInterceptor {
+let totalRequests = 0;
 
-  private totalRequests = 0;
-
-  constructor(
-    private loadingService: LoaderService
-  ) {}
-
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    this.totalRequests++;
-    this.loadingService.setLoading(true);
-    return next.handle(request).pipe(
-      finalize(() => {
-        this.totalRequests--;
-        if (this.totalRequests == 0) {
-          this.loadingService.setLoading(false);
-        }
-      })
-    );
-  }
-}
+export const loadingInterceptor: HttpInterceptorFn = (
+  request: HttpRequest<unknown>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<unknown>> => {
+  
+  const loadingService = inject(LoaderService);
+  
+  totalRequests++;
+  loadingService.setLoading(true);
+  
+  return next(request).pipe(
+    finalize(() => {
+      totalRequests--;
+      if (totalRequests === 0) {
+        loadingService.setLoading(false);
+      }
+    })
+  );
+};

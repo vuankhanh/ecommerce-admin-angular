@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { inject } from '@angular/core';
 import {
   HttpRequest,
-  HttpHandler,
+  HttpHandlerFn,
   HttpEvent,
-  HttpInterceptor,
-  HttpErrorResponse
+  HttpErrorResponse,
+  HttpInterceptorFn
 } from '@angular/common/http';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { AuthStateService } from '../../../service/auth_state.service';
@@ -12,67 +12,71 @@ import { AuthService } from '../../../service/api/auth.service';
 import { LocalStorageService } from '../../../service/local-storage.service';
 import { LocalStorageKey } from '../../constant/local_storage.constant';
 
-const methods = ['POST', 'PUT', 'PATCH', 'DELETE'];
+let isRefreshing = false;
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-  private isRefreshing = false;
-  constructor(
-    private authStateService: AuthStateService,
-    private authService: AuthService,
-    private readonly localStorageService: LocalStorageService
-  ) {}
+export const authInterceptor: HttpInterceptorFn = (
+  request: HttpRequest<unknown>, 
+  next: HttpHandlerFn
+): Observable<HttpEvent<unknown>> => {
+  
+  const authStateService = inject(AuthStateService);
+  const authService = inject(AuthService);
+  const localStorageService = inject(LocalStorageService);
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (methods.includes(request.method) && !request.url.includes('/login')) {
-      const accessToken = this.localStorageService.get(LocalStorageKey.ACCESSTOKEN);
-      if (accessToken) {
-        const cloned = request.clone({
-          headers: request.headers.set("authorization", "Bearer " + accessToken)
-        });
-        return next.handle(cloned).pipe(
-          catchError(error=>{
-            if(error instanceof HttpErrorResponse && !request.url.includes('/login') && error.status === 401 ){
-              return this.handle401Error(request, next)
-            }
+  if (!request.url.includes('/login')) {
+    const accessToken = localStorageService.get(LocalStorageKey.ACCESSTOKEN);
 
-            return throwError(()=>error);
-          })
-        );
-      }
+    if (accessToken) {
+      const cloned = request.clone({
+        headers: request.headers.set("authorization", "Bearer " + accessToken)
+      });
+      return next(cloned).pipe(
+        catchError(error => {
+          if (error instanceof HttpErrorResponse && !request.url.includes('/login') && error.status === 401) {
+            return handle401Error(request, next, authStateService, authService, localStorageService);
+          }
+          return throwError(() => error);
+        })
+      );
     }
-    return next.handle(request);
+  }
+  return next(request);
+};
+
+function handle401Error(
+  request: HttpRequest<any>, 
+  next: HttpHandlerFn,
+  authStateService: AuthStateService,
+  authService: AuthService,
+  localStorageService: LocalStorageService
+): Observable<HttpEvent<any>> {
+  if (!isRefreshing) {
+    isRefreshing = true;
+
+    const refreshToken = localStorageService.get(LocalStorageKey.REFRESHTOKEN);
+    const isLogin = authStateService.isLogin;
+    
+    if (isLogin) {
+      const refreshTokenRequest = authService.refreshToken(refreshToken!);
+      return refreshTokenRequest.pipe(
+        switchMap(accessToken => {
+          localStorageService.set(LocalStorageKey.ACCESSTOKEN, accessToken);
+          isRefreshing = false;
+          const cloned = request.clone({
+            headers: request.headers.set("authorization", "Bearer " + accessToken)
+          });
+          return next(cloned);
+        }),
+        catchError((error) => {
+          isRefreshing = false;
+          if (error.status == '403') {
+            authStateService.logout();
+          }
+          return throwError(() => error);
+        })
+      );
+    }
   }
 
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
-    if (!this.isRefreshing) {
-      this.isRefreshing = true;
-
-      const refreshToken = this.localStorageService.get(LocalStorageKey.REFRESHTOKEN);
-      const isLogin = this.authStateService.isLogin;
-      if (isLogin) {
-        const refreshTokenRequest = this.authService.refreshToken(refreshToken!)
-        return refreshTokenRequest.pipe(
-          switchMap(accessToken => {
-            this.localStorageService.set(LocalStorageKey.ACCESSTOKEN, accessToken);
-            this.isRefreshing = false;
-            const cloned = request.clone({
-              headers: request.headers.set("authorization", "Bearer " + accessToken)
-            });
-            return next.handle(cloned);
-          }),
-          catchError((error) => {
-            this.isRefreshing = false;
-            if (error.status == '403') {
-              this.authStateService.logout();
-            }
-
-            return throwError(() => error);
-          })
-        );
-      }
-    }
-
-    return next.handle(request);
-  }
+  return next(request);
 }

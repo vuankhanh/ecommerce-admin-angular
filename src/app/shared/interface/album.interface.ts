@@ -6,7 +6,7 @@ export interface IAlbum {
   name: string,
   description: string,
   route: string,
-  thumbnail: string,
+  thumbnailUrl: string,
   media: Array<TMediaModel>,
   mediaItems: number,
   createdAt: Date,
