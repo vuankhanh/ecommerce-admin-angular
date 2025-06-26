@@ -6,7 +6,7 @@ import { map, of, Subscription, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductService } from '../../../../service/api/product.service';
-import { AlbumService, DetailParams } from '../../../../service/api/album.service';
+// import { AlbumService, DetailParams } from '../../../../service/api/media-slide-show.service';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
 import { TAlbumModel } from '../../../../shared/interface/album.interface';
 import { CommonModule } from '@angular/common';
@@ -43,7 +43,7 @@ export class ProductFormComponent {
     private dialog: MatDialog,
     private prefixBackendStaticPipe: PrefixBackendStaticPipe,
     private productService: ProductService,
-    private albumService: AlbumService
+    // private albumService: AlbumService
   ) { }
 
   ngOnInit() {
@@ -136,30 +136,30 @@ export class ProductFormComponent {
   }
 
   private getAlbumDetail(albumId: string) {
-    const detailParams: DetailParams = {
-      id: albumId
-    }
-    this.subscription.add(
-      this.albumService.getDetail(detailParams).subscribe({
-        next: res => {
-          this.album = res;
-          const galleryItems: GalleryItem[] = res.media.map(media => {
-            return {
-              src: this.prefixBackendStaticPipe.transform(media.url),
-              thumbSrc: this.prefixBackendStaticPipe.transform(media.thumbnailUrl),
-              text: media.caption,
-              video: media.type === 'video' ? true : false
-            }
-          })
-          this.galleryItems = galleryItems;
-          console.log(this.galleryItems);
+    // const detailParams: DetailParams = {
+    //   id: albumId
+    // }
+    // this.subscription.add(
+    //   this.albumService.getDetail(detailParams).subscribe({
+    //     next: res => {
+    //       this.album = res;
+    //       const galleryItems: GalleryItem[] = res.media.map(media => {
+    //         return {
+    //           src: this.prefixBackendStaticPipe.transform(media.url),
+    //           thumbSrc: this.prefixBackendStaticPipe.transform(media.thumbnailUrl),
+    //           text: media.caption,
+    //           video: media.type === 'video' ? true : false
+    //         }
+    //       })
+    //       this.galleryItems = galleryItems;
+    //       console.log(this.galleryItems);
 
-        },
-        error: error => {
-          console.error(error);
-        }
-      })
-    )
+    //     },
+    //     error: error => {
+    //       console.error(error);
+    //     }
+    //   })
+    // )
   }
 
   goBackProducDetail() {

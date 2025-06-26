@@ -1,44 +1,41 @@
 <app-file-drag-and-drop [isMultiple]="true" [acceptMIMETypes]="imageMIMETypes"
   (uploadFiles)="handleFilesUploaded($event)"></app-file-drag-and-drop>
-  @if (album && !!album.length) {
-    @if(album[album.length - 1]; as mediaMetaData) {
-    <div class="media-info">
-      <h2>Thông tin</h2>
-      <div class="media-item">
-        <div class="media-title">Ảnh:</div>
-        <div class="media-value">
-          <img [src]="mediaMetaData.thumbnailUrl | prefixBackendStatic">
-        </div>
-      </div>
-      <div class="media-item">
-        <div class="media-title">Số lượng media:</div>
-        <div class="media-value">{{ mediaMetaData.mediaItems }}</div>
-      </div>
-      <div class="media-item">
-        <div class="media-title">Media:</div>
-        <div class="media-value">
-          <ng-container *ngIf="galleryItems.length">
-            <app-gallery-custom-thumbs [items]="galleryItems"
-              (itemTemporaryDeletionEvent)="handleItemTemporaryDeletion($event)"
-              (itemIndexChangedEvent)="handleitemIndexChanged($event)"
-              (itemHighLightEvent)="handleItemSetHighLight($event)"
-            ></app-gallery-custom-thumbs>
-          </ng-container>
-        </div>
-      </div>
-      @if(galleryItemTemporarilyDeleted.length){
-      <div class=" media-item">
-        <div class="media-title">Danh sách xóa tạm {{'('+galleryItemTemporarilyDeleted.length+')'}}</div>
-        <div class="media-value">
-          <app-gallery-item-temporarily-deleted [galleryItemTemporarilyDeleted]="galleryItemTemporarilyDeleted"
-            (galleryItemRestore)="onGalleryItemRestore($event)"></app-gallery-item-temporarily-deleted>
-        </div>
-      </div>
-      }
-      <button mat-raised-button color="primary" (click)="update()" [disabled]="galleryItemTemporarilyDeleted.length === 0 && galleryItemIndexChanged.length === 0">
-        Cập nhật
-        <mat-icon>sync</mat-icon>
-      </button>
+@if(slideShow){
+<div class="media-info">
+  <h2>Thông tin</h2>
+  <div class="media-item">
+    <div class="media-title">Ảnh:</div>
+    <div class="media-value">
+      <img [src]="slideShow.thumbnailUrl | prefixBackendStatic">
     </div>
-    }
+  </div>
+  <div class="media-item">
+    <div class="media-title">Số lượng media:</div>
+    <div class="media-value">{{ slideShow.mediaItems }}</div>
+  </div>
+  <div class="media-item">
+    <div class="media-title">Media:</div>
+    <div class="media-value">
+      <ng-container *ngIf="galleryItems.length">
+        <app-gallery-custom-thumbs [items]="galleryItems"
+          (itemTemporaryDeletionEvent)="handleItemTemporaryDeletion($event)"
+          (itemIndexChangedEvent)="handleitemIndexChanged($event)"
+        ></app-gallery-custom-thumbs>
+      </ng-container>
+    </div>
+  </div>
+  @if(galleryItemTemporarilyDeleted.length){
+  <div class=" media-item">
+    <div class="media-title">Danh sách xóa tạm {{'('+galleryItemTemporarilyDeleted.length+')'}}</div>
+    <div class="media-value">
+      <app-gallery-item-temporarily-deleted [galleryItemTemporarilyDeleted]="galleryItemTemporarilyDeleted"
+        (galleryItemRestore)="onGalleryItemRestore($event)"></app-gallery-item-temporarily-deleted>
+    </div>
+  </div>
   }
+  <button mat-raised-button color="primary" (click)="update()" [disabled]="galleryItemTemporarilyDeleted.length === 0 && galleryItemIndexChanged.length === 0">
+    Cập nhật
+    <mat-icon>sync</mat-icon>
+  </button>
+</div>
+}

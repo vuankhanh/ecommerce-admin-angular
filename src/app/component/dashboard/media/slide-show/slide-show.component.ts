@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FileDragAndDropComponent } from '../../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
-import { Observable, Subscription, switchMap } from 'rxjs';
-import { AlbumService } from '../../../../service/api/album.service';
+import { BehaviorSubject, catchError, map, Observable, of, Subscription, switchMap, take, throwError } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { IRequestParamsWithFiles } from '../../../../shared/interface/request.interface';
 import { GalleryComponent } from '@daelmaak/ngx-gallery';
@@ -12,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
 import { TAlbumModel, TMediaModel } from '../../../../shared/interface/album.interface';
+import { SlideShowService } from '../../../../service/api/media-slide-show.service';
 
 @Component({
   selector: 'app-slide-show',
@@ -38,46 +38,46 @@ export class SlideShowComponent implements OnInit, OnDestroy {
   @ViewChild(FileDragAndDropComponent) childComponentRef!: FileDragAndDropComponent;
   @ViewChild(GalleryComponent, { read: ElementRef }) galleryComponent!: ElementRef;
 
-  album?: TAlbumModel[];
+  slideShow?: TAlbumModel
   galleryItems: IGalleryItem[] = [];
   galleryItemTemporarilyDeleted: IGalleryItem[] = [];
-  galleryItemIndexChanged: Array<string> = [];
+
+  galleryItemIndexChanged: string[] = [];
 
   imageMIMETypes: Array<string> = ['image/png', 'image/jpeg', 'image/jpg', 'video/mp4', 'video/webm'];
 
-  subscription: Subscription = new Subscription();
+  private readonly subscription: Subscription = new Subscription();
   constructor(
-    private albumService: AlbumService,
+    private slideShowService: SlideShowService,
     private prefixBackendStaticPipe: PrefixBackendStaticPipe,
   ) { }
 
   ngOnInit(): void {
     this.subscription.add(
-      this.albumService.get().subscribe((res) => {
-        this.album = res.data;
-        const lastAlbum = this.album[this.album.length - 1];
-        this.initImages(lastAlbum.media);
+      this.slideShowService.get().subscribe((res) => {
+        this.slideShow = res;
+        this.initImages(this.slideShow.media);
       })
     )
   }
 
   handleFilesUploaded(params: IRequestParamsWithFiles): void {
-    const api = this.album ? this.updateAddNewFilesRequest(params) : this.createRequest(params);
-    // this.subscription.add(
-    //   api.subscribe((res) => {
-    //     this.childComponentRef.isEditing = true;
-    //     this.album = res.media;
-    //     this.initImages(res.media);
-    //   })
-    // )
+    const api = this.slideShow ? this.updateAddNewFilesRequest(params) : this.createRequest(params);
+    this.subscription.add(
+      api.subscribe((res) => {
+        this.childComponentRef.isEditing = true;
+        this.slideShow = res;
+        this.initImages(this.slideShow.media);
+      })
+    )
   }
 
   private createRequest(params: IRequestParamsWithFiles): Observable<TAlbumModel> {
-    return this.albumService.create(params.alternateName, params.description, params.files);
+    return this.slideShowService.create(params.files);
   }
 
   private updateAddNewFilesRequest(params: IRequestParamsWithFiles): Observable<TAlbumModel> {
-    return this.albumService.addNewFiles(params.files);
+    return this.slideShowService.addNewFiles(params.files);
   }
 
   private initImages(medias: Array<TMediaModel>): Array<IGalleryItem> {
@@ -110,15 +110,6 @@ export class SlideShowComponent implements OnInit, OnDestroy {
     this.galleryItemIndexChanged = galleryItems.map((item) => item._id)
   }
 
-  handleItemSetHighLight(id: string): void {
-    // this.subscription.add(
-    //   this.albumService.setHighLightItem(id).subscribe((mediaMetaData) => {
-    //     this.mediaMetaData = mediaMetaData;
-    //     this.galleryItems = this.initImages(mediaMetaData.media);
-    //   })
-    // )
-  }
-
   onGalleryItemRestore(item: IGalleryItem): void {
     this.galleryItems = [...this.galleryItems, item];
   }
@@ -126,36 +117,37 @@ export class SlideShowComponent implements OnInit, OnDestroy {
   update() {
     const filesWillRemove = this.galleryItemTemporarilyDeleted.map(item => item._id);
     const galleryItemIndexChanged = this.galleryItemIndexChanged;
-    
-    // this.updateRequest(filesWillRemove, galleryItemIndexChanged).subscribe((mediaMetaData) => {
-    //   this.mediaMetaData = mediaMetaData;
-    //   this.galleryItemTemporarilyDeleted = [];
-    //   this.galleryItemIndexChanged = [];
-    // });
+    this.subscription.add(
+      this.updateRequest(filesWillRemove, galleryItemIndexChanged).subscribe((res) => {
+        this.slideShow = res;
+        this.galleryItemTemporarilyDeleted = [];
+        this.galleryItemIndexChanged = [];
+      })
+    )
   }
 
-  // private updateRequest(filesWillRemove: Array<string>, galleryItemIndexChanged: Array<string>): Observable<MediaMetaData> {
-  //   if(filesWillRemove.length > 0 && galleryItemIndexChanged.length > 0){
-  //     return this.updateRemoveFilesRequest(filesWillRemove).pipe(
-  //       switchMap(() => this.updateItemIndexChangeRequest(galleryItemIndexChanged))
-  //     )
-  //   }else{
-  //     if(filesWillRemove.length > 0){
-  //       return this.updateRemoveFilesRequest(filesWillRemove);
-  //     }
-  //     if(galleryItemIndexChanged.length > 0){
-  //       return this.updateItemIndexChangeRequest(galleryItemIndexChanged);
-  //     }
-  //     return new Observable<MediaMetaData>();
-  //   }
-  // }
+  private updateRequest(filesWillRemove: Array<string>, galleryItemIndexChanged: Array<string>): Observable<TAlbumModel> {
+    if(filesWillRemove.length > 0 && galleryItemIndexChanged.length > 0){
+      return this.updateRemoveFilesRequest(filesWillRemove).pipe(
+        switchMap(() => this.updateItemIndexChangeRequest(galleryItemIndexChanged))
+      )
+    }else{
+      if(filesWillRemove.length > 0){
+        return this.updateRemoveFilesRequest(filesWillRemove);
+      }
+      if(galleryItemIndexChanged.length > 0){
+        return this.updateItemIndexChangeRequest(galleryItemIndexChanged);
+      }
+      return new Observable<TAlbumModel>();
+    }
+  }
 
   private updateRemoveFilesRequest(filesWillRemove: Array<string>) {
-    return this.albumService.removeFiles(filesWillRemove);
+    return this.slideShowService.removeFiles(filesWillRemove);
   }
 
   private updateItemIndexChangeRequest(galleryItemIndexChanged: Array<string>) {
-    return this.albumService.itemIndexChange(galleryItemIndexChanged)
+    return this.slideShowService.itemIndexChange(galleryItemIndexChanged)
   }
 
   ngOnDestroy(): void {

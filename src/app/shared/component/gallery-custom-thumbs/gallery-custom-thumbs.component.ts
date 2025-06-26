@@ -41,7 +41,7 @@ export class GalleryCustomThumbsComponent implements OnInit, AfterViewInit, OnDe
   @Output() indexChangeEvent: EventEmitter<number> = new EventEmitter<number>();
   @Output() itemTemporaryDeletionEvent: EventEmitter<number> = new EventEmitter<number>();
   @Output() itemIndexChangedEvent: EventEmitter<IGalleryItem[]> = new EventEmitter<IGalleryItem[]>();
-  @Output() itemHighLightEvent: EventEmitter<string> = new EventEmitter<string>();
+  // @Output() itemHighLightEvent: EventEmitter<string> = new EventEmitter<string>();
 
   itemTemporaryDeletions: number[] = [];
   menuTopLeftPosition = { x: '0', y: '0' };
@@ -110,11 +110,6 @@ export class GalleryCustomThumbsComponent implements OnInit, AfterViewInit, OnDe
 
   itemTemporaryDeletion() {
     this.itemTemporaryDeletionEvent.emit(this.selectedIndex);
-  }
-
-  setHighLight(){
-    const item = this.items[this.selectedIndex];
-    this.itemHighLightEvent.emit(item._id);
   }
 
   drop(event: CdkDragDrop<GalleryItem[]>): void {

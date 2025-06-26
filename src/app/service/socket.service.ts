@@ -3,7 +3,7 @@ import { io, Socket } from 'socket.io-client';
 import { environment } from '../../environments/environment.development';
 import { filter, map, Observable, tap } from 'rxjs';
 import { IImage } from '../shared/interface/media.interface';
-import { MediaMetaData } from './api/album.service';
+import { MediaMetaData } from './api/media-slide-show.service';
 
 @Injectable({
   providedIn: 'root'
