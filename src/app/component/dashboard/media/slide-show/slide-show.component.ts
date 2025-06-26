@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
 import { TAlbumModel, TMediaModel } from '../../../../shared/interface/album.interface';
-import { SlideShowService } from '../../../../service/api/media-slide-show.service';
+import { MediaSlideShowService } from '../../../../service/api/media-slide-show.service';
 
 @Component({
   selector: 'app-slide-show',
@@ -48,13 +48,13 @@ export class SlideShowComponent implements OnInit, OnDestroy {
 
   private readonly subscription: Subscription = new Subscription();
   constructor(
-    private slideShowService: SlideShowService,
+    private mediaSlideShowService: MediaSlideShowService,
     private prefixBackendStaticPipe: PrefixBackendStaticPipe,
   ) { }
 
   ngOnInit(): void {
     this.subscription.add(
-      this.slideShowService.get().subscribe((res) => {
+      this.mediaSlideShowService.get().subscribe((res) => {
         this.slideShow = res;
         this.initImages(this.slideShow.media);
       })
@@ -73,11 +73,11 @@ export class SlideShowComponent implements OnInit, OnDestroy {
   }
 
   private createRequest(params: IRequestParamsWithFiles): Observable<TAlbumModel> {
-    return this.slideShowService.create(params.files);
+    return this.mediaSlideShowService.create(params.files);
   }
 
   private updateAddNewFilesRequest(params: IRequestParamsWithFiles): Observable<TAlbumModel> {
-    return this.slideShowService.addNewFiles(params.files);
+    return this.mediaSlideShowService.addNewFiles(params.files);
   }
 
   private initImages(medias: Array<TMediaModel>): Array<IGalleryItem> {
@@ -143,11 +143,11 @@ export class SlideShowComponent implements OnInit, OnDestroy {
   }
 
   private updateRemoveFilesRequest(filesWillRemove: Array<string>) {
-    return this.slideShowService.removeFiles(filesWillRemove);
+    return this.mediaSlideShowService.removeFiles(filesWillRemove);
   }
 
   private updateItemIndexChangeRequest(galleryItemIndexChanged: Array<string>) {
-    return this.slideShowService.itemIndexChange(galleryItemIndexChanged)
+    return this.mediaSlideShowService.itemIndexChange(galleryItemIndexChanged)
   }
 
   ngOnDestroy(): void {

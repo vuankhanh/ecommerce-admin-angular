@@ -7,7 +7,7 @@ export const Menu: TMenu[] = [
       fontSet: 'fa-solid',
       fontIcon: 'fa-house'
     },
-    route: ''
+    route: '/dashboard/home'
   },
   {
     name: 'Sản phẩm',
@@ -42,8 +42,8 @@ export const Menu: TMenu[] = [
         route: '/dashboard/media/logo'
       },
       {
-        name: 'Hightlight marketing',
-        route: '/dashboard/media/hightlight-marketing'
+        name: 'Promotion',
+        route: '/dashboard/media/promotion'
       }
     ]
   }

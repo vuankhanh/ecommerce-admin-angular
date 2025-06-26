@@ -20,9 +20,9 @@ export const routes: Routes = [
         loadComponent: () => import('./logo/logo.component').then(m => m.LogoComponent)
       },
       {
-        path: 'hightlight-marketing',
-        title: 'Hightlight Marketing',
-        loadComponent: () => import('./hightlight-marketing/hightlight-marketing.component').then(m => m.HightlightMarketingComponent)
+        path: 'promotion',
+        title: 'Promotion',
+        loadComponent: () => import('./promotion/promotion.component').then(m => m.PromotionComponent)
       }
     ]
   }

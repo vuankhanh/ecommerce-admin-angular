@@ -29,6 +29,40 @@
   }
 }
 
+.active-parent-menu .mat-expansion-panel-header {
+  background-color: var(--mat-list-list-item-hover-state-layer-color, rgba(0, 0, 0, 0.04)) !important;
+}
+
+.active-parent-menu .mat-list-item {
+  color: var(--mat-primary-500) !important;
+  font-weight: 500 !important;
+}
+
+.active-parent-menu mat-icon {
+  color: var(--mat-primary-500) !important;
+}
+
+.active-menu-item {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  font-weight: 500 !important;
+}
+
+.active-menu-item mat-icon {
+  color: #fff !important;
+}
+
+/* Alternative styling for Material theme */
+.mat-mdc-list-item.active-menu-item {
+  background-color: var(--mat-list-list-item-hover-state-layer-color, rgba(0, 0, 0, 0.04)) !important;
+  border-left: 4px solid var(--mat-primary-500);
+}
+
+.mat-mdc-list-item.active-menu-item .mdc-list-item__primary-text {
+  font-weight: 500;
+  color: var(--mat-primary-500);
+}
+
 ::ng-deep mat-expansion-panel {
   mat-expansion-panel-header {
     padding: 0 !important;

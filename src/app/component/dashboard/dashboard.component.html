@@ -13,7 +13,12 @@
       <mat-nav-list>
         @for (nav of menu; track $index) {
         @if (!!nav.children?.length) {
-        <mat-expansion-panel hideToggle #expansionPanel>
+        <mat-expansion-panel
+          hideToggle
+          #expansionPanel
+          [appAutoExpand]="nav.children"
+          routerLinkActive="active-parent-menu"
+          [routerLinkActiveOptions]="{ exact: false }">
           <mat-expansion-panel-header>
             <mat-list-item>
               @if (!!nav.icon?.fontSet && !!nav.icon?.fontIcon) {
@@ -27,13 +32,15 @@
           </mat-expansion-panel-header>
 
           @for (child of nav.children; track $index) {
-          <mat-list-item role="listitem" [routerLink]="child.route" (click)="snav.close()">
+          <mat-list-item role="listitem" [routerLink]="child.route" routerLinkActive="active-menu-item"
+            [routerLinkActiveOptions]="{ exact: false }" (click)="snav.close()">
             {{ child.name }}
           </mat-list-item>
           }
         </mat-expansion-panel>
         }@else {
-        <mat-list-item role="listitem" [routerLink]="nav.route" (click)="snav.close()">
+        <mat-list-item role="listitem" [routerLink]="nav.route" routerLinkActive="active-menu-item"
+          [routerLinkActiveOptions]="{ exact: false }" (click)="snav.close()">
           @if (!!nav.icon?.fontSet && !!nav.icon?.fontIcon) {
           <mat-icon [fontSet]="nav.icon!.fontSet" [fontIcon]="nav.icon!.fontIcon" matListItemIcon></mat-icon>
           }

@@ -9,7 +9,7 @@ import { IPagination } from '../../shared/interface/pagination.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class SlideShowService {
+export class MediaSlideShowService {
   private readonly url: string = environment.backendApi + '/admin/media/slide-show';
 
   constructor(

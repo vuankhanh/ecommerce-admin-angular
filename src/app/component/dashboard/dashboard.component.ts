@@ -12,6 +12,7 @@ import { MatAccordion } from '@angular/material/expansion';
 import { IJwtDecoded } from '../../shared/interface/user_information.interface';
 import { MenuHeaderComponent } from '../../shared/component/menu-header/menu-header.component';
 import { Menu } from '../../shared/constant/menu.constant';
+import { AutoExpandMatExpansionPanelDirective } from '../../shared/directive/auto-expand-mat-expansion-panel.directive';
 
 
 @Component({
@@ -24,6 +25,8 @@ import { Menu } from '../../shared/constant/menu.constant';
     RouterLinkActive,
 
     MenuHeaderComponent,
+
+    AutoExpandMatExpansionPanelDirective,
 
     MaterialModule
   ],
