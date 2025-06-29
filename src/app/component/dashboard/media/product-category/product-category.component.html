@@ -1,0 +1,43 @@
+<div class="header-section">
+  <div class="search-section">
+    <mat-form-field>
+      <mat-label>Tìm danh mục sản phẩm</mat-label>
+      <input matInput [(ngModel)]="searchTerm" (keyup.enter)="onSearch()" placeholder="Nhập danh mục sản phẩm">
+      <button mat-icon-button matSuffix (click)="onSearch()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  
+  <div class="action-buttons">
+    <button mat-raised-button color="primary" (click)="createProductCategory()">
+      <mat-icon>add</mat-icon>
+      Tạo danh mục mới
+    </button>
+  </div>
+</div>
+
+@if (productCategories$ | async; as productCategories) {
+  @if (productCategories.data; as categories) {
+  <mat-grid-list [cols]="(breakpointDetection$ | async) ? 2 : 6"
+    [rowHeight]="(breakpointDetection$ | async) ? '150px' : '200px'"
+    [gutterSize]="(breakpointDetection$ | async) ? '8px' : '16px'" class="categories-grid">
+  
+    @for (category of categories; track category._id) {
+    <mat-grid-tile class="category-tile" (click)="productCategoryDetail(category._id)">
+      <div class="category-content">
+        <div class="category-image">
+          <img [src]="category._id" [alt]="category.name">
+        </div>
+        <div class="category-name">{{ category.name }}</div>
+      </div>
+    </mat-grid-tile>
+    }
+  </mat-grid-list>
+}
+}@else {
+<div class="empty-state">
+  <mat-icon>category</mat-icon>
+  <p>Không có danh mục sản phẩm nào.</p>
+</div>
+}

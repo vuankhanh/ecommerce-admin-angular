@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { ISuccess } from '../../shared/interface/success.interface';
 import { environment } from '../../../environments/environment.development';
 import { TAlbumModel, TMediaModel } from '../../shared/interface/album.interface';
+import { IFileUpload } from '../../shared/interface/file-upload.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -27,19 +28,16 @@ export class MediaPromotionService {
     );
   }
 
-  create(
-    alternateName: string,
-    description: string,
-    file: File
-  ): Observable<TAlbumModel> {
+  create(fileUpload: IFileUpload): Observable<TAlbumModel> {
     const formData = new FormData();
 
+    const file = fileUpload.file;
+    formData.append('file', fileUpload.file);
     const fileInfo = {
       fileName: file.name,
-      description: description,
-      alternateName: alternateName,
+      description: fileUpload.description,
+      alternateName: fileUpload.alternateName,
     }
-    formData.append('file', file);
     formData.append('file_0', JSON.stringify(fileInfo));
 
     return this.httpClient.post<MediaPromotionResponse>(this.url, formData).pipe(
@@ -47,19 +45,16 @@ export class MediaPromotionService {
     );
   }
 
-  update(
-    alternateName: string,
-    description: string,
-    file: File
-  ): Observable<TAlbumModel> {
+  update(fileUpload: IFileUpload): Observable<TAlbumModel> {
     const formData = new FormData();
 
+    const file = fileUpload.file;
+    formData.append('file', fileUpload.file);
     const fileInfo = {
       fileName: file.name,
-      description: description,
-      alternateName: alternateName,
+      description: fileUpload.description,
+      alternateName: fileUpload.alternateName,
     }
-    formData.append('file', file);
     formData.append('file_0', JSON.stringify(fileInfo));
 
     return this.httpClient.patch<MediaPromotionResponse>(this.url, formData).pipe(

@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ISuccess } from '../../shared/interface/success.interface';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { TAlbumModel } from '../../shared/interface/album.interface';
-import { IPagination } from '../../shared/interface/pagination.interface';
-
+import { IFileUpload } from '../../shared/interface/file-upload.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,36 +22,50 @@ export class MediaSlideShowService {
   }
 
   create(
-    files: Array<File>
+    fileUploads: IFileUpload[]
   ): Observable<TAlbumModel> {
-    const formData = new FormData();
-    if (files.length) {
-      for (let [index, file] of files.entries()) {
-        formData.append('files', file);
-        const fileInfo = {
-          fileName: file.name,
-          description: '',
-          alternateName: file.name,
-        }
-        formData.append('file_' + index, JSON.stringify(fileInfo));
-      }
+    if (!fileUploads || !fileUploads.length) {
+      throw new Error('Không có file nào được chọn để tải lên');
     }
+
+    const formData = new FormData();
+
+    for (let [index, fileUpload] of fileUploads.entries()) {
+      const file = fileUpload.file;
+      formData.append('files', file);
+
+      const fileInfo = {
+        fileName: file.name,
+        description: fileUpload.description,
+        alternateName: fileUpload.alternateName
+      }
+      formData.append('file_' + index, JSON.stringify(fileInfo));
+    }
+
     return this.httpClient.post<IAlbumResponse>(this.url, formData).pipe(
       map(res => res.metaData)
     );
   }
 
-  addNewFiles(files: Array<File>): Observable<TAlbumModel> {
+  addNewFiles(fileUploads: IFileUpload[]): Observable<TAlbumModel> {
+    if (!fileUploads || !fileUploads.length) {
+      throw new Error('Không có file nào được chọn để tải lên');
+    }
+
     const formData = new FormData();
-    for (let [index, file] of files.entries()) {
+
+    for (let [index, fileUpload] of fileUploads.entries()) {
+      const file = fileUpload.file;
       formData.append('files', file);
+
       const fileInfo = {
         fileName: file.name,
-        description: '',
-        alternateName: file.name,
+        description: fileUpload.description,
+        alternateName: fileUpload.alternateName
       }
       formData.append('file_' + index, JSON.stringify(fileInfo));
     }
+
     return this.httpClient.patch<IAlbumResponse>(this.url + '/add-new-files', formData).pipe(
       map(res => res.metaData)
     );

@@ -1,9 +1,9 @@
-<div class="center" #childElement appMatchHeight>
+<div class="center" #childElement>
 
-  <div *ngIf="!files.length || isEditing" class="file-drop-container" [@slideInOut]="'in'">
-    <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)"
-      (onFileLeave)="fileLeave($event)" [dropZoneClassName]="'ngx-file-drop__drop-zone'" [multiple]="isMultiple"
-      [accept]="accepts" [disabled]="!!(isDisabled$ | async)">
+  <div class="file-drop-container" [ngStyle]="{'display': files.length > 0 ? 'none' : 'block'}">
+    <ngx-file-drop #fileDropRef dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+      (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [dropZoneClassName]="'ngx-file-drop__drop-zone'"
+      [multiple]="isMultiple" [accept]="accepts">
       <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
         <div class="drop-zone-container">
           <div class="drop-zone-text">
@@ -23,61 +23,14 @@
     }
   </div>
 
-  <div *ngIf="files.length && !isEditing" class="upload-table-container" [@slideInOut]="'in'">
-    @if(!isMultiple) {
-      <form [formGroup]="formGroup">
-        <mat-form-field>
-          <input matInput placeholder="Tên thay thế" formControlName="alternateName" />
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput placeholder="Mô tả" formControlName="description" />
-        </mat-form-field>
-      </form>
-    }
-    <!-- Upload table content -->
-    <div class="upload-table">
-      <table mat-table [dataSource]="files" class="mat-elevation-z8">
-
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Tên </th>
-          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-        </ng-container>
-
-        <!-- Media Column -->
-        <ng-container matColumnDef="media">
-          <th mat-header-cell *matHeaderCellDef> Ảnh/Video </th>
-          <td mat-cell *matCellDef="let element" class="preview-media">
-            @if (element.type.includes('video')) {
-              <video [src]="element.url"></video>
-            }@else{
-              <img [src]="element.url" alt="image" />
-            }
-          </td>
-        </ng-container>
-
-        <!-- Type Column -->
-        <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef> Kiểu </th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.type }}
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </div>
-
-    <div class="button-container">
-      <button mat-stroked-button type="button" (click)="editFiles()">
-        Sửa lại
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-raised-button color="primary" (click)="upload()" [disabled]="formGroup.invalid">
-        Đẩy lên
-        <mat-icon>cloud_upload</mat-icon>
-      </button>
-    </div>
+  <div class="file-info-container horizontal-container" [ngStyle]="{'display': files.length > 0 ? 'flex' : 'none'}">
+    <app-file-info [files]="files" (uploadFiles)="uploadFiles.emit($event)">
+      @if(isMultiple){
+        <button slot="footer" mat-button type="button" (click)="fileDropRef.openFileSelector()">
+          <mat-icon>add</mat-icon>
+          Thêm file
+        </button>
+      }
+    </app-file-info>
   </div>
 </div>

@@ -34,17 +34,25 @@ export const Menu: TMenu[] = [
     },
     children: [
       {
+        name: 'Sản phẩm',
+        route: '/dashboard/media/product'
+      },
+      {
+        name: 'Danh mục sản phẩm',
+        route: '/dashboard/media/product-category'
+      },
+      {
         name: 'Slide show',
         route: '/dashboard/media/slide-show'
+      },
+      {
+        name: 'Promotion',
+        route: '/dashboard/media/promotion'
       },
       {
         name: 'Logo',
         route: '/dashboard/media/logo'
       },
-      {
-        name: 'Promotion',
-        route: '/dashboard/media/promotion'
-      }
     ]
   }
 ]

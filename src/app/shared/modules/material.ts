@@ -26,6 +26,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   imports: [CommonModule],
@@ -56,7 +61,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatCheckboxModule,
     ScrollingModule,
     MatProgressSpinnerModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSelectModule,
+    MatPaginatorModule,
+    MatChipsModule,
+    MatProgressBarModule,
+    MatBadgeModule,
   ]
 })
 export class MaterialModule { }

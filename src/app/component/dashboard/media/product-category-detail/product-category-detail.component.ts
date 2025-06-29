@@ -1,23 +1,28 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FileDragAndDropComponent } from '../../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
-import { BehaviorSubject, catchError, map, Observable, of, Subscription, switchMap, take, throwError } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
+import { Observable, Subscription, switchMap } from 'rxjs';
+import { TAlbumModel, TMediaModel } from '../../../../shared/interface/album.interface';
 import { IFileUpload } from '../../../../shared/interface/file-upload.interface';
-import { GalleryComponent } from '@daelmaak/ngx-gallery';
-import { GalleryCustomThumbsComponent } from '../../../../shared/component/gallery-custom-thumbs/gallery-custom-thumbs.component';
-import { GalleryItemTemporarilyDeletedComponent } from '../../../../shared/component/gallery-item-temporarily-deleted/gallery-item-temporarily-deleted.component';
-import { IGalleryItem } from '../../../../shared/interface/gallery.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
-import { TAlbumModel, TMediaModel } from '../../../../shared/interface/album.interface';
-import { MediaSlideShowService } from '../../../../service/api/media-slide-show.service';
+import { GalleryCustomThumbsComponent } from '../../../../shared/component/gallery-custom-thumbs/gallery-custom-thumbs.component';
+import { GalleryItemTemporarilyDeletedComponent } from '../../../../shared/component/gallery-item-temporarily-deleted/gallery-item-temporarily-deleted.component';
+import { GalleryComponent } from '@daelmaak/ngx-gallery';
+import { IGalleryItem } from '../../../../shared/interface/gallery.interface';
+import { ActivatedRoute } from '@angular/router';
+import { MediaProductCategoryService } from '../../../../service/api/media-product-category.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '../../../../shared/modules/material';
 
 @Component({
-  selector: 'app-slide-show',
+  selector: 'app-product-category-detail',
   standalone: true,
   imports: [
     CommonModule,
+
+    ReactiveFormsModule,
 
     MatButtonModule,
     MatIconModule,
@@ -26,58 +31,66 @@ import { MediaSlideShowService } from '../../../../service/api/media-slide-show.
 
     FileDragAndDropComponent,
     GalleryCustomThumbsComponent,
-    GalleryItemTemporarilyDeletedComponent
+    GalleryItemTemporarilyDeletedComponent,
+
+    MaterialModule
   ],
-  providers: [
-    PrefixBackendStaticPipe
-  ],
-  templateUrl: './slide-show.component.html',
-  styleUrl: './slide-show.component.scss'
+  templateUrl: './product-category-detail.component.html',
+  styleUrl: './product-category-detail.component.scss'
 })
-export class SlideShowComponent implements OnInit, OnDestroy {
+export class ProductCategoryDetailComponent {
   @ViewChild(FileDragAndDropComponent) childComponentRef!: FileDragAndDropComponent;
   @ViewChild(GalleryComponent, { read: ElementRef }) galleryComponent!: ElementRef;
 
-  slideShow?: TAlbumModel
+  mediaProductCategory?: TAlbumModel
   galleryItems: IGalleryItem[] = [];
   galleryItemTemporarilyDeleted: IGalleryItem[] = [];
 
   galleryItemIndexChanged: string[] = [];
 
-  imageMIMETypes: Array<string> = ['image/png', 'image/jpeg', 'image/jpg', 'video/mp4', 'video/webm'];
+  imageMIMETypes: Array<string> = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
 
   private readonly subscription: Subscription = new Subscription();
   constructor(
-    private mediaSlideShowService: MediaSlideShowService,
+    private activatedRoute: ActivatedRoute,
+    private mediaProductCategoryService: MediaProductCategoryService,
     private prefixBackendStaticPipe: PrefixBackendStaticPipe,
   ) { }
 
   ngOnInit(): void {
+    const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
+    if (!id) {
+      console.error('Id của danh mục sản phẩm không hợp lệ');
+      return;
+    }
     this.subscription.add(
-      this.mediaSlideShowService.get().subscribe((res) => {
-        this.slideShow = res;
-        this.initImages(this.slideShow.media);
+      this.mediaProductCategoryService.getDetail(id).subscribe((res) => {
+        this.mediaProductCategory = res;
+        this.initImages(this.mediaProductCategory.media);
       })
     )
   }
 
   handleFilesUploaded(fileUploads: IFileUpload[]): void {
-    const api = this.slideShow ? this.updateAddNewFilesRequest(fileUploads) : this.createRequest(fileUploads);
-    this.subscription.add(
-      api.subscribe((res) => {
-        this.childComponentRef.reset();
-        this.slideShow = res;
-        this.initImages(this.slideShow.media);
-      })
-    )
+    const fileUpload = fileUploads[0];
+    console.log(fileUpload);
+    
+    // const api = this.mediaProductCategory ? this.updateAddNewFilesRequest(fileUpload) : this.createRequest(fileUpload);
+    // this.subscription.add(
+    //   api.subscribe((res) => {
+    //     this.childComponentRef.reset();
+    //     this.mediaProductCategory = res;
+    //     this.initImages(this.mediaProductCategory.media);
+    //   })
+    // )
   }
 
-  private createRequest(fileUploads: IFileUpload[]): Observable<TAlbumModel> {
-    return this.mediaSlideShowService.create(fileUploads);
+  private createRequest(fileItem: IFileUpload): Observable<TAlbumModel> {
+    return this.mediaProductCategoryService.create(fileItem);
   }
 
-  private updateAddNewFilesRequest(fileUploads: IFileUpload[]): Observable<TAlbumModel> {
-    return this.mediaSlideShowService.addNewFiles(fileUploads);
+  private updateAddNewFilesRequest(fileItem: IFileUpload): Observable<TAlbumModel> {
+    return this.mediaProductCategoryService.addNewFiles(fileItem);
   }
 
   private initImages(medias: Array<TMediaModel>): Array<IGalleryItem> {
@@ -119,7 +132,7 @@ export class SlideShowComponent implements OnInit, OnDestroy {
     const galleryItemIndexChanged = this.galleryItemIndexChanged;
     this.subscription.add(
       this.updateRequest(filesWillRemove, galleryItemIndexChanged).subscribe((res) => {
-        this.slideShow = res;
+        this.mediaProductCategory = res;
         this.galleryItemTemporarilyDeleted = [];
         this.galleryItemIndexChanged = [];
       })
@@ -127,15 +140,15 @@ export class SlideShowComponent implements OnInit, OnDestroy {
   }
 
   private updateRequest(filesWillRemove: Array<string>, galleryItemIndexChanged: Array<string>): Observable<TAlbumModel> {
-    if(filesWillRemove.length > 0 && galleryItemIndexChanged.length > 0){
+    if (filesWillRemove.length > 0 && galleryItemIndexChanged.length > 0) {
       return this.updateRemoveFilesRequest(filesWillRemove).pipe(
         switchMap(() => this.updateItemIndexChangeRequest(galleryItemIndexChanged))
       )
-    }else{
-      if(filesWillRemove.length > 0){
+    } else {
+      if (filesWillRemove.length > 0) {
         return this.updateRemoveFilesRequest(filesWillRemove);
       }
-      if(galleryItemIndexChanged.length > 0){
+      if (galleryItemIndexChanged.length > 0) {
         return this.updateItemIndexChangeRequest(galleryItemIndexChanged);
       }
       return new Observable<TAlbumModel>();
@@ -143,11 +156,11 @@ export class SlideShowComponent implements OnInit, OnDestroy {
   }
 
   private updateRemoveFilesRequest(filesWillRemove: Array<string>) {
-    return this.mediaSlideShowService.removeFiles(filesWillRemove);
+    return this.mediaProductCategoryService.removeFiles(filesWillRemove);
   }
 
   private updateItemIndexChangeRequest(galleryItemIndexChanged: Array<string>) {
-    return this.mediaSlideShowService.itemIndexChange(galleryItemIndexChanged)
+    return this.mediaProductCategoryService.itemIndexChange(galleryItemIndexChanged)
   }
 
   ngOnDestroy(): void {

@@ -5,7 +5,7 @@ import { catchError, Observable, of, Subscription, switchMap, throwError } from 
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
 import { TAlbumModel, TMediaModel } from '../../../../shared/interface/album.interface';
 import { CommonModule } from '@angular/common';
-import { IRequestParamsWithFiles } from '../../../../shared/interface/request.interface';
+import { IFileUpload } from '../../../../shared/interface/file-upload.interface';
 
 @Component({
   selector: 'app-logo',
@@ -31,12 +31,10 @@ export class LogoComponent implements OnDestroy {
     private mediaLogoService: MediaLogoService
   ) { }
 
-  handleFilesUploaded(params: IRequestParamsWithFiles): void {
-    const description = params.description || '';
-    const alternateName = params.alternateName || params.files[0].name;
-    const file = params.files[0];
-    const createApi$: Observable<TAlbumModel> = this.mediaLogoService.create(alternateName, description, file)
-    const updateApi$: Observable<TAlbumModel> = this.mediaLogoService.update(alternateName, description, file);
+  handleFilesUploaded(fileUploads: IFileUpload[]): void {
+    const fileUpload = fileUploads[0];
+    const createApi$: Observable<TAlbumModel> = this.mediaLogoService.create(fileUpload)
+    const updateApi$: Observable<TAlbumModel> = this.mediaLogoService.update(fileUpload);
     this.subscription.add(
       this.logo$.pipe(
         catchError((err) => {
@@ -50,7 +48,7 @@ export class LogoComponent implements OnDestroy {
         })
       ).subscribe({
         next: (res) => {
-          this.childComponentRef.isEditing = true;
+          this.childComponentRef.reset();
           this.mainLogo$ = this.mediaLogoService.getMain();
         },
         error: (err) => {

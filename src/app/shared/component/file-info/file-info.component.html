@@ -1,0 +1,67 @@
+<div class="upload-table-container">
+  <div class="upload-header">
+    <h3 [matBadge]="filesControls.length" matBadgeOverlap="false">Số file đã đẩy lên</h3>
+  </div>
+
+  <form [formGroup]="filesForm">
+    <mat-list class="file-list">
+      <div formArrayName="files">
+        @for (fileControl of filesControls.controls; track fileControl; let index = $index) {
+        <div [formGroupName]="index">
+          @if (fileControl.get('file')?.value; as file) {
+          <mat-list-item>
+            <div matListItemAvatar>
+              @if (file.url | async; as url) {
+              <img [src]="url">
+              }
+            </div>
+            <div matListItemTitle>{{file.name}}</div>
+            <div matListItemLine>
+              <div class="vertical-container">
+                <span class="file-size">{{file.size | fileSize:'MB'}}</span>
+                <span class="file-date">{{file.lastModified | date:'hh:mm:ss dd/MM/yyyy'}}</span>
+              </div>
+            </div>
+            <div matListItemMeta>
+              <div class="vertical-container">
+                <button mat-icon-button type="button" (click)="removeFile(fileControl.get('file')?.value, index)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-list-item>
+          }
+
+          <!-- Form fields cho mỗi file -->
+          <div class="file-form-fields horizontal-container">
+            <mat-form-field>
+              <mat-label>Mô tả</mat-label>
+              <input matInput formControlName="description" placeholder="Nhập mô tả">
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Tên thay thế</mat-label>
+              <input matInput formControlName="alternateName" placeholder="Nhập tên thay thế">
+            </mat-form-field>
+
+            <mat-checkbox
+              [checked]="fileControl.get('isMain')?.value"
+              (change)="onMainFileChange(index)"
+              [disabled]="fileControl.get('isMain')?.value"
+              [matTooltip]="fileControl.get('isMain')?.value ? 'Đây là file chính' : 'Chọn làm file chính'"
+            >
+              File chính
+            </mat-checkbox>
+          </div>
+
+          <mat-divider></mat-divider>
+        </div>
+        }
+      </div>
+    </mat-list>
+    <div class="action-container horizontal-container">
+      <ng-content select="[slot=footer]"></ng-content>
+    </div>
+  </form>
+
+</div>

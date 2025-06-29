@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgxFileDropEntry, NgxFileDropModule } from 'ngx-file-drop';
 import { MaterialModule } from '../../modules/material';
-import { BehaviorSubject } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatchHeightDirective } from '../../directive/match-height.directive';
-import { GalleryComponent } from '@daelmaak/ngx-gallery';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { filesArrayValidator } from '../../utitl/form-validator/files_array.validator';
-import { IRequestParamsWithFiles } from '../../interface/request.interface';
+import { IFile, IFileUpload } from '../../interface/file-upload.interface';
+import { filter, last, map, Observable } from 'rxjs';
+import { FileSizePipe } from '../../pipe/file-size.pipe';
+import { FileInfoComponent } from '../file-info/file-info.component';
 
 @Component({
   selector: 'app-file-drag-and-drop',
@@ -18,7 +19,9 @@ import { IRequestParamsWithFiles } from '../../interface/request.interface';
     FormsModule,
     ReactiveFormsModule,
 
-    GalleryComponent,
+    FileInfoComponent,
+
+    FileSizePipe,
     MatchHeightDirective,
 
     NgxFileDropModule,
@@ -47,30 +50,18 @@ import { IRequestParamsWithFiles } from '../../interface/request.interface';
   ]
 })
 export class FileDragAndDropComponent implements OnInit {
+  @ViewChild(FileInfoComponent) fileInfoComponent!: FileInfoComponent;
+
   @Input() isMultiple: boolean = false;
   @Input() acceptMIMETypes: Array<string> = [];
-  
-  @Output() uploadFiles = new EventEmitter<IRequestParamsWithFiles>();
 
-  accepts!: string ;
+  @Output() uploadFiles = new EventEmitter<IFileUpload[]>();
+
+  accepts!: string;
   displayedColumns: string[] = ['name', 'media', 'type'];
 
-  isDisabled$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isFileOverLimit: boolean = false;
   files: Array<IFile> = [];
-
-  isEditing: boolean = false;
-
-  formGroup: FormGroup;
-
-  constructor(formBuilder: FormBuilder) {
-    this.formGroup = formBuilder.group({
-      alternateName: [''],
-      description: [''],
-      files: [this.files, filesArrayValidator]
-    });
-
-  }
 
   ngOnInit(): void {
     this.accepts = this.acceptMIMETypes.join(',');
@@ -82,17 +73,15 @@ export class FileDragAndDropComponent implements OnInit {
       console.warn('File drop ignored due to file limit.');
       return; // Ignore file drop if limit is exceeded
     }
-    
-    const transformFile: Array<IFile> = await this.transformFile(files);
-    
+
+    const transformFile: Array<IFile> = await FileUploadUtil.transformFile(files);
+
     if (!this.validateFile(transformFile)) {
       alert('Invalid file type');
       return;
     }
 
     this.files = transformFile;
-    this.formGroup.patchValue({ files: this.files });
-    this.isEditing = false;
   }
 
   public fileOver(event: DragEvent) {
@@ -109,39 +98,52 @@ export class FileDragAndDropComponent implements OnInit {
     this.isFileOverLimit = false;
   }
 
+  reset() {
+    this.files = [];
+    this.isFileOverLimit = false;
+    this.fileInfoComponent.filesControls.clear();
+  }
+
   private validateFile(transformFile: Array<File>): boolean {
     return transformFile.some(file => {
       return file ? this.acceptMIMETypes.includes(file.type) : false;
     });
   }
 
-  private async transformFile(droppedFiles: Array<NgxFileDropEntry>): Promise<Array<IFile>> {
+  ngOnDestroy() {
+
+  }
+}
+
+class FileUploadUtil {
+  static async transformFile(droppedFiles: Array<NgxFileDropEntry>): Promise<Array<IFile>> {
     const result: Array<IFile> = [];
-    for(let droppedFile of droppedFiles) {
+    for (let droppedFile of droppedFiles) {
       if (droppedFile.fileEntry.isFile) {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         const file = await this.cbToPromise(fileEntry);
-        const newFile = Object.assign(file, { url: await this.createObjectURL(file) });
+        const url = this.createObjectURL(file);
+        const newFile = Object.assign(file, { url }) as IFile;
 
         result.push(newFile);
       }
     }
-    
+
     return result;
   }
 
-  private cbToPromise(dropFile: FileSystemFileEntry): Promise<File> {
+  static cbToPromise(dropFile: FileSystemFileEntry): Promise<File> {
     return new Promise((resolve, reject) => {
       dropFile.file((file: File) => {
         resolve(file);
-      }, (error: Error)=>{
+      }, (error: Error) => {
         reject(error);
       })
     })
   }
 
-  createObjectURL(file: File): Promise<string> {
-    return new Promise((resolve, reject)=>{
+  static createObjectURL(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
         const result = reader.result as ArrayBuffer;
@@ -156,25 +158,43 @@ export class FileDragAndDropComponent implements OnInit {
     })
   }
 
-  editFiles(): void {
-    this.isEditing = true;
-  }
+  // static progessBarValue(file: File): Observable<IFileProgress> {
+  //   return new Observable<IFileProgress>((observer) => {
+  //     const reader = new FileReader();
+  //     observer.next({
+  //       progress: 0,
+  //       isComplete: false
+  //     });
+  //     reader.onprogress = (event: ProgressEvent<FileReader>) => {
+  //       if (event.lengthComputable) {
+  //         const progress = Math.round((event.loaded / event.total) * 100);
+  //         observer.next({
+  //           progress: progress,
+  //           isComplete: false
+  //         });
+  //       }
+  //     };
 
-  upload() {
-    const value = this.formGroup.value;
-    const paramsWithFiles: IRequestParamsWithFiles = {
-      alternateName: value.alternateName,
-      description: value.description,
-      files: value.files
-    }
-    this.uploadFiles.emit(paramsWithFiles);
-  }
+  //     reader.onload = () => {
+  //       const result = reader.result as ArrayBuffer;
+  //       const blob = new Blob([result]);
+  //       const url = URL.createObjectURL(blob);
 
-  ngOnDestroy() {
+  //       // Emit final progress với URL
+  //       observer.next({
+  //         progress: 100,
+  //         url: url,
+  //         isComplete: true
+  //       });
 
-  }
-}
+  //       observer.complete();
+  //     };
 
-interface IFile extends File {
-  url: string;
+  //     reader.onerror = (error) => {
+  //       observer.error(error);
+  //     };
+
+  //     reader.readAsArrayBuffer(file);
+  //   });
+  // }
 }
