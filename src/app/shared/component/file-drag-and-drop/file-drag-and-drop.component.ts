@@ -62,6 +62,7 @@ export class FileDragAndDropComponent implements OnInit {
 
   isFileOverLimit: boolean = false;
   files: Array<IFile> = [];
+  fileUploads: Array<IFileUpload> = [];
 
   ngOnInit(): void {
     this.accepts = this.acceptMIMETypes.join(',');
@@ -98,10 +99,15 @@ export class FileDragAndDropComponent implements OnInit {
     this.isFileOverLimit = false;
   }
 
+  handleFilesUploaded(fileUploads: IFileUpload[]): void {
+    this.fileUploads = fileUploads;
+    this.uploadFiles.emit(this.fileUploads);
+  }
+
   reset() {
     this.files = [];
     this.isFileOverLimit = false;
-    this.fileInfoComponent.filesControls.clear();
+    this.fileInfoComponent.reset();
   }
 
   private validateFile(transformFile: Array<File>): boolean {

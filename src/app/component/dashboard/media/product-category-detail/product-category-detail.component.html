@@ -1,11 +1,30 @@
-<app-file-drag-and-drop [isMultiple]="false" [acceptMIMETypes]="imageMIMETypes"
-  (uploadFiles)="handleFilesUploaded($event)">
-</app-file-drag-and-drop>
+<div class="file-upload-container vertical-container">
+  <form [formGroup]="formGroup" (ngSubmit)="uploadFiles()" class="vertical-container">
+    @if(formGroup.get('name')){
+      <mat-form-field>
+        <mat-label>Danh mục sản phẩm</mat-label>
+        <input matInput placeholder="Nhập tên danh mục sản phẩm" formControlName="name">
+        <mat-error *ngIf="formGroup.get('name')?.hasError('required')">
+          Tên danh mục sản phẩm là bắt buộc
+        </mat-error>
+      </mat-form-field>
+    }
+    <app-file-drag-and-drop [isMultiple]="false" [acceptMIMETypes]="imageMIMETypes"
+      (uploadFiles)="handleFilesUploaded($event)">
+    </app-file-drag-and-drop>
+    <div>
+      <button type="submit" mat-raised-button color="primary" [disabled]="formGroup.invalid">
+        Tải lên
+        <mat-icon>cloud_upload</mat-icon>
+      </button>
+    </div>
+  </form>
+</div>
 @if(mediaProductCategory){
 <div class="media-info">
   <h2>Thông tin</h2>
   <div class="media-item">
-    <div class="media-title">Ảnh:</div>
+    <div class="media-title">Ảnh chính:</div>
     <div class="media-value">
       <img [src]="mediaProductCategory.thumbnailUrl | prefixBackendStatic">
     </div>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { GalleryComponent, GalleryItem, GalleryItemEvent } from '@daelmaak/ngx-gallery';
 import { GalleryDomManipulatorDirective } from '../../directive/gallery-dom-manipulator.directive';
@@ -8,6 +8,8 @@ import { LongPressDirective } from '../../directive/long-press.directive';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { IGalleryItem } from '../../interface/gallery.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { SlidesComponent } from '../slides/slides.component';
 
 @Component({
   selector: 'app-gallery-custom-thumbs',
@@ -36,7 +38,6 @@ export class GalleryCustomThumbsComponent implements OnInit, AfterViewInit, OnDe
   @Input() items: IGalleryItem[] = [];
   @Input() selectedIndex: number = 0;
 
-  @Output() itemClickEvent: EventEmitter<GalleryItemEvent> = new EventEmitter<GalleryItemEvent>();
   @Output() thumbsClickEvent: EventEmitter<number> = new EventEmitter<number>();
   @Output() indexChangeEvent: EventEmitter<number> = new EventEmitter<number>();
   @Output() itemTemporaryDeletionEvent: EventEmitter<number> = new EventEmitter<number>();
@@ -47,6 +48,8 @@ export class GalleryCustomThumbsComponent implements OnInit, AfterViewInit, OnDe
   menuTopLeftPosition = { x: '0', y: '0' };
 
   private subscription: Subscription = new Subscription();
+
+  private readonly matDialog: MatDialog = inject(MatDialog);
 
   ngOnInit(): void {
     console.log(this.items);
@@ -118,14 +121,33 @@ export class GalleryCustomThumbsComponent implements OnInit, AfterViewInit, OnDe
     this.itemIndexChangedEvent.emit(this.items);
   }
 
-  onItemGallerySelection(event: GalleryItemEvent): void {
-    this.itemClickEvent.emit(event);
-  }
+  // onItemGallerySelection(event: GalleryItemEvent): void {
+  //   this.itemClickEvent.emit(event);
+  // }
 
   thumbsClick(index: number): void {
     this.thumbsClickEvent.emit(index);
     this.selectedIndex = index;
     this.galleryComponent.select(index);
+  }
+
+  selection(event: GalleryItemEvent){
+    const data = {
+      metaData: this.items,
+      selection: event.index
+    }
+    
+    const dialog = this.matDialog.open(SlidesComponent, {
+      id: '',
+      data: data,
+      minWidth: '100%',
+      minHeight: '100%',
+      maxWidth: '100%',
+      maxHeight: '100%',
+    })
+    this.subscription.add(
+      dialog.afterOpened().subscribe(_=>history.pushState(null, ''))
+    )
   }
 
   ngOnDestroy(): void {

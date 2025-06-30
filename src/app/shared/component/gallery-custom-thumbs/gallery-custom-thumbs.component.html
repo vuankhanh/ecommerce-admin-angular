@@ -1,6 +1,7 @@
 <gallery appLongPress [pressDuration]="500" [objectFit]="'contain'" [items]="items" [thumbs]="false"
-  (itemClick)="onItemGallerySelection($event)" (longTouch)="onGalleryLongTouch($event)"
-  (longPress)="onGalleryLongPress($event)">sdfsdfsd</gallery>
+  (itemClick)="selection($event)"
+  (longTouch)="onGalleryLongTouch($event)"
+  (longPress)="onGalleryLongPress($event)"></gallery>
 
 <div #thumbsElement cdkDropList cdkDropListOrientation="horizontal" class="thumbs-container"
   (cdkDropListDropped)="drop($event)">

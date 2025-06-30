@@ -22,17 +22,17 @@ export const routes: Routes = [
       },
       {
         path: 'promotion',
-        title: 'Promotion',
+        title: 'Quảng cáo',
         loadComponent: () => import('./promotion/promotion.component').then(m => m.PromotionComponent)
       },
       {
         path: 'product-category',
-        title: 'Product Category',
+        title: 'Danh mục sản phẩm',
         loadComponent: () => import('./product-category/product-category.component').then(m => m.ProductCategoryComponent)
       },
       {
         path: 'product-category/create',
-        title: 'Create Product Category',
+        title: 'Tạo danh mục sản phẩm',
         loadComponent: () => import('./product-category-detail/product-category-detail.component').then(c => c.ProductCategoryDetailComponent),
       },
       {
@@ -42,7 +42,7 @@ export const routes: Routes = [
       },
       {
         path: 'product',
-        title: 'Product',
+        title: 'Sản phẩm',
         loadComponent: () => import('./product/product.component').then(m => m.ProductComponent)
       }
     ]

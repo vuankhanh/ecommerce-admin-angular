@@ -27,18 +27,29 @@ export class MediaProductCategoryService {
     if (size != undefined) {
       params = params.append('size', size)
     }
-    return this.httpClient.get<AlbumProductCategoryResponse>(this.url).pipe(
+    return this.httpClient.get<AlbumProductCategoryResponse>(this.url, { params }).pipe(
       map(response => response.metaData)
     )
   }
 
   getDetail(id: string): Observable<TAlbumModel> {
-    return this.httpClient.get<MediaProductCategoryResponse>(`${this.url}/detail/${id}`).pipe(
+    let params = new HttpParams();
+    if (id!= undefined) {
+      params = params.append('id', id)
+    }
+
+    return this.httpClient.get<MediaProductCategoryResponse>(`${this.url}/detail`, { params }).pipe(
       map(response => response.metaData)
     );
   }
 
-  create(fileUpload: IFileUpload): Observable<TAlbumModel> {
+  create(name: string, fileUpload: IFileUpload): Observable<TAlbumModel> {
+    let params = new HttpParams();
+
+    if (name != undefined) {
+      params = params.append('name', name)
+    }
+
     const formData = new FormData();
 
     const file = fileUpload.file;
@@ -50,12 +61,18 @@ export class MediaProductCategoryService {
     }
     formData.append('file_0', JSON.stringify(fileInfo));
 
-    return this.httpClient.post<MediaProductCategoryResponse>(this.url, formData).pipe(
+    return this.httpClient.post<MediaProductCategoryResponse>(this.url, formData, { params }).pipe(
       map(res => res.metaData)
     );
   }
 
-  addNewFiles(fileUpload: IFileUpload): Observable<TAlbumModel> {
+  addNewFiles(id:string, fileUpload: IFileUpload): Observable<TAlbumModel> {
+    let params = new HttpParams();
+
+    if (id!= undefined) {
+      params = params.append('id', id)
+    }
+
     const formData = new FormData();
 
     const file = fileUpload.file;
@@ -67,30 +84,55 @@ export class MediaProductCategoryService {
     }
     formData.append('file_0', JSON.stringify(fileInfo));
 
-    return this.httpClient.patch<MediaProductCategoryResponse>(this.url + '/add-new-files', formData).pipe(
+    return this.httpClient.patch<MediaProductCategoryResponse>(this.url + '/add-new-files', formData, { params }).pipe(
       map(res => res.metaData)
     );
   }
 
-  removeFiles(filesWillRemove: Array<string>): Observable<TAlbumModel> {
-    return this.httpClient.patch<MediaProductCategoryResponse>(this.url + '/remove-files', { filesWillRemove }).pipe(
+  removeFiles(id: string, filesWillRemove: Array<string>): Observable<TAlbumModel> {
+    let params = new HttpParams();
+
+    if (id!= undefined) {
+      params = params.append('id', id)
+    }
+
+    return this.httpClient.patch<MediaProductCategoryResponse>(this.url + '/remove-files', { filesWillRemove }, { params }).pipe(
       map(res => res.metaData)
     );
   }
 
-  itemIndexChange(newItemIndexChange: Array<string>): Observable<TAlbumModel> {
-    return this.httpClient.patch<MediaProductCategoryResponse>(this.url + '/item-index-change', { newItemIndexChange }).pipe(
+  itemIndexChange(id: string, newItemIndexChange: Array<string>): Observable<TAlbumModel> {
+    let params = new HttpParams();
+
+    if (id!= undefined) {
+      params = params.append('id', id)
+    }
+    console.log('newItemIndexChange', newItemIndexChange);
+    
+    return this.httpClient.patch<MediaProductCategoryResponse>(this.url + '/item-index-change', { newItemIndexChange }, { params }).pipe(
       map(res => res.metaData)
     );
   }
 
-  setHighLightItem(id: string): Observable<TAlbumModel> {
-    return this.httpClient.patch<MediaProductCategoryResponse>(this.url + '/set-highlight-item', { id }).pipe(
+  setHighLightItem(id: string, itemId: string): Observable<TAlbumModel> {
+    let params = new HttpParams();
+
+    if (id!= undefined) {
+      params = params.append('id', id)
+    }
+
+    return this.httpClient.patch<MediaProductCategoryResponse>(this.url + '/set-highlight-item', { itemId }, { params }).pipe(
       map(res => res.metaData)
     );
   }
 
-  delete(): Observable<TAlbumModel> {
+  delete(id: string): Observable<TAlbumModel> {
+    let params = new HttpParams();
+
+    if (id!= undefined) {
+      params = params.append('id', id)
+    }
+
     return this.httpClient.delete<MediaProductCategoryResponse>(this.url).pipe(
       map(res => res.metaData)
     );

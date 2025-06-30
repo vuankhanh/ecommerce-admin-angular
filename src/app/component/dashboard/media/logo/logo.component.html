@@ -1,4 +1,16 @@
-<app-file-drag-and-drop [isMultiple]="false" [acceptMIMETypes]="imageMIMETypes" (uploadFiles)="handleFilesUploaded($event)"></app-file-drag-and-drop>
+<div class="file-upload-container vertical-container">
+  <form [formGroup]="formGroup" (ngSubmit)="uploadFiles()" class="vertical-container">
+    <app-file-drag-and-drop [isMultiple]="false" [acceptMIMETypes]="imageMIMETypes"
+      (uploadFiles)="handleFilesUploaded($event)">
+    </app-file-drag-and-drop>
+    <div>
+      <button type="submit" mat-raised-button color="primary" [disabled]="formGroup.invalid">
+        Tải lên
+        <mat-icon>cloud_upload</mat-icon>
+      </button>
+    </div>
+  </form>
+</div>
 @if(mainLogo$ | async; as logo) {
   <div class="media-info">
     <h2>Thông tin</h2>

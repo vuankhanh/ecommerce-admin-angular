@@ -20,13 +20,11 @@
   border-radius: 8px;
   padding: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  max-width: 700px;
   width: 100%;
   box-sizing: border-box;
 
   ngx-file-drop {
     width: 100%;
-    max-width: 700px;
 
     .drop-zone-container {
       width: 100%;
@@ -53,8 +51,10 @@
 .file-info-container {
   width: 100%;
   justify-content: center;
+  app-file-info {
+    width: 100%;
+  }
 }
-
 
 .warning-exceed-quantity {
   color: red;

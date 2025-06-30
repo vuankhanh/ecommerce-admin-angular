@@ -6,6 +6,7 @@ import { BreakpointDetectionService } from '../../../../service/breakpoint-detec
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 import { MediaProductCategoryService, TAlbumProductCategory } from '../../../../service/api/media-product-category.service';
+import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
 
 @Component({
   selector: 'app-product-category',
@@ -13,7 +14,8 @@ import { MediaProductCategoryService, TAlbumProductCategory } from '../../../../
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
+
+    PrefixBackendStaticPipe,
 
     MaterialModule
   ],

@@ -96,17 +96,6 @@ export class FileInfoComponent implements OnChanges, OnInit, OnDestroy {
     this.filesForm.reset();
   }
 
-  onSubmit() {
-    if (this.filesControls.invalid) {
-      this.filesControls.markAllAsTouched();
-      return;
-    }
-
-    const submittedFiles: IFileUpload[] = this.filesControls.value;
-    this.uploadFiles.emit(submittedFiles);
-    console.log('Submitted files:', this.filesControls.value);
-  }
-
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }

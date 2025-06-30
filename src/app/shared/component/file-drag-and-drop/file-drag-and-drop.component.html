@@ -1,6 +1,6 @@
 <div class="center" #childElement>
 
-  <div class="file-drop-container" [ngStyle]="{'display': files.length > 0 ? 'none' : 'block'}">
+  <div class="file-drop-container" [ngStyle]="{'display': fileUploads.length > 0 ? 'none' : 'block'}">
     <ngx-file-drop #fileDropRef dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
       (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [dropZoneClassName]="'ngx-file-drop__drop-zone'"
       [multiple]="isMultiple" [accept]="accepts">
@@ -8,10 +8,12 @@
         <div class="drop-zone-container">
           <div class="drop-zone-text">
             <mat-icon>upload</mat-icon>
-            <p>Kéo hình ảnh vào đây</p>
+            <p>{{ isMultiple ? 'Kéo các hình ảnh vào đây' : 'Kéo hình ảnh vào đây' }}</p>
             <p>Hoặc</p>
           </div>
-          <button mat-stroked-button type="button" (click)="openFileSelector()">Chọn</button>
+          <button mat-stroked-button type="button" (click)="openFileSelector()">
+            {{ isMultiple ? 'Chọn nhiều file' : 'Chọn file' }}
+          </button>
         </div>
       </ng-template>
     </ngx-file-drop>
@@ -23,13 +25,13 @@
     }
   </div>
 
-  <div class="file-info-container horizontal-container" [ngStyle]="{'display': files.length > 0 ? 'flex' : 'none'}">
-    <app-file-info [files]="files" (uploadFiles)="uploadFiles.emit($event)">
+  <div class="file-info-container horizontal-container" [ngStyle]="{'display': fileUploads.length > 0 ? 'flex' : 'none'}">
+    <app-file-info [files]="files" (uploadFiles)="handleFilesUploaded($event)">
       @if(isMultiple){
-        <button slot="footer" mat-button type="button" (click)="fileDropRef.openFileSelector()">
-          <mat-icon>add</mat-icon>
-          Thêm file
-        </button>
+      <button slot="footer" mat-button type="button" (click)="fileDropRef.openFileSelector()">
+        <mat-icon>add</mat-icon>
+        Thêm file
+      </button>
       }
     </app-file-info>
   </div>

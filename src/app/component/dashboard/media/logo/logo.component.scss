@@ -1,3 +1,19 @@
+.file-upload-container{
+  align-items: center;
+  form {
+    align-items: flex-end;
+    min-width: 700px;
+
+    mat-form-field, app-file-drag-and-drop{
+      width: 100%;
+    }
+
+    > :last-child {
+      margin-top: 15px;
+    }
+  }
+}
+
 .media-info {
   font-family: Arial, sans-serif;
   max-width: 700px;
@@ -40,7 +56,14 @@
   text-decoration: underline;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 700px) {
+  .file-upload-container{
+    form {
+      width: 100%;
+      min-width: 100%;
+    }
+  }
+
   .media-item {
     flex-direction: column;
   }

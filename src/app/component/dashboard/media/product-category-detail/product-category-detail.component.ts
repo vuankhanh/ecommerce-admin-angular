@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FileDragAndDropComponent } from '../../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
 import { CommonModule } from '@angular/common';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
@@ -11,10 +11,11 @@ import { GalleryCustomThumbsComponent } from '../../../../shared/component/galle
 import { GalleryItemTemporarilyDeletedComponent } from '../../../../shared/component/gallery-item-temporarily-deleted/gallery-item-temporarily-deleted.component';
 import { GalleryComponent } from '@daelmaak/ngx-gallery';
 import { IGalleryItem } from '../../../../shared/interface/gallery.interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MediaProductCategoryService } from '../../../../service/api/media-product-category.service';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../../../shared/modules/material';
+import { fileValidator } from '../../../../shared/utitl/form-validator/files_array.validator';
 
 @Component({
   selector: 'app-product-category-detail',
@@ -42,6 +43,8 @@ export class ProductCategoryDetailComponent {
   @ViewChild(FileDragAndDropComponent) childComponentRef!: FileDragAndDropComponent;
   @ViewChild(GalleryComponent, { read: ElementRef }) galleryComponent!: ElementRef;
 
+  private readonly id = this.activatedRoute.snapshot.paramMap.get('id') as string;
+
   mediaProductCategory?: TAlbumModel
   galleryItems: IGalleryItem[] = [];
   galleryItemTemporarilyDeleted: IGalleryItem[] = [];
@@ -50,22 +53,36 @@ export class ProductCategoryDetailComponent {
 
   imageMIMETypes: Array<string> = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
 
+  private readonly formBuilder: FormBuilder = inject(FormBuilder);
+  formGroup: FormGroup = this.formBuilder.group({
+    name: ['', Validators.required],
+    file: this.formBuilder.group({
+      file: [null, [Validators.required]],
+      description: [''],
+      alternateName: [''],
+      isMain: [false]
+    }, { validators: [Validators.required, fileValidator] })
+  });
+
   private readonly subscription: Subscription = new Subscription();
   constructor(
+    private readonly router: Router,
     private activatedRoute: ActivatedRoute,
     private mediaProductCategoryService: MediaProductCategoryService,
     private prefixBackendStaticPipe: PrefixBackendStaticPipe,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
-    if (!id) {
+    if (!this.id) {
       console.error('Id của danh mục sản phẩm không hợp lệ');
       return;
     }
     this.subscription.add(
-      this.mediaProductCategoryService.getDetail(id).subscribe((res) => {
+      this.mediaProductCategoryService.getDetail(this.id).subscribe((res) => {
         this.mediaProductCategory = res;
+
+        this.formGroup.removeControl('name');
         this.initImages(this.mediaProductCategory.media);
       })
     )
@@ -73,24 +90,52 @@ export class ProductCategoryDetailComponent {
 
   handleFilesUploaded(fileUploads: IFileUpload[]): void {
     const fileUpload = fileUploads[0];
-    console.log(fileUpload);
-    
-    // const api = this.mediaProductCategory ? this.updateAddNewFilesRequest(fileUpload) : this.createRequest(fileUpload);
-    // this.subscription.add(
-    //   api.subscribe((res) => {
-    //     this.childComponentRef.reset();
-    //     this.mediaProductCategory = res;
-    //     this.initImages(this.mediaProductCategory.media);
-    //   })
-    // )
+    const valuePatch = fileUpload ? {
+      file: fileUpload.file,
+      description: fileUpload.description || '',
+      alternateName: fileUpload.alternateName || '',
+      isMain: fileUpload.isMain || false
+    } : {
+      file: null,
+      description: '',
+      alternateName: '',
+      isMain: false
+    }
+
+    this.formGroup.get('file')?.patchValue(valuePatch);
+
+    this.cdr.detectChanges();
   }
 
-  private createRequest(fileItem: IFileUpload): Observable<TAlbumModel> {
-    return this.mediaProductCategoryService.create(fileItem);
+  uploadFiles(): void {
+    if (this.formGroup.valid) {
+      const name = this.formGroup.get('name')?.value;
+      const file = this.formGroup.get('file')?.value;
+      if (!this.mediaProductCategory) {
+        this.subscription.add(
+          this.createRequest(name, file).subscribe(res => {
+            this.router.navigate(['/dashboard/media/product-category', res._id]);
+          })
+        );
+      } else {
+        this.subscription.add(
+          this.updateAddNewFilesRequest(this.id, file).subscribe((res) => {
+            this.childComponentRef.reset();
+            this.mediaProductCategory = res;
+            this.formGroup.removeControl('name');
+            this.initImages(this.mediaProductCategory.media);
+          })
+        )
+      }
+    }
   }
 
-  private updateAddNewFilesRequest(fileItem: IFileUpload): Observable<TAlbumModel> {
-    return this.mediaProductCategoryService.addNewFiles(fileItem);
+  private createRequest(name: string, fileItem: IFileUpload): Observable<TAlbumModel> {
+    return this.mediaProductCategoryService.create(name, fileItem);
+  }
+
+  private updateAddNewFilesRequest(id: string, fileItem: IFileUpload): Observable<TAlbumModel> {
+    return this.mediaProductCategoryService.addNewFiles(id, fileItem);
   }
 
   private initImages(medias: Array<TMediaModel>): Array<IGalleryItem> {
@@ -156,11 +201,11 @@ export class ProductCategoryDetailComponent {
   }
 
   private updateRemoveFilesRequest(filesWillRemove: Array<string>) {
-    return this.mediaProductCategoryService.removeFiles(filesWillRemove);
+    return this.mediaProductCategoryService.removeFiles(this.id, filesWillRemove);
   }
 
   private updateItemIndexChangeRequest(galleryItemIndexChanged: Array<string>) {
-    return this.mediaProductCategoryService.itemIndexChange(galleryItemIndexChanged)
+    return this.mediaProductCategoryService.itemIndexChange(this.id, galleryItemIndexChanged)
   }
 
   ngOnDestroy(): void {
