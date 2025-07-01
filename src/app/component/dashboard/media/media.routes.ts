@@ -1,5 +1,6 @@
-import { Route, Routes } from "@angular/router";
+import { Routes } from "@angular/router";
 import { productCategoryNameTitleResolver } from "./resolvers/product-category-name-title.resolver";
+import { productNameTitleResolver } from "./resolvers/product-name-title.resolver";
 
 export const routes: Routes = [
   {
@@ -44,7 +45,17 @@ export const routes: Routes = [
         path: 'product',
         title: 'Sản phẩm',
         loadComponent: () => import('./product/product.component').then(m => m.ProductComponent)
-      }
+      },
+      {
+        path: 'product/create',
+        title: 'Tạo sản phẩm',
+        loadComponent: () => import('./product-detail/product-detail.component').then(c => c.ProductDetailComponent),
+      },
+      {
+        path: 'product/:id',
+        loadComponent: () => import('./product-detail/product-detail.component').then(c => c.ProductDetailComponent),
+        title: productNameTitleResolver
+      },
     ]
   }
 ]

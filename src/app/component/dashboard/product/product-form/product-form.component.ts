@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GalleryComponent, GalleryItem } from '@daelmaak/ngx-gallery';
-import { IProduct, TProductModel } from '../../../../shared/interface/product.interface';
-import { map, of, Subscription, switchMap } from 'rxjs';
+import { TProductModel } from '../../../../shared/interface/product.interface';
+import { BehaviorSubject, map, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductService } from '../../../../service/api/product.service';
@@ -11,6 +11,11 @@ import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.
 import { TAlbumModel } from '../../../../shared/interface/album.interface';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../shared/modules/material';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { ProductCategoryService } from '../../../../service/api/product-category.service';
+import { MatInput } from '@angular/material/input';
+import { TProductCategoryModel } from '../../../../shared/interface/product-category.interface';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-product-form',
@@ -21,14 +26,36 @@ import { MaterialModule } from '../../../../shared/modules/material';
 
     GalleryComponent,
 
+    NgxMaskDirective,
+
     MaterialModule
+  ],
+  providers: [
+    provideNgxMask()
   ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss'
 })
 export class ProductFormComponent {
-  title!: string;
+  @ViewChild('productCategoryEl') productCategoryEl!: ElementRef<MatInput>;
   formGroup!: FormGroup;
+  private readonly bBroductCategoryEl: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
+  productCategory$: Observable<TProductCategoryModel[]> = this.productCategoryService.getAllData().pipe(
+    switchMap((productCategoriese: TProductCategoryModel[]) => {
+      return this.bBroductCategoryEl.pipe(
+        startWith(''),
+        map((value: string) => {
+          const filterValue = value.toLowerCase();
+          return productCategoriese.filter((productCategory: TProductCategoryModel) => {
+            return productCategory.name.toLowerCase().includes(filterValue);
+          });
+        }),
+      )
+    })
+  );
+
+  private productCategorySelected: TProductCategoryModel | null = null;
 
   album?: TAlbumModel;
   galleryItems: GalleryItem[] = [];
@@ -43,6 +70,7 @@ export class ProductFormComponent {
     private dialog: MatDialog,
     private prefixBackendStaticPipe: PrefixBackendStaticPipe,
     private productService: ProductService,
+    private productCategoryService: ProductCategoryService,
     // private albumService: AlbumService
   ) { }
 
@@ -70,22 +98,37 @@ export class ProductFormComponent {
 
   private initForm() {
     this.formGroup = this.formBuilder.group({
+      // Thông tin sản phẩm cơ bản
       name: [this.product?.name || '', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
       description: [this.product?.description || '', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)]],
       shortDescription: [this.product?.shortDescription || '', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
+
+      // Hình ảnh
       albumId: [this.product?.albumId || ''],
+
+      // Giá và tồn kho
       price: [this.product?.price || 0, [Validators.required, Validators.min(0.01)]],
-      category: [this.product?.category || '', [Validators.required]],
       stock: [this.product?.stock || 0, [Validators.required, Validators.min(0)]],
-      tags: [this.product?.tags || []],
-      metaTitle: [this.product?.metaTitle || ''],
-      metaDescription: [this.product?.metaDescription || ''],
-      metaKeywords: [this.product?.metaKeywords || []]
+
+      // Phân loại
+      category: [this.product?.category || '', [Validators.required]],
     });
   }
 
   isFormChanged(): boolean {
     return this.formGroup.dirty && !this.formGroup.pristine;
+  }
+
+  onProductCategoryBlur(event: FocusEvent) {
+    const productCategorySelectedName = this.productCategorySelected?.name;
+    this.productCategoryEl.nativeElement.value = productCategorySelectedName ? productCategorySelectedName : '';
+  }
+
+  onCategoryOptionSelected(event: MatAutocompleteSelectedEvent) {
+    const productCategory: TProductCategoryModel = event.option.value;
+    this.productCategorySelected = productCategory;
+    this.productCategoryEl.nativeElement.value = productCategory.name;
+    this.formGroup.get('category')?.setValue(productCategory);
   }
 
   private create() {

@@ -1,1 +1,63 @@
-<p>product-category-list works!</p>
+<div class="container">
+  <section>
+    <div class="group-button-row">
+      <button mat-raised-button color="primary" (click)="onCreateEvent()">
+        <mat-icon>add</mat-icon>
+        Thêm sản phẩm
+      </button>
+    </div>
+  </section>
+  @if (productsCategories$ | async; as productsCategories) {
+  <section class="table-container mat-elevation-z8" tabindex="0">
+    <table mat-table [dataSource]="productsCategories" class="mat-elevation-z8">
+      <!-- Thumbnail Column -->
+      <ng-container matColumnDef="thumbnail" [sticky]="breakpointDetection$ | async">
+        <th mat-header-cell *matHeaderCellDef> Hình ảnh </th>
+        <td mat-cell *matCellDef="let element"> <img [src]="element.albumDetail.thumbnail | prefixBackendStatic"
+            [alt]="element.name" /></td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Tên sản phẩm </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Parent Column -->
+      <ng-container matColumnDef="parent">
+        <th mat-header-cell *matHeaderCellDef> Đơn vị </th>
+        <td mat-cell *matCellDef="let element"> {{element.parent.name}} </td>
+      </ng-container>
+
+      <!-- Active Column -->
+      <ng-container matColumnDef="isActive">
+        <th mat-header-cell *matHeaderCellDef> Tình trạng </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-icon [color]="element.isActive ? 'primary' : 'warn'">{{element.isActive ? 'check': 'close'}}</mat-icon>
+        </td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Hành động </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="action-group-button">
+            <button mat-icon-button color="primary" (click)="onViewEvent(element)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="onOrderEvent(element)">
+              <mat-icon>add_shopping_cart</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="onEditEvent(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </section>
+  }
+</div>

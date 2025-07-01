@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { environment } from '../../environments/environment.development';
 import { filter, map, Observable, tap } from 'rxjs';
-import { IImage } from '../shared/interface/media.interface';
-import { MediaMetaData } from './api/media-slide-show.service';
+import { IAlbum, IMedia } from '../shared/interface/album.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,24 +12,24 @@ export class SocketService {
     private mySocket: MySocket
   ) { }
 
-  get listenLogoChange$(): Observable<IImage> {
+  get listenLogoChange$(): Observable<IMedia> {
     return this.mySocket.listen('data_change').pipe(
       filter(data => data.route === 'logo'),
-      map(data => data.data as IImage)
+      map(data => data.data as IMedia)
     );
   }
 
-  get listenAlbumChange$(): Observable<MediaMetaData> {
+  get listenAlbumChange$(): Observable<IAlbum> {
     return this.mySocket.listen('data_change').pipe(
       filter(data => data.route === 'album'),
-      map(data => data.data as MediaMetaData)
+      map(data => data.data as IAlbum)
     );
   }
 
-  get listenHightlightMarketingChange$(): Observable<IImage> {
+  get listenHightlightMarketingChange$(): Observable<IMedia> {
     return this.mySocket.listen('data_change').pipe(
       filter(data => data.route === 'hightlightMarketing'),
-      map(data => data.data as IImage)
+      map(data => data.data as IMedia)
     );
   }
 

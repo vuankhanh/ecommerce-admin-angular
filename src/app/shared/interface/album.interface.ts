@@ -5,7 +5,7 @@ import { ISuccess } from "./success.interface"
 export interface IAlbum {
   name: string,
   description: string,
-  route: string,
+  slug: string,
   thumbnailUrl: string,
   media: Array<TMediaModel>,
   mediaItems: number,

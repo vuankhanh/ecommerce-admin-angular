@@ -28,17 +28,16 @@ import { CurrencyCustomPipe } from '../../../../shared/pipe/currency-custom.pipe
 export class ProductListComponent {
   products?: TProductModel[];
   pagination: IPagination = paginationConstant;
-  
+
   breakpointDetection$ = this.breakpointDetectionService.detection$();
   displayedColumns: string[] = ['thumbnail', 'name', 'price', 'availability', 'unit', 'action'];
-  
+
   private readonly subscription: Subscription = new Subscription();
   constructor(
     private router: Router,
     private productService: ProductService,
     private breakpointDetectionService: BreakpointDetectionService,
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
     this.initProduct('', this.pagination.page, this.pagination.size);

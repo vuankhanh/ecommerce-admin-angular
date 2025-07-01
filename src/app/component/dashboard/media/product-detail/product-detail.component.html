@@ -1,0 +1,61 @@
+<div class="file-upload-container vertical-container">
+  <form [formGroup]="formGroup" (ngSubmit)="uploadFiles()" class="vertical-container">
+    @if(formGroup.get('name')){
+      <mat-form-field>
+        <mat-label>Sản phẩm</mat-label>
+        <input matInput placeholder="Nhập tên Sản phẩm" formControlName="name">
+        <mat-error *ngIf="formGroup.get('name')?.hasError('required')">
+          Tên Sản phẩm là bắt buộc
+        </mat-error>
+      </mat-form-field>
+    }
+    <app-file-drag-and-drop [isMultiple]="true" [acceptMIMETypes]="imageMIMETypes"
+      (uploadFiles)="handleFilesUploaded($event)">
+    </app-file-drag-and-drop>
+    <div>
+      <button type="submit" mat-raised-button color="primary" [disabled]="formGroup.invalid">
+        Tải lên
+        <mat-icon>cloud_upload</mat-icon>
+      </button>
+    </div>
+  </form>
+</div>
+@if(mediaProduct){
+<div class="media-info">
+  <h2>Thông tin</h2>
+  <div class="media-item">
+    <div class="media-title">Ảnh chính:</div>
+    <div class="media-value">
+      <img [src]="mediaProduct.thumbnailUrl | prefixBackendStatic">
+    </div>
+  </div>
+  <div class="media-item">
+    <div class="media-title">Số lượng media:</div>
+    <div class="media-value">{{ mediaProduct.mediaItems }}</div>
+  </div>
+  <div class="media-item">
+    <div class="media-title">Media:</div>
+    <div class="media-value">
+      <ng-container *ngIf="galleryItems.length">
+        <app-gallery-custom-thumbs [items]="galleryItems"
+          (itemTemporaryDeletionEvent)="handleItemTemporaryDeletion($event)"
+          (itemIndexChangedEvent)="handleitemIndexChanged($event)"></app-gallery-custom-thumbs>
+      </ng-container>
+    </div>
+  </div>
+  @if(galleryItemTemporarilyDeleted.length){
+  <div class=" media-item">
+    <div class="media-title">Danh sách xóa tạm {{'('+galleryItemTemporarilyDeleted.length+')'}}</div>
+    <div class="media-value">
+      <app-gallery-item-temporarily-deleted [galleryItemTemporarilyDeleted]="galleryItemTemporarilyDeleted"
+        (galleryItemRestore)="onGalleryItemRestore($event)"></app-gallery-item-temporarily-deleted>
+    </div>
+  </div>
+  }
+  <button mat-raised-button color="primary" (click)="update()"
+    [disabled]="galleryItemTemporarilyDeleted.length === 0 && galleryItemIndexChanged.length === 0">
+    Cập nhật
+    <mat-icon>sync</mat-icon>
+  </button>
+</div>
+}

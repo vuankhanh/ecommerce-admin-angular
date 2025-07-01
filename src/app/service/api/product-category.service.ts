@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { EMPTY, expand, map, Observable, toArray } from 'rxjs';
 import { IPagination } from '../../shared/interface/pagination.interface';
 import { IProductCategory, TProductCategoryModel } from '../../shared/interface/product-category.interface';
 import { ISuccess } from '../../shared/interface/success.interface';
@@ -29,6 +29,22 @@ export class ProductCategoryService {
     return this.httpClient.get<IProductCategoryResponse>(this.url).pipe(
       map(response => response.metaData)
     )
+  }
+
+  getAllData() {
+    let page = 1;
+    return this.getAll().pipe(
+      expand(metaData => {
+        page++;
+        const paging = metaData.paging;
+        return page <= paging.totalPages ? this.getAll('', page) : EMPTY
+      }),
+      toArray(),
+      map((arr: Array<TProductCategory>) => {
+        const data = arr.map(res=>res.data).flat();
+        return data;
+      })
+    );
   }
 
   getDetail(id: string): Observable<TProductCategoryModel> {

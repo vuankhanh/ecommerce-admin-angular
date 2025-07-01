@@ -1,70 +1,115 @@
-<div class="container">
-  @if(formGroup){
-  <mat-card>
-    <mat-card-header class="horizontal-container">
-      <div class="button-group-header">
-        <button mat-icon-button color="primary" (click)="goBackProducDetail()">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-      </div>
-      <div class="horizontal-container">
-        <h3>{{ product?._id ? 'Chỉnh sửa sản phẩm' : 'Tạo sản phẩm' }}</h3>
-      </div>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="horizontal-container">
-        <form [formGroup]="formGroup" class="vertical-container">
-          <div>Tên sản phẩm: <b>{{formGroup.get('name')?.value}}</b></div>
-          <mat-form-field class="example-full-width">
-            <mat-label>Tên</mat-label>
-            <input matInput placeholder="Tên sản phẩm" formControlName="name" required>
-          </mat-form-field>
-  
-          <mat-form-field class="example-full-width">
-            <mat-label>Giá</mat-label>
-            <input matInput type="number" placeholder="Giá sản phẩm" formControlName="price" required>
-          </mat-form-field>
-  
-          <mat-form-field class="example-full-width">
-            <mat-label>Đơn vị</mat-label>
-            <input matInput placeholder="Đơn vị" formControlName="unit" required>
-          </mat-form-field>
-
-          <section>
-            <mat-slide-toggle formControlName="availability">
-              Tình trạng: {{ formGroup.get('availability')?.value ? 'Còn hàng' : 'Hết hàng' }}</mat-slide-toggle>
-          </section>
-  
-          <mat-form-field class="example-full-width">
-            <mat-label>Mô tả sản phẩm</mat-label>
-            <textarea matInput placeholder="Mô tả sản phẩm" formControlName="description" cdkTextareaAutosize
-              cdkAutosizeMinRows="3" cdkAutosizeMaxRows="9"></textarea>
-          </mat-form-field>
-  
-          <mat-form-field class="example-full-width">
-            <mat-label>Hướng dẫn sử dụng</mat-label>
-            <textarea matInput placeholder="Hướng dẫn sử dụng" formControlName="usageInstructions" cdkTextareaAutosize
-              cdkAutosizeMinRows="3" cdkAutosizeMaxRows="9"></textarea>
-          </mat-form-field>
-        </form>
-        <section class="album-container">
-          @if(album && galleryItems && galleryItems.length){
-          <div>Tên album: <b>{{album.name}}</b></div>
-          <gallery [objectFit]="'contain'" [items]="galleryItems"></gallery>
-          }
-          <button mat-raised-button (click)="openAlbumDialog()">
-            <mat-icon>photo_library</mat-icon>
-            {{ album ? 'Chọn lại' : 'Chọn album' }}
-          </button>
-        </section>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" type="button" (click)="onSubmit()"
-        [disabled]="formGroup.invalid || !isFormChanged()">
-        {{ product?._id ? 'Lưu' : 'Tạo' }}
+@if(formGroup){
+<mat-card>
+  <mat-card-header class="horizontal-container">
+    <div class="button-group-header">
+      <button mat-icon-button color="primary" (click)="goBackProducDetail()">
+        <mat-icon>arrow_back</mat-icon>
       </button>
-    </mat-card-actions>
-  </mat-card>
-  }
-</div>
+    </div>
+    <div class="horizontal-container">
+      <h3>{{ product?._id ? 'Chỉnh sửa sản phẩm' : 'Tạo sản phẩm' }}</h3>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="horizontal-container">
+      <form [formGroup]="formGroup" class="vertical-container">
+        <!-- Thông tin sản phẩm cơ bản -->
+        <mat-form-field>
+          <mat-label>Tên sản phẩm</mat-label>
+          <input matInput placeholder="Tên sản phẩm" formControlName="name" required>
+          <mat-error *ngIf="formGroup.get('name')?.hasError('required')">
+            Tên sản phẩm là bắt buộc
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('name')?.hasError('minlength')">
+            Tên sản phẩm phải có ít nhất 3 ký tự
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('name')?.hasError('maxlength')">
+            Tên sản phẩm không được quá 100 ký tự
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Mô tả ngắn</mat-label>
+          <textarea matInput placeholder="Mô tả ngắn sản phẩm" formControlName="shortDescription" cdkTextareaAutosize
+            cdkAutosizeMinRows="2" cdkAutosizeMaxRows="4" required></textarea>
+          <mat-error *ngIf="formGroup.get('shortDescription')?.hasError('required')">
+            Mô tả ngắn là bắt buộc
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('shortDescription')?.hasError('minlength')">
+            Mô tả ngắn phải có ít nhất 10 ký tự
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('shortDescription')?.hasError('maxlength')">
+            Mô tả ngắn không được quá 200 ký tự
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Mô tả chi tiết</mat-label>
+          <textarea matInput placeholder="Mô tả chi tiết sản phẩm" formControlName="description" cdkTextareaAutosize
+            cdkAutosizeMinRows="3" cdkAutosizeMaxRows="9" required></textarea>
+          <mat-error *ngIf="formGroup.get('description')?.hasError('required')">
+            Mô tả chi tiết là bắt buộc
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('description')?.hasError('minlength')">
+            Mô tả chi tiết phải có ít nhất 10 ký tự
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('description')?.hasError('maxlength')">
+            Mô tả chi tiết không được quá 1000 ký tự
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Giá và tồn kho -->
+        <mat-form-field>
+          <mat-label>Giá</mat-label>
+          <input matInput type="tel" inputmode="numeric" mask="separator.0" thousandSeparator="." suffix=" VND"
+            [allowNegativeNumbers]="false" placeholder="Giá sản phẩm" formControlName="price" required>
+          <mat-error *ngIf="formGroup.get('price')?.hasError('required')">
+            Giá sản phẩm là bắt buộc
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('price')?.hasError('min')">
+            Giá sản phẩm phải lớn hơn 0.01
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Số lượng tồn kho</mat-label>
+          <input matInput mask="separator.0" placeholder="Số lượng tồn kho" formControlName="stock" required>
+          <mat-error *ngIf="formGroup.get('stock')?.hasError('required')">
+            Số lượng tồn kho là bắt buộc
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('stock')?.hasError('min')">
+            Số lượng tồn kho không được âm
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Danh mục</mat-label>
+          <input #productCategoryEl type="text" matInput [matAutocomplete]="productCategoryElAuto" (blur)="onProductCategoryBlur($event)">
+          <mat-autocomplete #productCategoryElAuto="matAutocomplete" (optionSelected)="onCategoryOptionSelected($event)">
+            @for (productCategory of productCategory$ | async; track productCategory) {
+            <mat-option [value]="productCategory">{{productCategory.name}}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error *ngIf="formGroup.get('category')?.hasError('required')">
+            Danh mục là bắt buộc
+          </mat-error>
+        </mat-form-field>
+      </form>
+
+      <section class="album-container">
+        @if(album && galleryItems && galleryItems.length){
+        <div>Tên album: <b>{{album.name}}</b></div>
+        <gallery [objectFit]="'contain'" [items]="galleryItems"></gallery>
+        }
+        <button mat-raised-button (click)="openAlbumDialog()">
+          <mat-icon>photo_library</mat-icon>
+          {{ album ? 'Chọn lại' : 'Chọn album' }}
+        </button>
+      </section>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" type="button" (click)="onSubmit()"
+      [disabled]="formGroup.invalid || !isFormChanged()">
+      {{ product?._id ? 'Lưu' : 'Tạo' }}
+    </button>
+  </mat-card-actions>
+</mat-card>
+}

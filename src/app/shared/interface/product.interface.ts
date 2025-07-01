@@ -14,10 +14,6 @@ export interface IProduct {
   price: number;
   category: string;
   stock: number;
-  tags?: string[];
-  metaTitle?: string;       // SEO
-  metaDescription?: string; // SEO
-  metaKeywords?: string[];  // SEO
   reviews?: IProductReview[];
   averageRating?: number;   // Tính trung bình từ reviews
   totalReviews?: number;
