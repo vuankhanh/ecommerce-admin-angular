@@ -16,6 +16,7 @@ import { MediaProductCategoryService } from '../../../../service/api/media-produ
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../../../shared/modules/material';
 import { fileValidator } from '../../../../shared/utitl/form-validator/files_array.validator';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-product-category-detail',
@@ -70,7 +71,8 @@ export class ProductCategoryDetailComponent {
     private activatedRoute: ActivatedRoute,
     private mediaProductCategoryService: MediaProductCategoryService,
     private prefixBackendStaticPipe: PrefixBackendStaticPipe,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private readonly title: Title
   ) { }
 
   ngOnInit(): void {
@@ -81,7 +83,7 @@ export class ProductCategoryDetailComponent {
     this.subscription.add(
       this.mediaProductCategoryService.getDetail(this.id).subscribe((res) => {
         this.mediaProductCategory = res;
-
+        this.title.setTitle(this.mediaProductCategory.name);
         this.formGroup.removeControl('name');
         this.initImages(this.mediaProductCategory.media);
       })
@@ -122,6 +124,7 @@ export class ProductCategoryDetailComponent {
           this.updateAddNewFilesRequest(this.id, file).subscribe((res) => {
             this.childComponentRef.reset();
             this.mediaProductCategory = res;
+            this.title.setTitle(this.mediaProductCategory.name);
             this.formGroup.removeControl('name');
             this.initImages(this.mediaProductCategory.media);
           })

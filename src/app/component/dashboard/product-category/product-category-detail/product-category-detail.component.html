@@ -1,1 +1,116 @@
-<p>product-category-detail works!</p>
+<div class="product-category-detail-container">
+  <!-- Header Section -->
+  <mat-card appearance="outlined" class="header-card">
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>productCategory</mat-icon>
+      </div>
+      <mat-card-title>Chi tiết danh mục sản phẩm</mat-card-title>
+      <mat-card-subtitle>Thông tin chi tiết về danh mục</mat-card-subtitle>
+      <div class="header-actions">
+        <button mat-raised-button color="primary">
+          <mat-icon>edit</mat-icon>
+          Chỉnh sửa
+        </button>
+        <button mat-stroked-button>
+          <mat-icon>delete</mat-icon>
+          Xóa
+        </button>
+      </div>
+    </mat-card-header>
+  </mat-card>
+
+  <div>
+    <!-- Thông tin cơ bản -->
+    <mat-card appearance="outlined" class="info-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>info</mat-icon>
+          Thông tin cơ bản
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>ID:</label>
+            <span>{{productCategory?._id}}</span>
+          </div>
+          <div class="info-item">
+            <label>Tên danh mục:</label>
+            <span>{{productCategory?.name}}</span>
+          </div>
+          <div class="info-item">
+            <label>Slug:</label>
+            <span class="slug">{{productCategory?.slug}}</span>
+          </div>
+
+          <div class="info-item full-width">
+            <label>Mô tả chi tiết:</label>
+            <p class="description">{{productCategory?.description}}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Hình ảnh và Media -->
+    <mat-card appearance="outlined" class="media-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>photo_library</mat-icon>
+          Hình ảnh & Media
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="media-grid">
+          <div class="media-item">
+            <label>Thumbnail:</label>
+            <div class="image-container">
+              <img [src]="(productCategory?.album?.thumbnailUrl || '') | prefixBackendStatic" [alt]="productCategory?.name"
+                class="thumbnail-image">
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Thống kê -->
+    <mat-card appearance="outlined" class="stats-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>bar_chart</mat-icon>
+          Thống kê
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number">{{productCategory?.productCount || 0}}</div>
+            <div class="stat-label">Sản phẩm</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Thông tin thời gian -->
+    <mat-card appearance="outlined" class="time-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>schedule</mat-icon>
+          Thông tin thời gian
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Ngày tạo:</label>
+            <span>{{productCategory?.createdAt | date:'dd/MM/yyyy HH:mm'}}</span>
+          </div>
+          <div class="info-item">
+            <label>Cập nhật cuối:</label>
+            <span>{{productCategory?.updatedAt | date:'dd/MM/yyyy HH:mm'}}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

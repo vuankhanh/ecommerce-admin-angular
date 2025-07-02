@@ -10,7 +10,7 @@ import { ISuccess } from '../../shared/interface/success.interface';
   providedIn: 'root'
 })
 export class ProductCategoryService {
-  private readonly url: string = environment.backendApi + '/product-category';
+  private readonly url: string = environment.backendApi + '/admin/product-category';
   constructor(
     private readonly httpClient: HttpClient
   ) { }
@@ -48,7 +48,14 @@ export class ProductCategoryService {
   }
 
   getDetail(id: string): Observable<TProductCategoryModel> {
-    return this.httpClient.get<IProductCategoryDetailResponse>(`${this.url}/${id}`).pipe(
+    if (!id) {
+      throw new Error('Id là bắt buộc để cập nhật danh mục sản phẩm');
+    }
+
+    let params = new HttpParams();
+    params = params.append('id', id)
+
+    return this.httpClient.get<IProductCategoryDetailResponse>(`${this.url}/detail`, { params }).pipe(
       map(response => response.metaData)
     );
   }
@@ -60,19 +67,40 @@ export class ProductCategoryService {
   }
 
   update(id: string, data: Partial<IProductCategory>) {
-    return this.httpClient.patch<IProductCategoryDetailResponse>(this.url + '/' + id, data).pipe(
+    if (!id) {
+      throw new Error('Id là bắt buộc để cập nhật danh mục sản phẩm');
+    }
+
+    let params = new HttpParams();
+    params = params.append('id', id)
+
+    return this.httpClient.patch<IProductCategoryDetailResponse>(this.url, data, { params }).pipe(
       map(res => res.metaData)
     );
   }
 
   replace(id: string, data: IProductCategory) {
-    return this.httpClient.put<IProductCategoryDetailResponse>(this.url + '/' + id, data).pipe(
+    if (!id) {
+      throw new Error('Id là bắt buộc để cập nhật danh mục sản phẩm');
+    }
+
+    let params = new HttpParams();
+    params = params.append('id', id);
+
+    return this.httpClient.put<IProductCategoryDetailResponse>(this.url, data, { params }).pipe(
       map(res => res.metaData)
     );
   }
 
   remove(id: string) {
-    return this.httpClient.delete<IProductCategoryDetailResponse>(this.url + '/' + id).pipe(
+    if (!id) {
+      throw new Error('Id là bắt buộc để cập nhật danh mục sản phẩm');
+    }
+
+    let params = new HttpParams();
+    params = params.append('id', id)
+
+    return this.httpClient.delete<IProductCategoryDetailResponse>(this.url, { params }).pipe(
       map(res => res.metaData)
     );
   }

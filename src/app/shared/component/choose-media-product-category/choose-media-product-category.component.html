@@ -1,0 +1,40 @@
+<form>
+  <mat-form-field appearance="fill">
+    <mat-label>Media danh mục</mat-label>
+    <input #mediaProductCategoryEl type="text" matInput [matAutocomplete]="mediaProductCategoryElAuto"
+      (blur)="onMediaProductCategoryBlur($event)">
+    <mat-icon matSuffix>photo_library</mat-icon>
+    <mat-autocomplete #mediaProductCategoryElAuto="matAutocomplete"
+      (optionSelected)="onMEdiaCategoryOptionSelected($event)">
+      @for (mediaProductCategory of mediaProductCategory$ | async; track mediaProductCategory) {
+      <mat-option [value]="mediaProductCategory">
+        <mat-list-item class="category-list-item">
+          <div matListItemAvatar>
+            <img [src]="mediaProductCategory.thumbnailUrl | prefixBackendStatic">
+          </div>
+          <div matListItemTitle>{{mediaProductCategory.name}}</div>
+          <div matListItemLine>
+            {{mediaProductCategory.slug}}
+          </div>
+        </mat-list-item>
+      </mat-option>
+      }
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
+@if (mediaProductCategorySelected; as mediaProductCategory) {
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>{{mediaProductCategory.name}}</mat-card-title>
+        <mat-card-subtitle>{{mediaProductCategory.slug}}</mat-card-subtitle>
+        <img mat-card-sm-image [src]="mediaProductCategory.thumbnailUrl| prefixBackendStatic"
+          [alt]="mediaProductCategory.name">
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+      {{mediaProductCategory.description}}
+    </mat-card-content>
+  </mat-card>
+}

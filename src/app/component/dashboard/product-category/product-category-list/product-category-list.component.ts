@@ -41,24 +41,14 @@ export class ProductCategoryListComponent {
   ) { }
 
   onCreateEvent() {
-    this.router.navigate(['dashboard/product/create']);
+    this.router.navigate(['dashboard/product-category/create']);
   }
 
   onViewEvent(element: TProductCategoryModel) {
-    this.router.navigate(['dashboard/product/detail', element._id]);
-  }
-
-  onOrderEvent(element: TProductCategoryModel) {
-    this.router.navigate(['dashboard/product/edit'], {
-      queryParams: { productId: element._id }
-    })
+    this.router.navigate(['dashboard/product-category/detail', element._id]);
   }
 
   onEditEvent(element: TProductCategoryModel) {
-    this.router.navigate(['dashboard/product/edit'], {
-      queryParams: {
-        _id: element._id
-      }
-    });
+    this.router.navigate(['dashboard/product-category/edit', element._id]);
   }
 }

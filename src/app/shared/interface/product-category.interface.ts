@@ -1,10 +1,16 @@
+import { TAlbumModel } from "./album.interface";
 import { IMongodbDocument } from "./mongo.interface";
 
 export interface IProductCategory {
   name: string;
+  slug: string;
   description?: string;
+  albumId: string;
+  album: TAlbumModel;
   parentId?: string;
+  parent?: TProductCategoryModel;
   isActive?: boolean;
+  productCount?: number;
 }
 
 export type TProductCategoryModel = IProductCategory & IMongodbDocument;

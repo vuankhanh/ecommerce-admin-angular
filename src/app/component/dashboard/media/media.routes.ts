@@ -1,6 +1,4 @@
 import { Routes } from "@angular/router";
-import { productCategoryNameTitleResolver } from "./resolvers/product-category-name-title.resolver";
-import { productNameTitleResolver } from "./resolvers/product-name-title.resolver";
 
 export const routes: Routes = [
   {
@@ -39,7 +37,6 @@ export const routes: Routes = [
       {
         path: 'product-category/:id',
         loadComponent: () => import('./product-category-detail/product-category-detail.component').then(c => c.ProductCategoryDetailComponent),
-        title: productCategoryNameTitleResolver
       },
       {
         path: 'product',
@@ -53,8 +50,7 @@ export const routes: Routes = [
       },
       {
         path: 'product/:id',
-        loadComponent: () => import('./product-detail/product-detail.component').then(c => c.ProductDetailComponent),
-        title: productNameTitleResolver
+        loadComponent: () => import('./product-detail/product-detail.component').then(c => c.ProductDetailComponent)
       },
     ]
   }

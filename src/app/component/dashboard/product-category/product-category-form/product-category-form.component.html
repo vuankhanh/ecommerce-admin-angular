@@ -1,1 +1,86 @@
-<p>product-category-form works!</p>
+@if(formGroup){
+<mat-card>
+  <mat-card-header class="horizontal-container">
+    <div class="button-group-header">
+      <button mat-icon-button color="primary" (click)="goBackProducCategoryDetail()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="horizontal-container">
+      <form [formGroup]="formGroup" class="vertical-container">
+        <!-- Thông tin sản phẩm cơ bản -->
+        <mat-form-field>
+          <mat-label>Tên danh mục sản phẩm</mat-label>
+          <input matInput placeholder="Tên danh mục sản phẩm" formControlName="name" required>
+          <mat-error *ngIf="formGroup.get('name')?.hasError('required')">
+            Tên danh mục sản phẩm là bắt buộc
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('name')?.hasError('minlength')">
+            Tên sản phẩm phải có ít nhất 3 ký tự
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('name')?.hasError('maxlength')">
+            Tên sản phẩm không được quá 100 ký tự
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Mô tả chi tiết</mat-label>
+          <textarea matInput placeholder="Mô tả chi tiết danh mục sản phẩm" formControlName="description"
+            cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="9" required></textarea>
+          <mat-error *ngIf="formGroup.get('description')?.hasError('required')">
+            Mô tả chi tiết là bắt buộc
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('description')?.hasError('minlength')">
+            Mô tả chi tiết phải có ít nhất 10 ký tự
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('description')?.hasError('maxlength')">
+            Mô tả chi tiết không được quá 1000 ký tự
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Danh mục Cha</mat-label>
+          <input #productCategoryEl type="text" matInput [matAutocomplete]="productCategoryElAuto"
+            (blur)="onProductCategoryBlur($event)">
+          <mat-icon matSuffix>category</mat-icon>
+          <mat-autocomplete #productCategoryElAuto="matAutocomplete"
+            (optionSelected)="onCategoryOptionSelected($event)">
+            @for (productCategory of productCategory$ | async; track productCategory) {
+            <mat-option [value]="productCategory">{{productCategory.name}}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error *ngIf="formGroup.get('parentId')?.hasError('required')">
+            Danh mục là bắt buộc
+          </mat-error>
+        </mat-form-field>
+
+        <section>
+          <mat-checkbox formControlName="isActive">
+            Kích hoạt
+          </mat-checkbox>
+        </section>
+      </form>
+
+      <section class="album-container">
+        <app-choose-media-product-category
+          [mediaId] = "formGroup.get('albumId')?.value"
+          (mediaProductCategoryEmit)="handleMediaProductCategory($event)"></app-choose-media-product-category>
+      </section>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    @if (productCategory?._id) {
+    <button mat-raised-button color="primary" type="button" (click)="onSubmit()"
+      [disabled]="formGroup.invalid || !(isFormChanged$ | async)">
+      Lưu
+    </button>
+    }@else {
+    <button mat-raised-button color="primary" type="button" (click)="onSubmit()" [disabled]="formGroup.invalid ">
+      Tạo
+    </button>
+    }
+  </mat-card-actions>
+</mat-card>
+}
