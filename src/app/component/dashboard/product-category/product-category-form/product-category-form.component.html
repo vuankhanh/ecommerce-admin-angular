@@ -1,12 +1,6 @@
 @if(formGroup){
+<app-header-page-container (goBack)="goBackProducCategoryDetail()"></app-header-page-container>
 <mat-card>
-  <mat-card-header class="horizontal-container">
-    <div class="button-group-header">
-      <button mat-icon-button color="primary" (click)="goBackProducCategoryDetail()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-    </div>
-  </mat-card-header>
   <mat-card-content>
     <div class="horizontal-container">
       <form [formGroup]="formGroup" class="vertical-container">
@@ -64,8 +58,7 @@
       </form>
 
       <section class="album-container">
-        <app-choose-media-product-category
-          [mediaId] = "formGroup.get('albumId')?.value"
+        <app-choose-media-product-category [mediaId]="formGroup.get('albumId')?.value"
           (mediaProductCategoryEmit)="handleMediaProductCategory($event)"></app-choose-media-product-category>
       </section>
     </div>

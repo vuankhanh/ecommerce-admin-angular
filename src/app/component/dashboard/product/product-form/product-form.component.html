@@ -1,15 +1,9 @@
 @if(formGroup){
+  <app-header-page-container
+  (goBack)="goBackProducDetail()"
+  [title]="product?._id ? 'Chi tiết sản phẩm' : 'Tạo sản phẩm'"
+  ></app-header-page-container>
 <mat-card>
-  <mat-card-header class="horizontal-container">
-    <div class="button-group-header">
-      <button mat-icon-button color="primary" (click)="goBackProducDetail()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-    </div>
-    <div class="horizontal-container">
-      <h3>{{ product?._id ? 'Chỉnh sửa sản phẩm' : 'Tạo sản phẩm' }}</h3>
-    </div>
-  </mat-card-header>
   <mat-card-content>
     <div class="horizontal-container">
       <form [formGroup]="formGroup" class="vertical-container">

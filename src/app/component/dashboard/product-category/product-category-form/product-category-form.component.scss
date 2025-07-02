@@ -3,12 +3,6 @@ mat-card {
     width: auto;
   }
 
-  mat-card-header {
-    .button-group-header {
-      margin-right: 100px;
-    }
-  }
-
   mat-card-content {
     .horizontal-container {
       align-items: flex-start;
@@ -35,11 +29,6 @@ mat-card {
 
 @media screen and (max-width: 700px) {
   mat-card {
-    mat-card-header {
-      .button-group-header {
-        margin-right: 0;
-      }
-    }
 
     mat-card-content {
       .horizontal-container {

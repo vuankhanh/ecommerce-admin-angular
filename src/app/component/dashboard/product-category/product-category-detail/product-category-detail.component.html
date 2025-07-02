@@ -1,26 +1,9 @@
 <div class="product-category-detail-container">
-  <!-- Header Section -->
-  <mat-card appearance="outlined" class="header-card">
-    <mat-card-header>
-      <div mat-card-avatar>
-        <mat-icon>productCategory</mat-icon>
-      </div>
-      <mat-card-title>Chi tiết danh mục sản phẩm</mat-card-title>
-      <mat-card-subtitle>Thông tin chi tiết về danh mục</mat-card-subtitle>
-      <div class="header-actions">
-        <button mat-raised-button color="primary">
-          <mat-icon>edit</mat-icon>
-          Chỉnh sửa
-        </button>
-        <button mat-stroked-button>
-          <mat-icon>delete</mat-icon>
-          Xóa
-        </button>
-      </div>
-    </mat-card-header>
-  </mat-card>
-
-  <div>
+  <app-header-page-container
+  [title]="'Chi tiết danh mục sản phẩm'"
+  (goBack)="goBackProducCategory()"
+  ></app-header-page-container>
+  <div class="content-container">
     <!-- Thông tin cơ bản -->
     <mat-card appearance="outlined" class="info-card">
       <mat-card-header>
@@ -65,8 +48,8 @@
           <div class="media-item">
             <label>Thumbnail:</label>
             <div class="image-container">
-              <img [src]="(productCategory?.album?.thumbnailUrl || '') | prefixBackendStatic" [alt]="productCategory?.name"
-                class="thumbnail-image">
+              <img [src]="(productCategory?.album?.thumbnailUrl || '') | prefixBackendStatic"
+                [alt]="productCategory?.name" class="thumbnail-image">
             </div>
           </div>
         </div>
@@ -113,4 +96,17 @@
       </mat-card-content>
     </mat-card>
   </div>
+
+  <mat-card class="footer-card">
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="onEditProductCategory()">
+        <mat-icon>edit</mat-icon>
+        Chỉnh sửa
+      </button>
+      <button mat-stroked-button color="warn" (click)="onDeleteProductCategory()">
+        <mat-icon>delete</mat-icon>
+        Xóa
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>

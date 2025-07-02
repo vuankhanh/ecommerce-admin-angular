@@ -1,0 +1,9 @@
+mat-toolbar {
+  border-width: var(--mdc-outlined-card-outline-width);
+  border-style: solid;
+  border-color: var(--mdc-outlined-card-outline-color);
+  border-radius: var(--mdc-outlined-card-container-shape);
+  background-color: var(--mdc-outlined-card-container-color);
+  box-shadow: var(--mdc-outlined-card-container-elevation);
+  margin-bottom: 10px;
+}

@@ -16,6 +16,7 @@ import { ProductCategoryService } from '../../../../service/api/product-category
 import { MatInput } from '@angular/material/input';
 import { TProductCategoryModel } from '../../../../shared/interface/product-category.interface';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { HeaderPageContainerComponent } from '../../../../shared/component/header-page-container/header-page-container.component';
 
 @Component({
   selector: 'app-product-form',
@@ -25,6 +26,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
     ReactiveFormsModule,
 
     GalleryComponent,
+    HeaderPageContainerComponent,
 
     NgxMaskDirective,
 

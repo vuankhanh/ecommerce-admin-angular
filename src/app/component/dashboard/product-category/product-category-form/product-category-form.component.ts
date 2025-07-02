@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductCategoryService } from '../../../../service/api/product-category.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ChooseMediaProductCategoryComponent } from '../../../../shared/component/choose-media-product-category/choose-media-product-category.component';
+import { HeaderPageContainerComponent } from '../../../../shared/component/header-page-container/header-page-container.component';
 
 @Component({
   selector: 'app-product-category-form',
@@ -18,6 +19,7 @@ import { ChooseMediaProductCategoryComponent } from '../../../../shared/componen
     CommonModule,
     ReactiveFormsModule,
 
+    HeaderPageContainerComponent,
     ChooseMediaProductCategoryComponent,
 
     MaterialModule
