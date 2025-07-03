@@ -1,7 +1,4 @@
 import { IMongodbDocument } from "./mongo.interface";
-import { IPagination } from "./pagination.interface"
-import { ISuccess } from "./success.interface"
-
 export interface IAlbum {
   name: string,
   description: string,

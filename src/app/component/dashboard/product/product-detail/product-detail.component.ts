@@ -13,6 +13,7 @@ import { GalleryPipe } from '../../../../shared/pipe/gallery.pipe';
 import { ConfirmationDialogData } from '../../../../shared/interface/confirmation-dialog.interface';
 import { ConfirmationDialogComponent } from '../../../../shared/component/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ProductDetailSkeletonComponent } from '../../../../shared/component/loading/product-detail-skeleton/product-detail-skeleton.component';
 
 @Component({
   selector: 'app-product-detail',
@@ -20,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
   imports: [
     CommonModule,
 
+    ProductDetailSkeletonComponent,
     GalleryComponent,
     HeaderPageContainerComponent,
     CurrencyCustomPipe,

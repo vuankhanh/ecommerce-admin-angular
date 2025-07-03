@@ -1,6 +1,9 @@
-
 <mat-toolbar color="primary" class="menu-header-toolbar">
-  <img [src]="user.avatar" class="avatar-img" alt="Avatar" />
+  @if (user.avatar) {
+  <img [src]="user.avatar | prefixBackendStatic" class="avatar-img" alt="Avatar" />
+  } @else {
+  <mat-icon class="avatar-icon">account_circle</mat-icon>
+  }
   <div class="user-info">
     <div class="user-name">{{ user.name }}</div>
     <div class="user-email">{{ user.email }}</div>

@@ -8,19 +8,22 @@
   height: 40px;
   margin-right: 12px;
   border-radius: 50%;
-  background: #fff;
+}
+.avatar-icon {
+  font-size: 40px;
 }
 .avatar-img {
+  background: #fff;
   object-fit: cover;
 }
 .user-info {
   display: flex;
   flex-direction: column;
-}
-.user-name {
-  font-weight: 600;
-}
-.user-email {
-  font-size: 0.9em;
-  color: #e0e0e0;
+  .user-name {
+    font-weight: 600;
+  }
+  .user-email {
+    font-size: 0.9em;
+    color: #e0e0e0;
+  }
 }
