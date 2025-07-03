@@ -17,8 +17,7 @@ section {
   table[mat-table] {
 
     .mat-column-price,
-    .mat-column-availability,
-    .mat-column-unit {
+    .mat-column-availability{
       text-wrap: nowrap;
     }
   }

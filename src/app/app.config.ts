@@ -12,18 +12,19 @@ import { provideIconConfig } from './shared/provider/icon-config.provider';
 import { PrefixBackendStaticPipe } from './shared/pipe/prefix-backend.pipe';
 import { AddressPipe } from './shared/pipe/address.pipe';
 import { ReplaceNewLinePipe } from './shared/pipe/replace-new-line.pipe';
-import { ToastrService } from 'ngx-toastr';
+import { provideToastr } from 'ngx-toastr';
+import { showToastInterceptor } from './shared/core/interceptor/show-toast.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(
-      withInterceptors([authInterceptor, loadingInterceptor])
+      withInterceptors([authInterceptor, loadingInterceptor, showToastInterceptor])
     ),
     provideAnimationsAsync(),
     provideIconConfig(),
     { provide: IMAGE_CONFIG, useValue: { disableImageSizeWarning: true, disableImageLazyLoadWarning: true } },
-    ToastrService,
+    provideToastr(),
     PrefixBackendStaticPipe,
     CurrencyCustomPipe,
     AddressPipe,

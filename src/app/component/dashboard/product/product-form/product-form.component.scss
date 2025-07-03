@@ -9,7 +9,7 @@ mat-card {
 
       form {
         align-items: flex-start;
-        max-width: 700px;
+        width: 400px;
 
         mat-form-field,
         section {
@@ -20,16 +20,11 @@ mat-card {
 
       .album-container {
         margin: 0 0 0 15px;
-
-        gallery {
-          height: auto;
-          margin: 10px 0;
-        }
+        width: 400px;
       }
     }
   }
 }
-
 
 @media screen and (max-width: 800px) {
   mat-card {
@@ -38,12 +33,12 @@ mat-card {
       .horizontal-container {
         flex-direction: column-reverse;
 
-        .album-container {
-          margin: 0 0 15px 0 !important;
-
-          gallery {
-            width: auto;
-          }
+        form {
+          width: 100%;
+        }
+        .album-container{
+          margin: 0 0 22px 0;
+          width: 100%;
         }
       }
     }

@@ -12,7 +12,7 @@
     <!-- Thumbnail Column -->
     <ng-container matColumnDef="thumbnail" [sticky]="breakpointDetection$ | async">
       <th mat-header-cell *matHeaderCellDef> Hình ảnh </th>
-      <td mat-cell *matCellDef="let element"> <img [src]="element.albumDetail.thumbnail | prefixBackendStatic"
+      <td mat-cell *matCellDef="let element"> <img [src]="element.album.thumbnailUrl | prefixBackendStatic"
           [alt]="element.name" /></td>
     </ng-container>
 
@@ -28,16 +28,10 @@
       <td mat-cell *matCellDef="let element"> {{element.price | vndCurrency}} </td>
     </ng-container>
 
-    <!-- Unit Column -->
-    <ng-container matColumnDef="unit">
-      <th mat-header-cell *matHeaderCellDef> Đơn vị </th>
-      <td mat-cell *matCellDef="let element"> {{element.unit}} </td>
-    </ng-container>
-
     <!-- Availability Column -->
     <ng-container matColumnDef="availability">
       <th mat-header-cell *matHeaderCellDef> Tình trạng </th>
-      <td mat-cell *matCellDef="let element"> {{element.availability ? 'Còn hàng' : 'Hết hàng'}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.inStock ? 'Còn hàng' : 'Hết hàng'}} </td>
     </ng-container>
 
     <!-- Action Column -->
@@ -47,9 +41,6 @@
         <div class="action-group-button">
           <button mat-icon-button color="primary" (click)="onViewEvent(element)">
             <mat-icon>visibility</mat-icon>
-          </button>
-          <button mat-icon-button color="primary" (click)="onOrderEvent(element)">
-            <mat-icon>add_shopping_cart</mat-icon>
           </button>
           <button mat-icon-button color="warn" (click)="onEditEvent(element)">
             <mat-icon>edit</mat-icon>

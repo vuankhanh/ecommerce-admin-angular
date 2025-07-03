@@ -31,6 +31,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   imports: [CommonModule],
@@ -67,6 +68,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatChipsModule,
     MatProgressBarModule,
     MatBadgeModule,
+    MatTabsModule
   ]
 })
 export class MaterialModule { }

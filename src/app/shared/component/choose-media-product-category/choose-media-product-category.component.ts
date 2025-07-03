@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,7 +34,7 @@ import { BehaviorSubject, lastValueFrom, map, Observable, startWith, switchMap }
   templateUrl: './choose-media-product-category.component.html',
   styleUrl: './choose-media-product-category.component.scss'
 })
-export class ChooseMediaProductCategoryComponent implements OnChanges {
+export class ChooseMediaProductCategoryComponent implements OnChanges, AfterViewInit {
   @ViewChild('mediaProductCategoryEl') mediaProductCategoryEl!: ElementRef<MatInput>;
 
   @Input() mediaId: string = '';
@@ -59,7 +59,8 @@ export class ChooseMediaProductCategoryComponent implements OnChanges {
 
   constructor(
     private mediaProductCategoryService: MediaProductCategoryService,
-    private readonly cdr: ChangeDetectorRef
+    private readonly cdr: ChangeDetectorRef,
+    private readonly renderer: Renderer2
   ) {
 
   }
@@ -67,14 +68,20 @@ export class ChooseMediaProductCategoryComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     const mediaId = changes['mediaId'];
     if (mediaId.currentValue && mediaId.currentValue.length && mediaId.currentValue != mediaId.previousValue) {
-      
+
       const id = mediaId.currentValue as string;
       lastValueFrom(this.mediaProductCategoryService.getDetail(id)).then((res) => {
         this.mediaProductCategorySelected = res;
         this.cdr.detectChanges();
       })
     }
-    
+
+  }
+
+  ngAfterViewInit(): void {
+    this.renderer.listen(this.mediaProductCategoryEl.nativeElement, 'input', (event: InputEvent) => {
+      this.bMediaBroductCategoryEl.next(this.mediaProductCategoryEl.nativeElement.value);
+    });
   }
 
   onMediaProductCategoryBlur(event: FocusEvent) {

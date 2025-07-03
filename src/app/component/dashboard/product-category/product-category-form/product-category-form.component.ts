@@ -51,7 +51,7 @@ export class ProductCategoryFormComponent {
 
   formGroup: FormGroup = this.formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-    albumId: ['', Validators.required],
+    albumId: [''],
     description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)]],
     parentId: [''],
     isActive: [true, Validators.required]
@@ -102,8 +102,6 @@ export class ProductCategoryFormComponent {
         Object.keys(value).forEach(key => {
           if (!this.productCategory) return;
           if (value[key] !== this.productCategory[key as keyof TProductCategoryModel]) {
-            console.log(value[key]);
-            
             if(value[key] === '') return;
             changedControls[key] = value[key];
           }
@@ -116,10 +114,10 @@ export class ProductCategoryFormComponent {
 
   handleMediaProductCategory(album: TAlbumModel | null) {
     this.formGroup.get('albumId')?.setValue(album?._id);
-  }
-
-  displayProductCategory(productCategory: any): string {
-    return productCategory ? productCategory.name : '';
+    const nameControl = this.formGroup.get('name');
+    if (nameControl && !nameControl.value) {
+      nameControl.setValue(album?.name);
+    }
   }
 
   onProductCategoryBlur(event: FocusEvent) {
@@ -131,7 +129,7 @@ export class ProductCategoryFormComponent {
     const productCategory: TProductCategoryModel = event.option.value;
     this.productCategorySelected = productCategory;
     this.productCategoryEl.nativeElement.value = productCategory.name;
-    this.formGroup.get('parentId')?.setValue(productCategory);
+    this.formGroup.get('parentId')?.setValue(productCategory._id);
   }
 
   private create() {
@@ -139,15 +137,11 @@ export class ProductCategoryFormComponent {
   }
 
   private update() {
-    const changedControls: { [key: string]: any } = {};
-    Object.keys(this.formGroup.controls).forEach(key => {
-      const control = this.formGroup.get(key);
-      if (control?.dirty) {
-        changedControls[key] = control.value;
-      }
-    });
-
-    return this.productCategoryService.update(this.productCategory!._id, changedControls)
+    return this.controlFormChanged$.pipe(
+      switchMap((changedControls: { [key: string]: any }) => {
+        return this.productCategoryService.update(this.productCategory!._id, changedControls)
+      })
+    )
   }
 
   onSubmit() {

@@ -62,16 +62,12 @@
             Giá sản phẩm phải lớn hơn 0.01
           </mat-error>
         </mat-form-field>
-        <mat-form-field>
-          <mat-label>Số lượng tồn kho</mat-label>
-          <input matInput mask="separator.0" placeholder="Số lượng tồn kho" formControlName="stock" required>
-          <mat-error *ngIf="formGroup.get('stock')?.hasError('required')">
-            Số lượng tồn kho là bắt buộc
-          </mat-error>
-          <mat-error *ngIf="formGroup.get('stock')?.hasError('min')">
-            Số lượng tồn kho không được âm
-          </mat-error>
-        </mat-form-field>
+        
+        <section>
+          <mat-checkbox formControlName="inStock">
+            Còn hàng
+          </mat-checkbox>
+        </section>
 
         <mat-form-field appearance="fill">
           <mat-label>Danh mục</mat-label>
@@ -81,29 +77,29 @@
             <mat-option [value]="productCategory">{{productCategory.name}}</mat-option>
             }
           </mat-autocomplete>
-          <mat-error *ngIf="formGroup.get('category')?.hasError('required')">
+          <mat-error *ngIf="formGroup.get('productCategoryId')?.hasError('required')">
             Danh mục là bắt buộc
           </mat-error>
         </mat-form-field>
       </form>
 
       <section class="album-container">
-        @if(album && galleryItems && galleryItems.length){
-        <div>Tên album: <b>{{album.name}}</b></div>
-        <gallery [objectFit]="'contain'" [items]="galleryItems"></gallery>
-        }
-        <button mat-raised-button (click)="openAlbumDialog()">
-          <mat-icon>photo_library</mat-icon>
-          {{ album ? 'Chọn lại' : 'Chọn album' }}
-        </button>
+        <app-choose-media-product [mediaId]="formGroup.get('albumId')?.value"
+          (mediaProductEmit)="handleMediaProduct($event)"></app-choose-media-product>
       </section>
     </div>
   </mat-card-content>
   <mat-card-actions>
+    @if (product?._id) {
     <button mat-raised-button color="primary" type="button" (click)="onSubmit()"
-      [disabled]="formGroup.invalid || !isFormChanged()">
-      {{ product?._id ? 'Lưu' : 'Tạo' }}
+      [disabled]="formGroup.invalid || !(isFormChanged$ | async)">
+      Lưu
     </button>
+    }@else {
+    <button mat-raised-button color="primary" type="button" (click)="onSubmit()" [disabled]="formGroup.invalid ">
+      Tạo
+    </button>
+    }
   </mat-card-actions>
 </mat-card>
 }

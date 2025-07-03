@@ -1,1 +1,169 @@
-<p>product-detail works!</p>
+<div class="product-detail-container">
+  <app-header-page-container [title]="'Chi tiết sản phẩm'" (goBack)="goBackProduct()"></app-header-page-container>
+  <!-- Product Details -->
+  @if (product){
+  <div class="product-detail">
+
+    <!-- Product Information -->
+    <div class="product-info">
+      <!-- Basic Info -->
+      <mat-card appearance="outlined" class="info-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>info</mat-icon>
+            Thông tin cơ bản
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Tên sản phẩm:</label>
+              <span>{{ product.name }}</span>
+            </div>
+            <div class="info-item">
+              <label>Danh mục:</label>
+              <span>{{ product.productCategory?.name }}</span>
+            </div>
+            <div class="info-item">
+              <label>Giá:</label>
+              <span class="price">
+                {{ product.price | vndCurrency }}
+              </span>
+            </div>
+            <div class="info-item">
+              <label>Tồn kho:</label>
+              <span>
+                {{ product.inStock ? 'Còn hàng': 'Hết hàng' }}
+              </span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Album -->
+      <mat-card appearance="outlined" class="info-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>photo_library</mat-icon>
+            Album
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <gallery [items]="product.album | gallery"></gallery>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Descriptions -->
+      <mat-card appearance="outlined" class="info-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>description</mat-icon>
+            Mô tả sản phẩm
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item full-width">
+              <label>Mô tả ngắn:</label>
+              <p class="description">{{ product.shortDescription }}</p>
+            </div>
+            <div class="info-item full-width">
+              <label>Mô tả chi tiết:</label>
+              <p class="description">{{ product.description }}</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Reviews Section -->
+      <mat-card appearance="outlined" class="info-card" *ngIf="product.reviews && product.reviews.length > 0">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>star</mat-icon>
+            Đánh giá & Bình luận
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <!-- Rating Summary -->
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Đánh giá trung bình:</label>
+              <div class="rating-display">
+                <span class="average-rating">{{ product.averageRating || 0 | number:'1.1-1' }}</span>
+                <div class="stars">
+                  <mat-icon *ngFor="let star of [1,2,3,4,5]"
+                    [color]="star <= (product.averageRating || 0) ? 'primary' : ''">
+                    {{ star <= (product.averageRating || 0) ? 'star' : 'star_border' }} </mat-icon>
+                </div>
+              </div>
+            </div>
+            <div class="info-item">
+              <label>Tổng số đánh giá:</label>
+              <span>{{ product.totalReviews || 0 }} reviews</span>
+            </div>
+          </div>
+
+          <!-- Reviews List -->
+          <mat-divider></mat-divider>
+          <div class="reviews-list">
+            <div class="info-item full-width" *ngFor="let review of product.reviews">
+              <label>
+                <mat-icon>person</mat-icon>
+                User: {{ review.userId }}
+              </label>
+              <div class="review-content">
+                <div class="review-rating">
+                  <span>{{ review.rating }}/5</span>
+                  <mat-icon color="primary">star</mat-icon>
+                </div>
+                <p class="review-comment">{{ review.comment }}</p>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Metadata -->
+      <mat-card appearance="outlined" class="info-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>schedule</mat-icon>
+            Thông tin thời gian
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Product ID:</label>
+              <span class="product-id">
+                <mat-icon>fingerprint</mat-icon>
+                {{ product._id }}
+              </span>
+            </div>
+            <div class="info-item">
+              <label>Ngày tạo:</label>
+              <span>{{ product.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <div class="info-item">
+              <label>Cập nhật cuối:</label>
+              <span>{{ product.updatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <mat-card class="footer-card">
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="onEditProduct()">
+        <mat-icon>edit</mat-icon>
+        Chỉnh sửa
+      </button>
+      <button mat-stroked-button color="warn" (click)="onDeleteProduct()">
+        <mat-icon>delete</mat-icon>
+        Xóa
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  }
+</div>

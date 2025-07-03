@@ -30,7 +30,7 @@ export class ProductListComponent {
   pagination: IPagination = paginationConstant;
 
   breakpointDetection$ = this.breakpointDetectionService.detection$();
-  displayedColumns: string[] = ['thumbnail', 'name', 'price', 'availability', 'unit', 'action'];
+  displayedColumns: string[] = ['thumbnail', 'name', 'price', 'availability', 'action'];
 
   private readonly subscription: Subscription = new Subscription();
   constructor(
@@ -60,18 +60,8 @@ export class ProductListComponent {
     this.router.navigate(['dashboard/product/detail', element._id]);
   }
 
-  onOrderEvent(element: TProductModel) {
-    this.router.navigate(['dashboard/product/edit'], {
-      queryParams: { productId: element._id }
-    })
-  }
-
   onEditEvent(element: TProductModel) {
-    this.router.navigate(['dashboard/product/edit'], {
-      queryParams: {
-        _id: element._id
-      }
-    });
+    this.router.navigate(['dashboard/product/edit', element._id]);
   }
 
   ngOnDestroy(): void {
