@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FileDragAndDropComponent } from '../../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
-import { BehaviorSubject, catchError, map, Observable, of, Subscription, switchMap, take, throwError } from 'rxjs';
+import { Observable, Subscription, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { IFileUpload } from '../../../../shared/interface/file-upload.interface';
 import { GalleryComponent } from '@daelmaak/ngx-gallery';
@@ -79,8 +79,6 @@ export class SlideShowComponent implements OnInit, OnDestroy {
   }
 
   handleFilesUploaded(fileUploads: IFileUpload[]): void {
-    console.log(fileUploads);
-
     const valuePatch = fileUploads.map(fileUpload => {
       return {
         file: fileUpload.file,
@@ -89,7 +87,6 @@ export class SlideShowComponent implements OnInit, OnDestroy {
         isMain: fileUpload.isMain || false
       }
     });
-
 
     this.filesFormArray.clear();
 
