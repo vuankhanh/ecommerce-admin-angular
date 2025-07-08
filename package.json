@@ -5,7 +5,8 @@
     "ng": "ng",
     "start": "ng serve --open --port 4212",
     "build": "ng build",
-    "build:production": "ng build --configuration production",
+    "build:prod": "ng build --configuration production",
+    "build:prod:admin": "ng build --base-href /admin/ --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

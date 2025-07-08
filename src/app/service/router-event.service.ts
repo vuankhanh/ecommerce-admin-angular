@@ -81,9 +81,6 @@ export class RouterEventService implements OnDestroy {
       return of('');
     }
     
-    console.log('Resolving title:');
-    console.log(typeof title);
-    
     // Nếu title là string
     if (typeof title === 'string') {
       return of(title);

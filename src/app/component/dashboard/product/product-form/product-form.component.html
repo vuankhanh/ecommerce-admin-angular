@@ -31,9 +31,6 @@
           <mat-error *ngIf="formGroup.get('shortDescription')?.hasError('minlength')">
             Mô tả ngắn phải có ít nhất 10 ký tự
           </mat-error>
-          <mat-error *ngIf="formGroup.get('shortDescription')?.hasError('maxlength')">
-            Mô tả ngắn không được quá 200 ký tự
-          </mat-error>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Mô tả chi tiết</mat-label>
@@ -44,9 +41,6 @@
           </mat-error>
           <mat-error *ngIf="formGroup.get('description')?.hasError('minlength')">
             Mô tả chi tiết phải có ít nhất 10 ký tự
-          </mat-error>
-          <mat-error *ngIf="formGroup.get('description')?.hasError('maxlength')">
-            Mô tả chi tiết không được quá 1000 ký tự
           </mat-error>
         </mat-form-field>
 

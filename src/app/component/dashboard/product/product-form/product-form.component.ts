@@ -59,8 +59,8 @@ export class ProductFormComponent {
   formGroup: FormGroup = this.formBuilder.group({
     // Thông tin sản phẩm cơ bản
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-    description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)]],
-    shortDescription: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
+    description: ['', [Validators.required, Validators.minLength(10)]],
+    shortDescription: ['', [Validators.required, Validators.minLength(10)]],
 
     // Hình ảnh
     albumId: [''],
