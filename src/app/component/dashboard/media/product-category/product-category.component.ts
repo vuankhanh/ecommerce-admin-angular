@@ -30,7 +30,7 @@ export class ProductCategoryComponent {
     switchMap(term => this.mediaProductCategoryService.getAll(term ? term : ''))
   );
 
-  breakpointDetection$ = this.breakpointDetectionService.detection$();
+  isMobile$ = this.breakpointDetectionService.isMobile$;
 
   constructor(
     private router: Router,

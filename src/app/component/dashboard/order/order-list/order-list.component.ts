@@ -9,6 +9,8 @@ import { paginationConstant } from '../../../../shared/constant/pagination.const
 import { IOrderFilterParams, OrderService } from '../../../../service/api/order.service';
 import { PageEvent } from '@angular/material/paginator';
 import { BehaviorSubject, distinctUntilChanged, map, switchMap, combineLatest, from, startWith } from 'rxjs';
+import { OrderStatusColorDirective } from '../../../../shared/directive/order-status-color.directive';
+import { BreakpointDetectionService } from '../../../../service/breakpoint-detection.service';
 
 @Component({
   selector: 'app-order-list',
@@ -18,6 +20,8 @@ import { BehaviorSubject, distinctUntilChanged, map, switchMap, combineLatest, f
     ReactiveFormsModule,
 
     RouterLink,
+
+    OrderStatusColorDirective,
 
     MaterialModule
   ],
@@ -59,13 +63,16 @@ export class OrderListComponent implements OnInit {
       this.bPagination.next(pagination);
       return data;
     })
-  )
+  );
+
+  isMobile$ = this.breakpointDetectionService.isMobile$;
 
   displayedColumns: string[] = ['code', 'createdAt', 'status', 'total', 'actions'];
 
   constructor(
     private formBuilder: FormBuilder,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private readonly breakpointDetectionService: BreakpointDetectionService
   ) { }
 
   ngOnInit() {

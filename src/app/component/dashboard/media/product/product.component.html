@@ -19,9 +19,9 @@
 
 @if (products$ | async; as products) {
 @if (products.data; as categories) {
-<mat-grid-list [cols]="(breakpointDetection$ | async) ? 2 : 6"
-  [rowHeight]="(breakpointDetection$ | async) ? '150px' : '200px'"
-  [gutterSize]="(breakpointDetection$ | async) ? '8px' : '16px'" class="categories-grid">
+<mat-grid-list [cols]="(isMobile$ | async) ? 2 : 6"
+  [rowHeight]="(isMobile$ | async) ? '150px' : '200px'"
+  [gutterSize]="(isMobile$ | async) ? '8px' : '16px'" class="categories-grid">
 
   @for (category of categories; track category._id) {
   <mat-grid-tile class="category-tile" (click)="productDetail(category._id)">

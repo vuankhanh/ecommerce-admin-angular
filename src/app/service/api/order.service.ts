@@ -27,11 +27,11 @@ export class OrderService {
 
     const filterParams: IOrderFilterParams = {};
 
-    // if (orderFilterParams?.fromDate) filterParams.fromDate = orderFilterParams.fromDate;
-    // if (orderFilterParams?.toDate) filterParams.toDate = orderFilterParams.toDate;
-    // if (orderFilterParams?.statuses && orderFilterParams.statuses.length > 0) filterParams.statuses = orderFilterParams.statuses;
+    if (orderFilterParams?.fromDate) filterParams.fromDate = orderFilterParams.fromDate;
+    if (orderFilterParams?.toDate) filterParams.toDate = orderFilterParams.toDate;
+    if (orderFilterParams?.statuses && orderFilterParams.statuses.length > 0) filterParams.statuses = orderFilterParams.statuses;
 
-    return this.httpClient.post<OrderResponse>(this.url, orderFilterParams, { params }).pipe(
+    return this.httpClient.post<OrderResponse>(this.url, filterParams, { params }).pipe(
       map(response => response.metaData),
     );
   }

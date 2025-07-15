@@ -32,7 +32,7 @@ export class ProductCategoryListComponent {
   )
   // paginationConstant;
 
-  breakpointDetection$ = this.breakpointDetectionService.detection$();
+  isMobile$ = this.breakpointDetectionService.isMobile$;
   displayedColumns: string[] = ['thumbnail', 'name', 'parent', 'isActive', 'action'];
   constructor(
     private router: Router,

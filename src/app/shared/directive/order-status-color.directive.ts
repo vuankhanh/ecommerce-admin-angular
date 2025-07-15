@@ -6,34 +6,49 @@ import { OrderStatus } from '../constant/order.constant';
   standalone: true
 })
 export class OrderStatusColorDirective implements OnChanges {
-
   @Input('appOrderStatusColor') status!: `${OrderStatus}`; // Trạng thái đơn hàng
 
   constructor(private el: ElementRef, private renderer: Renderer2) { }
 
   ngOnChanges() {
-    let color = '';
+    let bgColor = '';
+    let color = '#fff';
     switch (this.status) {
       case OrderStatus.PENDING:
-        color = '#FFA000'; // Vàng cam
+        bgColor = '#FFA000'; // Vàng cam
+        color = '#fff';
         break;
       case OrderStatus.CONFIRMED:
-        color = '#1976D2'; // Xanh dương đậm
+        bgColor = '#1976D2'; // Xanh dương đậm
+        color = '#fff';
         break;
       case OrderStatus.SHIPPING:
-        color = '#00BCD4'; // Xanh ngọc
+        bgColor = '#00BCD4'; // Xanh ngọc
+        color = '#fff';
         break;
       case OrderStatus.COMPLETED:
-        color = '#388E3C'; // Xanh lá đậm
+        bgColor = '#388E3C'; // Xanh lá đậm
+        color = '#fff';
         break;
       case OrderStatus.CANCELED:
-        color = '#D32F2F'; // Đỏ đậm
+        bgColor = '#D32F2F'; // Đỏ đậm
+        color = '#fff';
         break;
       default:
-        color = '#616161'; // Xám
+        bgColor = '#E0E0E0'; // Xám nhạt
+        color = '#333';
     }
-    this.renderer.setStyle(this.el.nativeElement, 'color', color);
-    this.renderer.setStyle(this.el.nativeElement, 'font-weight', 'bold');
+    const chip = this.el.nativeElement.querySelector('mat-chip');
+    if (chip) {
+      this.renderer.setStyle(chip, 'background-color', bgColor);
+      this.renderer.setStyle(chip, 'font-weight', 'bold');
+      // Set color cho text-label bên trong chip
+      const textLabel = chip.querySelector('.mdc-evolution-chip__text-label');
+      if (textLabel) {
+        this.renderer.setStyle(textLabel, 'color', color);
+        // this.renderer.setStyle(textLabel, 'font-weight', 'bold');
+      }
+    }
   }
 
 }

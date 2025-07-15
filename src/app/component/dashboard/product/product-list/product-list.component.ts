@@ -29,7 +29,7 @@ export class ProductListComponent {
   products?: TProductModel[];
   pagination: IPagination = paginationConstant;
 
-  breakpointDetection$ = this.breakpointDetectionService.detection$();
+  isMobile$ = this.breakpointDetectionService.isMobile$;
   displayedColumns: string[] = ['thumbnail', 'name', 'price', 'availability', 'action'];
 
   private readonly subscription: Subscription = new Subscription();

@@ -31,7 +31,7 @@ export class ProductComponent {
     switchMap(term => this.mediaProductService.getAll(term ? term : ''))
   );
   
-  breakpointDetection$ = this.breakpointDetectionService.detection$();
+  isMobile$ = this.breakpointDetectionService.isMobile$;
 
   constructor(
     private router: Router,

@@ -26,35 +26,40 @@
     </div>
   </form>
 </div>
+<section class="table-container mat-elevation-z8" tabindex="0">
 
-<mat-table [dataSource]="(orders$ | async) || []" class="mat-elevation-z2">
-  <ng-container matColumnDef="code">
-    <mat-header-cell *matHeaderCellDef> Mã đơn </mat-header-cell>
-    <mat-cell *matCellDef="let order"> {{ order.orderCode }} </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="createdAt">
-    <mat-header-cell *matHeaderCellDef> Ngày tạo </mat-header-cell>
-    <mat-cell *matCellDef="let order"> {{ order.createdAt | date:'shortDate' }} </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="status">
-    <mat-header-cell *matHeaderCellDef> Trạng thái </mat-header-cell>
-    <mat-cell *matCellDef="let order"> {{ order.status }} </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="total">
-    <mat-header-cell *matHeaderCellDef> Tổng tiền </mat-header-cell>
-    <mat-cell *matCellDef="let order"> {{ order.total | currency:'VND' }} </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="actions">
-    <mat-header-cell *matHeaderCellDef> Thao tác </mat-header-cell>
-    <mat-cell *matCellDef="let order">
-      <a mat-button color="accent" [routerLink]="['/dashboard/order/detail', order.id]">Chi tiết</a>
-    </mat-cell>
-  </ng-container>
-
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
-
+  <table mat-table [dataSource]="(orders$ | async) || []" class="mat-elevation-z8">
+    <ng-container matColumnDef="code" [sticky]="isMobile$ | async">
+      <th mat-header-cell *matHeaderCellDef> Mã đơn </th>
+      <td mat-cell *matCellDef="let order"> {{ order.orderCode }} </td>
+    </ng-container>
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef> Ngày tạo </th>
+      <td mat-cell *matCellDef="let order"> {{ order.createdAt | date:'shortDate' }} </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Trạng thái </th>
+      <td mat-cell *matCellDef="let order" [appOrderStatusColor]="order.status">
+        <mat-chip>
+          {{ order.status }}
+        </mat-chip>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef> Tổng tiền </th>
+      <td mat-cell *matCellDef="let order"> {{ order.total | currency:'VND' }} </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Thao tác </th>
+      <td mat-cell *matCellDef="let order">
+        <button mat-button color="accent" [routerLink]="['/dashboard/order/detail', order.id]">Chi tiết</button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>  
+</section>
 @if (pagination$ | async; as pagination) {
 <mat-paginator [length]="pagination.totalItems" [pageSize]="pagination.size"
   [pageSizeOptions]="[2, 20, 100]" (page)="handlePageEvent($event)">

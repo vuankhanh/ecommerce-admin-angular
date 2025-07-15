@@ -1,11 +1,11 @@
-<div role="main" class="container" [class.example-is-mobile]="breakpointDetection$ | async">
+<div role="main" class="container" [class.example-is-mobile]="isMobile$ | async">
   <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
     <h1 class="example-app-name">{{ title$ | async }}</h1>
   </mat-toolbar>
 
   <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #snav [mode]="(breakpointDetection$ | async) ? 'over' : 'side'" [fixedInViewport]="true"
+    <mat-sidenav #snav [mode]="(isMobile$ | async) ? 'over' : 'side'" [fixedInViewport]="true"
       fixedTopGap="64">
       @if (userInformation$|async; as user) {
       <app-menu-header [user]="user"></app-menu-header>

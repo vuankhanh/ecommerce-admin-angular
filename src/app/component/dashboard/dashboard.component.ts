@@ -36,7 +36,7 @@ import { AutoExpandMatExpansionPanelDirective } from '../../shared/directive/aut
 export class DashboardComponent implements OnInit {
   @ViewChild('accordion') accordion?: MatAccordion;
   @ViewChild('userAccordion') userAccordion?: MatAccordion;
-  breakpointDetection$: Observable<boolean> = of(false);
+  isMobile$: Observable<boolean> = this.breakpointDetectionService.isMobile$;
   menu = Menu;
 
   title$ = this.routerEventService.getRouteTitle$();
@@ -49,9 +49,7 @@ export class DashboardComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly authStateService: AuthStateService,
     private readonly routerEventService: RouterEventService,
-  ) {
-    this.breakpointDetection$ = this.breakpointDetectionService.detection$()
-  }
+  ) {}
 
   ngOnInit() {
     const jwtTokenPayload: IJwtDecoded = this.activatedRoute.snapshot.data['user'] as IJwtDecoded;
