@@ -10,6 +10,23 @@ export const Menu: TMenu[] = [
     route: '/dashboard/home'
   },
   {
+    name: 'Đơn hàng',
+    icon: {
+      fontSet: 'fa-solid',
+      fontIcon: 'fa-cart-shopping'
+    },
+    children: [
+      {
+        name: 'Danh sách đơn hàng',
+        route: '/dashboard/order/list'
+      },
+      {
+        name: 'Chi tiết đơn hàng',
+        route: '/dashboard/order/detail'
+      }
+    ]
+  },
+  {
     name: 'Sản phẩm',
     icon: {
       fontSet: 'fa-brands',

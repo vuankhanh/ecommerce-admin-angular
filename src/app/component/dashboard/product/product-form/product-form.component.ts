@@ -98,14 +98,10 @@ export class ProductFormComponent {
     if (id) {
       this.productService.getDetail(id).subscribe({
         next: (res) => {
-          console.log(res);
-          
           this.product = res;
           this.initForm(this.product);
         },
         error: error => {
-          console.log(error);
-          
           this.goBackProducDetail();
         }
       })
@@ -135,8 +131,6 @@ export class ProductFormComponent {
   }
 
   handleMediaProduct(album: TAlbumModel | null) {
-    console.log(album);
-    
     this.formGroup.get('albumId')?.setValue(album?._id);
     const nameControl = this.formGroup.get('name');
     if (nameControl && !nameControl.value) {
@@ -185,7 +179,6 @@ export class ProductFormComponent {
 
   goBackProducDetail() {
     const commands = this.product?._id ? ['/dashboard/product/detail', this.product?._id] : ['/dashboard/product/list'];
-
     this.router.navigate(commands);
   };
 

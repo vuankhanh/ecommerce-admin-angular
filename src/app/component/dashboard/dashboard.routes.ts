@@ -19,6 +19,11 @@ export const routes: Routes = [
         component: HomeComponent
       },
       {
+        path: 'order',
+        title: 'Đơn hàng',
+        loadChildren: () => import('./order/order.routes').then(m => m.routes)
+      },
+      {
         path: 'product',
         title: 'Sản phẩm',
         loadChildren: () => import('./product/product.routes').then(m => m.routes)

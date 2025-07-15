@@ -1,0 +1,62 @@
+<div class="order-filter" style="margin-bottom: 16px;">
+  <form [formGroup]="filterForm" (ngSubmit)="submit()" class="mat-elevation-z2"
+    style="padding: 16px; display: flex; gap: 16px; flex-wrap: wrap;">
+    <mat-form-field appearance="outline">
+      <mat-label>Từ ngày</mat-label>
+      <input matInput [matDatepicker]="fromPicker" formControlName="fromDate">
+      <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+      <mat-datepicker #fromPicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Đến ngày</mat-label>
+      <input matInput [matDatepicker]="toPicker" formControlName="toDate">
+      <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+      <mat-datepicker #toPicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Trạng thái</mat-label>
+      <mat-select multiple formControlName="statuses">
+        <mat-option *ngFor="let s of statusOptions" [value]="s">{{ s }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <button mat-raised-button color="primary" type="submit" [disabled]="filterForm.invalid">Lọc</button>
+      <button mat-button type="button" (click)="resetFilter()">Reset</button>
+    </div>
+  </form>
+</div>
+
+<mat-table [dataSource]="(orders$ | async) || []" class="mat-elevation-z2">
+  <ng-container matColumnDef="code">
+    <mat-header-cell *matHeaderCellDef> Mã đơn </mat-header-cell>
+    <mat-cell *matCellDef="let order"> {{ order.orderCode }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="createdAt">
+    <mat-header-cell *matHeaderCellDef> Ngày tạo </mat-header-cell>
+    <mat-cell *matCellDef="let order"> {{ order.createdAt | date:'shortDate' }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="status">
+    <mat-header-cell *matHeaderCellDef> Trạng thái </mat-header-cell>
+    <mat-cell *matCellDef="let order"> {{ order.status }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="total">
+    <mat-header-cell *matHeaderCellDef> Tổng tiền </mat-header-cell>
+    <mat-cell *matCellDef="let order"> {{ order.total | currency:'VND' }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef> Thao tác </mat-header-cell>
+    <mat-cell *matCellDef="let order">
+      <a mat-button color="accent" [routerLink]="['/dashboard/order/detail', order.id]">Chi tiết</a>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+@if (pagination$ | async; as pagination) {
+<mat-paginator [length]="pagination.totalItems" [pageSize]="pagination.size"
+  [pageSizeOptions]="[2, 20, 100]" (page)="handlePageEvent($event)">
+</mat-paginator>
+}
