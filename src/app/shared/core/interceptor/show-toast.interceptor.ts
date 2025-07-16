@@ -2,7 +2,6 @@ import {
   HttpRequest,
   HttpHandlerFn,
   HttpEvent,
-  HttpResponse,
   HttpErrorResponse,
   HttpInterceptorFn
 } from '@angular/common/http';
@@ -21,8 +20,6 @@ export const showToastInterceptor: HttpInterceptorFn = (
     tap({
       // Operation failed; error is an HttpErrorResponse
       error: (error: HttpErrorResponse) => {
-        console.log(error);
-        
         toastrService.error(error.error.message, error.error.error);
       }
     })

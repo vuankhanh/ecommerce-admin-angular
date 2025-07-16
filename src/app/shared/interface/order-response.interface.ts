@@ -2,6 +2,7 @@ import { OrderStatus } from "../constant/order.constant";
 import { TDeliveryModel } from "./address.interface";
 import { IMongodbDocument } from "./mongo.interface";
 import { TPaymentMethod } from "./payment.interface";
+import { IUserInformation } from "./user_information.interface";
 
 export type TOrderStatus = `${OrderStatus}`;
 
@@ -15,7 +16,8 @@ export interface IOrderResponse {
   deliveryFee: number;
 }
 export interface IOrderDetailResponse {
-  customerId: string;
+  customerId?: string;
+  customer?: IUserInformation;
   orderCode: string;
   orderItems: IOrderItem[];
   status: TOrderStatus;
@@ -32,6 +34,8 @@ export interface IOrderItem {
   productThumbnail: string;
   productCode: string;
   productName: string;
+  productCategorySlug: string;
+  productSlug: string;
   quantity: number;
   price: number;
 }

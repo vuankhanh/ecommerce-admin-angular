@@ -35,6 +35,19 @@ export class OrderService {
       map(response => response.metaData),
     );
   }
+
+  getDetail(id: string): Observable<TOrderDetailModel> {
+    if (!id) {
+      throw new Error('Order ID là bắt buộc để lấy chi tiết đơn hàng');
+    }
+
+    let params = new HttpParams();
+    params = params.append('id', id);
+
+    return this.httpClient.get<OrderDetailResponse>(`${this.url}/detail`, { params }).pipe(
+      map(response => response.metaData)
+    );
+  }
 }
 
 export interface IOrderFilterParams {
