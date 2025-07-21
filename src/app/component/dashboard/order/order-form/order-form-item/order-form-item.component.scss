@@ -1,0 +1,58 @@
+.order-items {
+  mat-card-header {
+    mat-card-title {
+      >*:not(:first-child) {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  mat-card-content {
+    mat-list {
+      padding: 0;
+
+      mat-list-item:not(:last-child) {
+        margin-bottom: 10px;
+      }
+
+      mat-list-item {
+        height: unset;
+        padding: 0;
+
+        div[matListItemAvatar] {
+          margin: 0 16px 0 0;
+          width: 160px;
+          height: 90px;
+
+          src {
+            width: 100%;
+          }
+        }
+
+        div[matListItemTitle] {
+          margin: unset
+        }
+
+        div[matListItemTitle]::before {
+          display: none;
+        }
+
+        div[matListItemLine]:before {
+          display: none;
+        }
+      }
+    }
+
+    .order-summary {
+      justify-content: flex-end;
+
+      b {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  mat-card-actions {
+    justify-content: flex-end;
+  }
+}

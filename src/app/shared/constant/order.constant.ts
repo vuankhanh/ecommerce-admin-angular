@@ -5,3 +5,9 @@ export enum OrderStatus {
   COMPLETED = 'Hoàn thành',
   CANCELED = 'Đã hủy',
 }
+
+export enum OrderFrom {
+  VISITOR = 'Khách vãng lai',
+  LOYALTY = 'Khách hàng thân thiết',
+  ADMIN = 'Quản trị viên',
+}

@@ -128,9 +128,9 @@
   
     <!-- Action Buttons -->
     <div class="action-buttons">
-      <button mat-raised-button color="warn">
-        <mat-icon>cancel</mat-icon>
-        Hủy đơn
+      <button mat-raised-button color="primary" (click)="processOrder(orderDetail._id)" [disabled]="!(canProcessOrder$ | async)">
+        <mat-icon>settings</mat-icon>
+        Xử lý
       </button>
     </div>
   </div>

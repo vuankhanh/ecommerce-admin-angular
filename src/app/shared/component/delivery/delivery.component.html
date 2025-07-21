@@ -1,0 +1,38 @@
+<div class="container vertical-container">
+  <h2 mat-dialog-title>Địa chỉ của tôi</h2>
+  <mat-dialog-content>
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" #form="ngForm">
+      <div class="horizontal-container">
+        <mat-form-field>
+          <mat-label>Tên</mat-label>
+          <input matInput formControlName="name" required />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Số điện thoại</mat-label>
+          <input matInput formControlName="phoneNumber" mask="0000 000 000" [dropSpecialCharacters]="false"
+            placeholder="0xxx xxx xxx" required/>
+          <mat-hint>VD: 0901 234 567</mat-hint>
+          @if (formGroup.controls['phoneNumber'].getError('vietnamesePhoneNumber')) {
+            <mat-error>Số điện thoại không đúng định dạng</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <app-address-selector [address]="addressControl.value" (valueChange)="addressSelectionChange($event)"
+        (addressValidChange)="addressValidChange($event)"></app-address-selector>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Trở lại</button>
+    @if (data) {
+      <button mat-button (click)="form.ngSubmit.emit()" [disabled]="formGroup.invalid || !addressValid || !(isFormChanged$ | async)"
+      cdkFocusInitial>Hoàn
+      thành</button>
+    }@else {
+    <button mat-button (click)="form.ngSubmit.emit()" [disabled]="formGroup.invalid ">
+      Tạo
+    </button>
+    }
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,57 @@
+@if (orderDelivery) {
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Thông tin giao hàng</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="horizontal-container">
+      <div class="delivery-details">
+        <div class="delivery-row">
+          <mat-icon>person</mat-icon>
+          <span class="label">Người nhận:</span>
+          <span class="value">{{orderDelivery.name}}</span>
+        </div>
+        <div class="delivery-row">
+          <mat-icon>phone</mat-icon>
+          <span class="label">Số điện thoại:</span>
+          <span class="value">{{orderDelivery.phoneNumber}}</span>
+        </div>
+        <div class="delivery-row">
+          <mat-icon>location_on</mat-icon>
+          <span class="label">Địa chỉ:</span>
+          <span class="value">{{orderDelivery.address| address}}</span>
+        </div>
+      </div>
+      @if(deliveryWillChange){
+      <div class="delivery-will-change-container delivery-details">
+        <button mat-icon-button (click)="onCancelChange()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <h3>Thông tin sẽ thay đổi</h3>
+        <div class="delivery-row">
+          <mat-icon>person</mat-icon>
+          <span class="label">Người nhận:</span>
+          <span class="value">{{deliveryWillChange.name}}</span>
+        </div>
+        <div class="delivery-row">
+          <mat-icon>phone</mat-icon>
+          <span class="label">Số điện thoại:</span>
+          <span class="value">{{deliveryWillChange.phoneNumber}}</span>
+        </div>
+        <div class="delivery-row">
+          <mat-icon>location_on</mat-icon>
+          <span class="label">Địa chỉ:</span>
+          <span class="value">{{deliveryWillChange.address| address}}</span>
+        </div>
+      </div>
+      }
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="onChangeDelivery(orderDelivery)">
+      <mat-icon>edit</mat-icon>
+      {{'Sửa lại'}}
+    </button>
+  </mat-card-actions>
+</mat-card>
+}

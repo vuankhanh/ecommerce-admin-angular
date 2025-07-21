@@ -1,4 +1,4 @@
-import { OrderStatus } from "../constant/order.constant";
+import { OrderFrom, OrderStatus } from "../constant/order.constant";
 import { TDeliveryModel } from "./address.interface";
 import { IMongodbDocument } from "./mongo.interface";
 import { TPaymentMethod } from "./payment.interface";
@@ -7,6 +7,7 @@ import { IUserInformation } from "./user_information.interface";
 export type TOrderStatus = `${OrderStatus}`;
 
 export interface IOrderResponse {
+  orderFrom: `${OrderFrom}`;
   orderItems: IOrderItem[];
   status: TOrderStatus;
   paymentMethod: TPaymentMethod;

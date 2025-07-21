@@ -1,0 +1,146 @@
+.order-detail-container {
+  mat-card {
+    margin-bottom: 16px;
+  }
+  .delivery-info, .order-item {
+    margin-bottom: 16px;
+  }
+}
+
+.order-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+
+  mat-card-title,
+  mat-card-subtitle {
+    color: white;
+  }
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .label {
+    font-weight: 500;
+  }
+
+  .value {
+    font-weight: 600;
+  }
+}
+
+.items-list {
+  .item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .item-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+
+    .product-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 16px;
+    }
+
+    .product-details {
+      h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .product-variant {
+        margin: 4px 0 0 0;
+        color: #666;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .item-quantity {
+    margin: 0 20px;
+    font-weight: 500;
+  }
+
+  .item-price {
+    .price {
+      font-size: 16px;
+      font-weight: 600;
+      color: #f44336;
+    }
+  }
+}
+
+.order-summary {
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+
+    .label {
+      font-weight: 500;
+    }
+
+    .value {
+      font-weight: 600;
+
+      &.discount {
+        color: #4caf50;
+      }
+    }
+
+    &.total {
+      font-size: 18px;
+      font-weight: 700;
+      color: #f44336;
+      padding-top: 16px;
+    }
+  }
+
+  mat-divider {
+    margin: 16px 0;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 24px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}

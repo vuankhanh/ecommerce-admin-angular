@@ -1,1 +1,92 @@
-<p>order-form works!</p>
+@if (order$ | async; as orderDetail) {
+<app-header-page-container [title]="'Xử lý đơn hàng'" (goBack)="goBackOrderDetail()"></app-header-page-container>
+<div class="order-detail-container">
+  <!-- Header -->
+  <mat-card class="order-header">
+    <mat-card-header>
+      <mat-card-title>Xử lý đơn hàng</mat-card-title>
+      <mat-card-subtitle>Mã đơn hàng: {{orderDetail.orderCode}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+
+  <!-- Order Status & Payment -->
+  <mat-card class="order-status">
+    <mat-card-content>
+      <div class="status-row">
+        <div class="status-item">
+          <mat-icon>local_shipping</mat-icon>
+          <span class="label">Trạng thái:</span>
+          <div [appOrderStatusColor]="orderDetail.status">
+            <mat-chip selected>
+              {{orderDetail.status}}
+            </mat-chip>
+          </div>
+        </div>
+
+
+        <div class="status-item">
+          <mat-icon>payment</mat-icon>
+          <span class="label">Thanh toán:</span>
+          <span class="value">{{orderDetail.paymentMethod}}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Order Items -->
+  <div class="order-item">
+    <app-order-form-item [orderItems]="orderDetail.orderItems"></app-order-form-item>
+  </div>
+
+  <!-- Delivery Information -->
+  <div class="delivery-info">
+    <app-order-form-delivery [orderDelivery]="orderDetail.delivery"
+      (deliveryWillChangeEmit)="onChangeDelivery($event)"></app-order-form-delivery>
+  </div>
+
+  <!-- Order Note -->
+  <mat-card class="order-note" *ngIf="orderDetail.note">
+    <mat-card-header>
+      <mat-card-title>Ghi chú đơn hàng</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{orderDetail.note}}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Order Summary -->
+  <mat-card class="order-summary">
+    <mat-card-header>
+      <mat-card-title>Tổng kết đơn hàng</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="summary-row">
+        <span class="label">Tạm tính:</span>
+        <span class="value">{{orderDetail.subTotal | currency:'VND':'symbol':'1.0-0'}}</span>
+      </div>
+      <div class="summary-row" *ngIf="orderDetail.discount > 0">
+        <span class="label">Giảm giá:</span>
+        <span class="value discount">-{{orderDetail.discount | currency:'VND':'symbol':'1.0-0'}}</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Phí giao hàng:</span>
+        <span class="value">{{orderDetail.deliveryFee | currency:'VND':'symbol':'1.0-0'}}</span>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="summary-row total">
+        <span class="label">Tổng cộng:</span>
+        <span class="value">{{orderDetail.total | currency:'VND':'symbol':'1.0-0'}}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button mat-raised-button color="primary" (click)="processOrder(orderDetail._id)"
+      [disabled]="!(canProcessOrder$ | async) && (!orderItemsWillChange && !deliveryWillChange)">
+      <mat-icon>update</mat-icon>
+      Cập nhật
+    </button>
+  </div>
+</div>
+}

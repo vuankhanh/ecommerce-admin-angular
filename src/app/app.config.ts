@@ -16,6 +16,7 @@ import { provideToastr } from 'ngx-toastr';
 import { showToastInterceptor } from './shared/core/interceptor/show-toast.interceptor';
 import localeVi from '@angular/common/locales/vi';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { provideNgxMask } from 'ngx-mask';
 
 registerLocaleData(localeVi);
 
@@ -35,6 +36,7 @@ export const appConfig: ApplicationConfig = {
     CurrencyCustomPipe,
     AddressPipe,
     ReplaceNewLinePipe,
-    DatePipe
+    DatePipe,
+    provideNgxMask()
   ]
 };

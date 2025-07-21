@@ -67,7 +67,7 @@ export class OrderListComponent implements OnInit {
 
   isMobile$ = this.breakpointDetectionService.isMobile$;
 
-  displayedColumns: string[] = ['code', 'createdAt', 'status', 'total', 'actions'];
+  displayedColumns: string[] = ['code', 'orderFrom', 'createdAt', 'status', 'total', 'actions'];
 
   constructor(
     private formBuilder: FormBuilder,

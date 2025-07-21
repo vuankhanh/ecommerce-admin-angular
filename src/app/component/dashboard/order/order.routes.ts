@@ -26,6 +26,10 @@ export const routes: Routes = [
       {
         path: 'detail/:id',
         loadComponent: () => import('./order-detail/order-detail.component').then(c => c.OrderDetailComponent)
+      },
+      {
+        path: '**',
+        redirectTo: 'list'
       }
     ]
   }

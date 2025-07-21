@@ -1,0 +1,68 @@
+mat-card {
+  mat-card-content {
+
+  }
+  mat-card-actions {
+    justify-content: flex-end;
+  }
+}
+.delivery-details {
+  .delivery-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+
+    mat-icon {
+      margin-right: 12px;
+      color: #666;
+    }
+
+    .label {
+      font-weight: 500;
+      margin-right: 8px;
+      min-width: 120px;
+    }
+
+    .value {
+      flex: 1;
+    }
+  }
+}
+
+.delivery-will-change-container {
+  margin-top: -32px;
+  position: relative;
+  padding: 5px;
+  button[mat-icon-button] {
+    position: absolute;
+    top: 0px;
+    right: 0%;
+    color: #666;
+  }
+  h3 {
+    margin: 0;
+    color: #666;
+  }
+  background: #fffde7; // vàng nhạt
+  border: 1px dashed #ffb300;
+  border-radius: 6px;
+  margin-left: 16px;
+
+  .delivery-row {
+    color: #ff9800; // cam đậm
+    font-weight: 500;
+  }
+}
+
+@media screen and (max-width: 799px) {
+  mat-card-content {
+    .horizontal-container{
+      flex-direction: column;
+      .delivery-will-change-container {
+        margin-left: 0;
+        margin-top: 16px;
+      }
+    }
+  }
+
+}
