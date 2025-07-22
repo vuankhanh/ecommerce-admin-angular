@@ -1,0 +1,47 @@
+<div class="container vertical-container">
+  <h2 mat-dialog-title>Địa chỉ của tôi</h2>
+  <mat-dialog-content>
+    @if (orderItemEntity && orderItemEntity.orderItems) {
+      <div class="horizontal-container">
+        <mat-list>
+          @for (orderItem of orderItemEntity.orderItems; track $index) {
+          <mat-list-item #orderItemElement>
+            <div matListItemAvatar class="horizontal-container">
+              <img [src]="orderItem.productThumbnail | prefixBackendStatic" [alt]="orderItem.productName"
+                class="product-image">
+            </div>
+            <div matListItemTitle>
+              <span class="product-name">{{orderItem.productName}}</span>
+            </div>
+            <div matListItemLine>
+              <span>{{orderItem.productCode}}</span>
+            </div>
+            <div matListItemLine>
+              <div class="price-quantity-container horizontal-container">
+                <span>{{(orderItem.price | vndCurrency)}}</span>
+                <app-number-input [value]="orderItem.quantity"
+                  (valueChange)="orderItemsQuantityChange(orderItem, $event)"></app-number-input>
+              </div>
+            </div>
+  
+            <div matListItemMeta>
+              <button mat-icon-button color="warn" (click)="removeOrderItem(orderItem, orderItemElement)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          }
+        </mat-list>
+      </div>
+    }
+    <div class="total-container">
+      <span class="total-label">Tổng cộng:</span>
+      <span class="total-value">{{((orderItemEntity?.totalValue || 0)| vndCurrency)}}</span>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Trở lại</button>
+  </mat-dialog-actions>
+</div>

@@ -8,7 +8,7 @@ export type TOrderStatus = `${OrderStatus}`;
 
 export interface IOrderResponse {
   orderFrom: `${OrderFrom}`;
-  orderItems: IOrderItem[];
+  orderItems: TOrderItem[];
   status: TOrderStatus;
   paymentMethod: TPaymentMethod;
   subTotal: number;
@@ -40,6 +40,8 @@ export interface IOrderItem {
   quantity: number;
   price: number;
 }
+
+export type TOrderItem = IOrderItem & IMongodbDocument;
 
 export type TOrderModel = IOrderResponse & IMongodbDocument;
 export type TOrderDetailModel = IOrderDetailResponse & IMongodbDocument

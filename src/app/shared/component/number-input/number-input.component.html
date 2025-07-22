@@ -1,0 +1,9 @@
+<div class="number-input horizontal-container">
+  <button mat-icon-button (click)="decrement()">
+    <mat-icon>remove</mat-icon>
+  </button>
+  <input matInput type="number" [value]="value" (input)="onInputChange($event)" appOnlyNumber>
+  <button mat-icon-button (click)="increment()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

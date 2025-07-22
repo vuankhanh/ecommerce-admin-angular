@@ -40,7 +40,7 @@ export class OrderFormDeliveryComponent implements OnDestroy {
         data: delivery,
         panelClass: 'delivery-modal'
       }).afterClosed().pipe(
-        filter((result: IDelivery) => !!result),
+        filter((result: Partial<IDelivery>) => !!result),
       ).subscribe((result: Partial<IDelivery>) => {
         const newDelivery: IDelivery = Object.assign({}, this.orderDelivery, result);
         this.deliveryWillChange = newDelivery;

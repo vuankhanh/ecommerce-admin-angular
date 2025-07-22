@@ -1,0 +1,85 @@
+mat-list {
+  padding: 0;
+
+  mat-list-item:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  mat-list-item:not(:first-child) {
+    margin-top: 10px;
+  }
+
+  mat-list-item {
+    height: unset;
+    padding: 0;
+    transition: max-height .45s, opacity .45s;
+
+    div[matListItemAvatar] {
+      margin: 0 16px 0 0;
+      width: 160px;
+      height: 90px;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    div[matListItemTitle] {
+      margin: unset
+    }
+
+    div[matListItemTitle]::before {
+      display: none;
+    }
+
+    div[matListItemLine]:before {
+      display: none;
+    }
+
+    div[matListItemLine] {
+      .price-quantity-container {
+        align-items: center;
+      }
+    }
+  }
+}
+
+.cart-item-removed {
+  max-height: 0 !important;
+  margin-bottom: 0 !important;
+  opacity: 0;
+
+  .product-information-container .product-price-container {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  ::ng-deep .order-item-modify-modal {
+    width: 100%;
+    height: 100%;
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+
+  mat-list {
+    mat-list-item {
+      div[matListItemLine] {
+        .price-quantity-container {
+          align-items: center;
+          ::ng-deep app-number-input {
+            .number-input {
+              width: unset;
+              min-width: unset;
+              input {
+                height: 34px;
+                width: 40px;
+                box-sizing: border-box;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
