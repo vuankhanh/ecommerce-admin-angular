@@ -17,8 +17,9 @@ import { OnlyNumberDirective } from '../../directive/only-number.directive';
 })
 export class NumberInputComponent {
   @Input() value: number = 1;
+  @Input() allowZero: boolean = false;
   @Output() valueChange: EventEmitter<number> = new EventEmitter<number>();
-
+  @Output() isZero: EventEmitter<null> = new EventEmitter<null>();
   increment() {
     if (this.value < 999) {
       this.value++;
@@ -31,12 +32,21 @@ export class NumberInputComponent {
       this.value--;
       this.valueChange.emit(this.value);
     }
+    if (this.value === 1) {
+      this.isZero.emit();
+    }
   }
 
   onInputChange(event: any) {
     let value = event.target.value;
+
     if (value === '' || value === '0') {
-      value = 1;
+      if (this.allowZero) {
+        this.value = 0;
+        this.isZero.emit();
+      } else {
+        this.value = 1;
+      }
     }
     this.value = Number(value);
     this.valueChange.emit(this.value);

@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="decrement()">
     <mat-icon>remove</mat-icon>
   </button>
-  <input matInput type="number" [value]="value" (input)="onInputChange($event)" appOnlyNumber>
+  <input appOnlyNumber [allowZero]="allowZero" matInput type="number" [value]="value" (input)="onInputChange($event)">
   <button mat-icon-button (click)="increment()">
     <mat-icon>add</mat-icon>
   </button>

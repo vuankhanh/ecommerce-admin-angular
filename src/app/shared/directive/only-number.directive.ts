@@ -26,8 +26,10 @@ export class OnlyNumberDirective implements ControlValueAccessor {
     const target = event.target as HTMLInputElement;
     let value = target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
 
-    // Remove leading zeros
-    value = value.replace(/^0+/, '');
+    if(!this.allowZero){
+      // Remove leading zeros
+      value = value.replace(/^0+/, '');
+    }
 
     if (this.limitedValue && Number(value) > 999) {
       value = '999'; // Limit to 999

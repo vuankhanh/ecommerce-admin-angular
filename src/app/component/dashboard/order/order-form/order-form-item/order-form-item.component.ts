@@ -49,7 +49,8 @@ export class OrderFormItemComponent implements OnDestroy {
     this.subscription.add(
       this.dialog.open(OrderItemModifyComponent, {
         data: orderItems,
-        panelClass: 'order-item-modify-modal'
+        panelClass: 'order-item-modify-modal',
+        autoFocus: false,
       }).afterClosed().pipe(
         filter((result: IOrderItem[] | null) => !!result),
       ).subscribe((result: IOrderItem[] | null) => {
