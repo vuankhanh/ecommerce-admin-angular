@@ -1,7 +1,7 @@
+@if (orderItemEntity && orderItemEntity.orderItems) {
 <div class="container vertical-container">
   <h2 mat-dialog-title>Sản phẩm trong đơn hàng</h2>
   <mat-dialog-content>
-    @if (orderItemEntity && orderItemEntity.orderItems) {
     <div class="horizontal-container">
       <mat-list>
         @for (orderItem of orderItemEntity.orderItems; track orderItem) {
@@ -19,9 +19,7 @@
           <div matListItemLine>
             <div class="price-quantity-container horizontal-container">
               <span>{{(orderItem.price | vndCurrency)}}</span>
-              <app-number-input
-                [value]="orderItem.quantity"
-                [allowZero]="true"
+              <app-number-input [value]="orderItem.quantity" [allowZero]="true"
                 (isZero)="onIsZero(orderItem, orderItemElement)"
                 (valueChange)="orderItemsQuantityChange(orderItem, $event)"></app-number-input>
             </div>
@@ -37,14 +35,16 @@
         }
       </mat-list>
     </div>
-    }
-    <div class="total-container">
-      <span class="total-label">Tổng cộng:</span>
-      <span class="total-value">{{((orderItemEntity?.totalValue || 0)| vndCurrency)}}</span>
+    <div class="summary-row total">
+      <span class="label">Tổng cộng:</span>
+      <span class="value">{{orderItemEntity.totalValue | vndCurrency}}</span>
     </div>
 
   </mat-dialog-content>
-  <mat-dialog-actions>
+  <mat-dialog-actions align="end">
     <button mat-button (click)="onNoClick()">Trở lại</button>
+    <button mat-raised-button color="primary" [disabled]="!(orderItemEntity.isChangedItems$ | async)"
+      (click)="onSaveChanges()">Lưu thay đổi</button>
   </mat-dialog-actions>
 </div>
+}

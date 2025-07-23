@@ -43,6 +43,29 @@
       }
     }
 
+    .order-item-will-change-container {
+      margin-top: -32px;
+      position: relative;
+      padding: 5px;
+
+      button[mat-icon-button] {
+        position: absolute;
+        top: 0px;
+        right: 0%;
+        color: #666;
+      }
+
+      h3 {
+        margin: 0;
+        color: #666;
+      }
+
+      background: #fffde7; // vàng nhạt
+      border: 1px dashed #ffb300;
+      border-radius: 6px;
+      margin-left: 16px;
+    }
+
     .order-summary {
       justify-content: flex-end;
 
@@ -55,4 +78,17 @@
   mat-card-actions {
     justify-content: flex-end;
   }
+}
+
+@media screen and (max-width: 599px) {
+  mat-card-content {
+    .horizontal-container{
+      flex-direction: column;
+      .order-item-will-change-container {
+        margin-left: 0;
+        margin-top: 16px;
+      }
+    }
+  }
+
 }

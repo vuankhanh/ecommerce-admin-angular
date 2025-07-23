@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { PrefixBackendStaticPipe } from '../../../../../shared/pipe/prefix-backend.pipe';
 import { CurrencyCustomPipe } from '../../../../../shared/pipe/currency-custom.pipe';
 import { MaterialModule } from '../../../../../shared/modules/material';
@@ -25,6 +25,7 @@ import { OrderItemModifyComponent } from '../../../../../shared/component/order-
 })
 export class OrderFormItemComponent implements OnDestroy {
   @Input() orderItems: IOrderItem[] | null = null;
+  @Output() orderItemsWillChangeEmit: EventEmitter<IOrderItem[] | null> = new EventEmitter<IOrderItem[] | null>();
 
   orderItemsWillChange: IOrderItem[] | null = null;
 
@@ -57,6 +58,11 @@ export class OrderFormItemComponent implements OnDestroy {
         this.orderItemsWillChange = result;
       })
     )
+  }
+
+  onCancelChange() {
+    this.orderItemsWillChange = null;
+    this.orderItemsWillChangeEmit.emit(this.orderItemsWillChange);
   }
 
   ngOnDestroy(): void {
