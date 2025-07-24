@@ -83,6 +83,37 @@ mat-list {
   opacity: 0;
 }
 
+mat-option {
+  ::ng-deep .mdc-list-item__primary-text {
+    width: 100%;
+
+    .product-option {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 10px 0;
+      border-bottom: 1px solid #ccc;
+
+      .thumbnail {
+        width: 100px;
+      }
+
+      .product-name {
+        flex-grow: 1;
+      }
+
+      .product-price {
+        font-weight: bold;
+      }
+
+      >*:not(:first-child) {
+        margin-left: 10px;
+        text-wrap: nowrap;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 599px) {
   ::ng-deep .order-item-modify-modal {
     width: 100%;

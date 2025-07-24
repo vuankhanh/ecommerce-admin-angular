@@ -10,11 +10,13 @@ export interface IProductReview {
 
 export interface IProduct {
   name: string;
+  code: string; // Mã sản phẩm
   description: string;
   shortDescription: string;
   albumId?: string; // ID của album chứa ảnh sản phẩm
   album?: TAlbumModel;
   price: number;
+  slug: string; // Đường dẫn sản phẩm
   productCategoryId?: string; // ID của danh mục sản phẩm
   productCategory?: TProductCategoryModel; // Danh mục sản phẩm
   inStock: boolean;

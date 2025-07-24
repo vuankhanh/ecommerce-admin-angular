@@ -5,13 +5,16 @@ import { PrefixBackendStaticPipe } from '../../pipe/prefix-backend.pipe';
 import { CurrencyCustomPipe } from '../../pipe/currency-custom.pipe';
 import { NumberInputComponent } from '../number-input/number-input.component';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TOrderItem } from '../../interface/order-response.interface';
+import { IOrderItem, TOrderItem } from '../../interface/order-response.interface';
 import { OrderItemEntity } from '../../../entity/order.entity';
 import { MatListItem } from '@angular/material/list';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogData } from '../../interface/confirmation-dialog.interface';
 import { BreakpointDetectionService } from '../../../service/breakpoint-detection.service';
-import { filter, lastValueFrom, Subscription, take } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, lastValueFrom, map, Observable, Subscription, switchMap, take } from 'rxjs';
+import { TProductModel } from '../../interface/product.interface';
+import { ProductService } from '../../../service/api/product.service';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-order-item-modify',
@@ -34,7 +37,17 @@ export class OrderItemModifyComponent implements OnInit, OnDestroy {
   private readonly dialogRef = inject(MatDialogRef<OrderItemModifyComponent>);
   readonly orderItems = inject<TOrderItem[] | null>(MAT_DIALOG_DATA);
   readonly isMobile$ = inject(BreakpointDetectionService).isMobile$;
+  private readonly productService = inject(ProductService);
   orderItemEntity: OrderItemEntity | null = null;
+
+  private readonly bNameOrProductElChange: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  filteredOptions$: Observable<TProductModel[]> = this.bNameOrProductElChange.pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+    switchMap((nameOrProduct) => this.productService.getAll(nameOrProduct).pipe(
+      map((data) => data.data)
+    ))
+  );
 
   private readonly renderer2: Renderer2 = inject(Renderer2);
 
@@ -45,13 +58,38 @@ export class OrderItemModifyComponent implements OnInit, OnDestroy {
     }
   }
 
-  orderItemsQuantityChange(orderItem: TOrderItem, quantity: number) {
-    console.log(orderItem);
+  inputValueChange(event: KeyboardEvent) {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value.trim();
+    this.bNameOrProductElChange.next(value);
 
-    this.orderItemEntity?.changeQuantity(orderItem._id, quantity);
   }
 
-  async onIsZero(orderItem: TOrderItem, cartItemElement: MatListItem) {
+  onChooseProductEvent(event: MatAutocompleteSelectedEvent, auto: MatAutocomplete) {
+    console.log(event);
+    
+    const product = event.option.value as TProductModel;
+    const orderItem: IOrderItem = {
+      productThumbnail: product.album?.thumbnailUrl || '',
+      productCode: product.code,
+      productName: product.name,
+      productCategorySlug: product.slug,
+      productSlug: product.slug,
+      quantity: 1,
+      price: product.price
+    }
+    this.orderItemEntity?.addItem(orderItem);
+
+    auto.options.forEach((item) => {
+      item.deselect()
+    });
+  }
+
+  orderItemsQuantityChange(orderItem: IOrderItem, quantity: number) {
+    this.orderItemEntity?.changeQuantity(orderItem.productCode, quantity);
+  }
+
+  async onIsZero(orderItem: IOrderItem, cartItemElement: MatListItem) {
     const isMobile: boolean = await lastValueFrom(this.isMobile$.pipe(
       take(1)
     ));
@@ -59,22 +97,22 @@ export class OrderItemModifyComponent implements OnInit, OnDestroy {
     if (!isMobile) {
       return;
     }
-    
+
     this.removeOrderItem(orderItem, cartItemElement);
   }
 
-  removeOrderItem(orderItem: TOrderItem, cartItemElement: MatListItem) {
+  removeOrderItem(orderItem: IOrderItem, cartItemElement: MatListItem) {
     this.subscription.add(
       this.confirmRemoveOrderItem$(orderItem).subscribe(_ => {
         this.renderer2.addClass(cartItemElement._elementRef.nativeElement, 'cart-item-removed');
         setTimeout(() => {
-          this.orderItemEntity?.removeItem(orderItem._id);
+          this.orderItemEntity?.removeItem(orderItem.productCode);
         }, 450);
       })
     )
   }
 
-  private confirmRemoveOrderItem$(orderItem: TOrderItem) {
+  private confirmRemoveOrderItem$(orderItem: IOrderItem) {
     const data: ConfirmationDialogData = {
       title: 'Xác nhận xóa sản phẩm',
       message: `Bạn có chắc chắn muốn xóa sản phẩm "${orderItem.productName}" khỏi đơn hàng này?`,
@@ -95,7 +133,7 @@ export class OrderItemModifyComponent implements OnInit, OnDestroy {
 
   async onSaveChanges() {
     console.log('Save changes');
-    
+
     const isChangedItems$ = await lastValueFrom(this.orderItemEntity!.isChangedItems$.pipe(
       take(1)
     ));

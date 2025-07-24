@@ -1,18 +1,18 @@
 
 import { BehaviorSubject } from "rxjs";
-import { TOrderItem } from "../shared/interface/order-response.interface";
+import { IOrderItem } from "../shared/interface/order-response.interface";
 
 export class OrderItemEntity {
 
-  private rawOrderItems: TOrderItem[];
-  orderItems: TOrderItem[];
+  private rawOrderItems: IOrderItem[];
+  orderItems: IOrderItem[];
   totalValue: number = 0;
   totalQuantity: number = 0;
 
   private readonly bIsChangedItems: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isChangedItems$ = this.bIsChangedItems.asObservable();
 
-  constructor(cartItems: TOrderItem[]) {
+  constructor(cartItems: IOrderItem[]) {
     this.rawOrderItems = cartItems;
     this.orderItems = JSON.parse(JSON.stringify(cartItems));
     this.calculateTotalValue();
@@ -21,8 +21,15 @@ export class OrderItemEntity {
     this.bIsChangedItems.next(isChangedItem);
   }
 
-  addItem(orderItem: TOrderItem) {
-    this.orderItems.push(orderItem);
+  addItem(orderItem: IOrderItem) {
+    // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+    let index = this.orderItems.findIndex((item: IOrderItem) => item.productCode === orderItem.productCode);
+    if (index !== -1) {
+      this.orderItems[index].quantity++;
+    }else {
+      this.orderItems.push(orderItem);
+    }
+
 
     this.calculateTotalValue();
     this.calculateTotalQuantity();
@@ -30,8 +37,8 @@ export class OrderItemEntity {
     this.bIsChangedItems.next(isChangedItem);
   }
 
-  changeQuantity(orderItemId: string, quantity: number) {
-    let index = this.orderItems.findIndex((orderItem: TOrderItem) => orderItem._id === orderItemId);
+  changeQuantity(orderItemProductCode: string, quantity: number) {
+    let index = this.orderItems.findIndex((orderItem: IOrderItem) => orderItem.productCode === orderItemProductCode);
     quantity = quantity || 1; // Default to 1 if quantity is not provided
     if (index !== -1) {
       this.orderItems[index].quantity = quantity;
@@ -44,8 +51,8 @@ export class OrderItemEntity {
     }
   }
 
-  removeItem(orderItemId: string) {
-    let index = this.orderItems.findIndex((orderItem: TOrderItem) => orderItem._id === orderItemId);
+  removeItem(orderItemProductCode: string) {
+    let index = this.orderItems.findIndex((orderItem: IOrderItem) => orderItem.productCode === orderItemProductCode);
     if (index === -1) {
       throw new Error("Không tìm thấy sản phẩm trong giỏ hàng");
     }
@@ -74,12 +81,12 @@ export class OrderItemEntity {
       const oldItem = this.rawOrderItems[i];
 
       //Kiểm tra xem sản phẩm ở items mới có tồn tại ở items cũ không
-      const existingItem = this.orderItems.some(item => item._id === oldItem._id);
+      const existingItem = this.orderItems.some(item => item.productCode === oldItem.productCode);
       if (!existingItem) return true;
 
       //Kiểm tra xem số 2 object có giống nhau không
       // Có thể vị trí sẽ khác nhau
-      const newItem = this.orderItems.find(item => item._id === oldItem._id);
+      const newItem = this.orderItems.find(item => item.productCode === oldItem.productCode);
       if (!newItem) return true;
 
       if (oldItem.quantity !== newItem.quantity) return true;

@@ -2,7 +2,25 @@
 <div class="container vertical-container">
   <h2 mat-dialog-title>Sản phẩm trong đơn hàng</h2>
   <mat-dialog-content>
-    <div class="horizontal-container">
+    <div class="vertical-container">
+      <mat-form-field class="search-form-container">
+        <mat-label>Tìm sản phẩm</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input #nameOrProductEl (keypress)="inputValueChange($event)" type="text" placeholder="Nhập tên hoặc mã sản phẩm" matInput [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onChooseProductEvent($event, auto); nameOrProductEl.value = ''" >
+          @for (option of filteredOptions$ | async; track option) {
+          <mat-option [value]="option">
+            
+            <div class="product-option">
+              <img class="thumbnail" [src]="(option.album?.thumbnailUrl || '') | prefixBackendStatic" alt="">
+              <span class="product-name">{{ option.name }}</span>
+              <span class="product-name">{{ option.inStock ? 'Còn hàng' : 'Hết hàng' }}</span>
+              <span class="product-price">{{ option.price | vndCurrency }}</span>
+            </div>
+          </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
       <mat-list>
         @for (orderItem of orderItemEntity.orderItems; track orderItem) {
         <mat-list-item #orderItemElement>
