@@ -17,6 +17,8 @@ import { HeaderPageContainerComponent } from '../../../../shared/component/heade
 import { IDelivery } from '../../../../shared/interface/address.interface';
 import { OrderFormDeliveryComponent } from './order-form-delivery/order-form-delivery.component';
 import { OrderFormItemComponent } from './order-form-item/order-form-item.component';
+import { OrderItemEntity, OrderTotalEntity } from '../../../../entity/order.entity';
+import { OrderFormTotalComponent } from './order-form-total/order-form-total.component';
 
 @Component({
   selector: 'app-order-form',
@@ -33,6 +35,7 @@ import { OrderFormItemComponent } from './order-form-item/order-form-item.compon
     HeaderPageContainerComponent,
     OrderFormItemComponent,
     OrderFormDeliveryComponent,
+    OrderFormTotalComponent,
 
     MaterialModule
   ],
@@ -54,8 +57,9 @@ export class OrderFormComponent {
     map(order => [OrderStatus.PENDING, OrderStatus.CONFIRMED, OrderStatus.SHIPPING].includes(order.status as OrderStatus))
   )
 
-  orderItemsWillChange: IOrderItem[] | null = null;
+  orderItemsWillChange: OrderItemEntity | null = null;
   deliveryWillChange: IDelivery | null = null;
+  totalWillChange: OrderTotalEntity | null = null;
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly router: Router,
@@ -71,8 +75,16 @@ export class OrderFormComponent {
     this.router.navigate(['/dashboard/order/detail', orderId]);
   }
 
+  onChangeOrderItems(orderItems: OrderItemEntity | null) {
+    this.orderItemsWillChange = orderItems;
+  }
+
   onChangeDelivery(delivery: IDelivery | null) {
-    
+    this.deliveryWillChange = delivery;
+  }
+
+  onOrderTotalChange(orderTotal: OrderTotalEntity | null) {
+    this.totalWillChange = orderTotal;
   }
 
   async processOrder(orderId: string) {

@@ -1,0 +1,19 @@
+<div class="container vertical-container">
+  <h2 mat-dialog-title>{{data.title}}</h2>
+  <mat-dialog-content>
+    <p>{{data.message}}</p>
+    <mat-form-field appearance="fill">
+      <mat-label>Delivery Fee</mat-label>
+      <input matInput type="number" [formControl]="feeControl" type="tel" inputmode="numeric" mask="separator.0"
+        thousandSeparator="." suffix=" VND" [allowNegativeNumbers]="false" />
+      <mat-error *ngIf="feeControl.invalid">Please enter a valid fee.</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">{{data.cancelText}}</button>
+
+    <button mat-button (click)="updateFee()" [disabled]="feeControl.invalid"
+      cdkFocusInitial>{{data.confirmText}}</button>
+
+  </mat-dialog-actions>
+</div>

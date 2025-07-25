@@ -9,6 +9,7 @@ import { VietnameseAccentUtil } from '../../../../../shared/utitl/form-validator
 import { filter, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { OrderItemModifyComponent } from '../../../../../shared/component/order-item-modify/order-item-modify.component';
+import { OrderItemEntity } from '../../../../../entity/order.entity';
 
 @Component({
   selector: 'app-order-form-item',
@@ -25,9 +26,9 @@ import { OrderItemModifyComponent } from '../../../../../shared/component/order-
 })
 export class OrderFormItemComponent implements OnDestroy {
   @Input() orderItems: IOrderItem[] | null = null;
-  @Output() orderItemsWillChangeEmit: EventEmitter<IOrderItem[] | null> = new EventEmitter<IOrderItem[] | null>();
+  @Output() orderItemsWillChangeEmit: EventEmitter<OrderItemEntity | null> = new EventEmitter<OrderItemEntity | null>();
 
-  orderItemsWillChange: IOrderItem[] | null = null;
+  orderItemsWillChange: OrderItemEntity | null = null;
 
   private readonly subscription = new Subscription();
 
@@ -53,9 +54,10 @@ export class OrderFormItemComponent implements OnDestroy {
         panelClass: 'order-item-modify-modal',
         autoFocus: false,
       }).afterClosed().pipe(
-        filter((result: IOrderItem[] | null) => !!result),
-      ).subscribe((result: IOrderItem[] | null) => {
+        filter((result: OrderItemEntity) => !!result),
+      ).subscribe((result: OrderItemEntity) => {
         this.orderItemsWillChange = result;
+        this.orderItemsWillChangeEmit.emit(this.orderItemsWillChange);
       })
     )
   }

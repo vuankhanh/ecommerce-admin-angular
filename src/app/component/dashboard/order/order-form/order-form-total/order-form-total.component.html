@@ -1,0 +1,66 @@
+@if (rawOrderTotal) {
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Tổng kết đơn hàng</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="horizontal-container">
+      <div class="order-summary">
+        <div class="summary-row">
+          <span class="label">Tạm tính:</span>
+          <span class="value">{{rawOrderTotal.subTotal | vndCurrency}}</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Giảm giá:</span>
+          <span class="value discount">-{{rawOrderTotal.discount | vndCurrency}}</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Phí giao hàng:</span>
+          <span class="value">{{rawOrderTotal.deliveryFee | vndCurrency}}</span>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="summary-row total">
+          <span class="label">Tổng cộng:</span>
+          <span class="value">{{rawOrderTotal.total | vndCurrency}}</span>
+        </div>
+      </div>
+  
+      @if (orderItemsWillChangeTotal) {
+      <div class="order-total-will-change-container">
+        <button mat-icon-button (click)="onCancelChange()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <h3>Tổng kết đơn hàng sẽ thay đổi</h3>
+        <div class="summary-row">
+          <span class="label">Tạm tính:</span>
+          <span class="value">{{orderItemsWillChangeTotal.subTotal| vndCurrency}}</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Giảm giá:</span>
+          <span class="value discount">-{{orderItemsWillChangeTotal.discount | vndCurrency}}</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Phí giao hàng:</span>
+          <span class="value">{{orderItemsWillChangeTotal.deliveryFee | vndCurrency}}</span>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="summary-row total">
+          <span class="label">Tổng cộng:</span>
+          <span class="value">{{orderItemsWillChangeTotal.total | vndCurrency}}</span>
+        </div>
+      </div>
+      }
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="editDiscountFee()">
+      <mat-icon>edit</mat-icon>
+      {{'Sửa lại giảm giá'}}
+    </button>
+    <button mat-raised-button (click)="editDeliveryFee()">
+      <mat-icon>edit</mat-icon>
+      {{'Sửa lại phí giao hàng'}}
+    </button>
+  </mat-card-actions>
+</mat-card>
+}

@@ -10,6 +10,7 @@
   mat-card-content {
     mat-list {
       padding: 0;
+      width: 100%;
 
       mat-list-item:not(:last-child) {
         margin-bottom: 10px;
@@ -47,7 +48,8 @@
       margin-top: -32px;
       position: relative;
       padding: 5px;
-
+      width: 100%;
+      
       button[mat-icon-button] {
         position: absolute;
         top: 0px;

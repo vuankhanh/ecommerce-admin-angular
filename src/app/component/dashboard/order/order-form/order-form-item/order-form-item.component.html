@@ -24,14 +24,15 @@
         }
       </mat-list>
 
-      @if(orderItemsWillChange){
+      @if(orderItemsWillChange && orderItemsWillChange.orderItems.length) {
+        <!-- Display items that will change -->
       <div class="order-item-will-change-container">
         <button mat-icon-button (click)="onCancelChange()">
           <mat-icon>close</mat-icon>
         </button>
         <h3>Thông tin sẽ thay đổi</h3>
         <mat-list>
-        @for (orderItem of orderItemsWillChange; track $index) {
+        @for (orderItem of orderItemsWillChange.orderItems; track $index) {
         <mat-list-item (click)="onViewProduct(orderItem)">
           <div matListItemAvatar class="horizontal-container">
             <img [src]="orderItem.productThumbnail | prefixBackendStatic" [alt]="orderItem.productName"

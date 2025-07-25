@@ -132,8 +132,6 @@ export class OrderItemModifyComponent implements OnInit, OnDestroy {
   }
 
   async onSaveChanges() {
-    console.log('Save changes');
-
     const isChangedItems$ = await lastValueFrom(this.orderItemEntity!.isChangedItems$.pipe(
       take(1)
     ));
@@ -142,7 +140,7 @@ export class OrderItemModifyComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.dialogRef.close(this.orderItemEntity!.orderItems);
+    this.dialogRef.close(this.orderItemEntity);
   }
 
   ngOnDestroy(): void {
