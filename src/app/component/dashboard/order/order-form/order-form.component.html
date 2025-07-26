@@ -10,28 +10,11 @@
   </mat-card>
 
   <!-- Order Status & Payment -->
-  <mat-card class="order-status">
-    <mat-card-content>
-      <div class="status-row">
-        <div class="status-item">
-          <mat-icon>local_shipping</mat-icon>
-          <span class="label">Trạng thái:</span>
-          <div [appOrderStatusColor]="orderDetail.status">
-            <mat-chip selected>
-              {{orderDetail.status}}
-            </mat-chip>
-          </div>
-        </div>
-
-
-        <div class="status-item">
-          <mat-icon>payment</mat-icon>
-          <span class="label">Thanh toán:</span>
-          <span class="value">{{orderDetail.paymentMethod}}</span>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+  <div class="order-status">
+    <app-order-form-status [status]="orderDetail.status" [paymentMethod]="orderDetail.paymentMethod"
+    (statusChange)="onStatusChange($event)"
+    (paymentMethodChange)="onPaymentMethodChange($event)"></app-order-form-status>
+  </div>
 
   <!-- Order Items -->
   <div class="order-item">

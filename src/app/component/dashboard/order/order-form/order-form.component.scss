@@ -2,7 +2,7 @@
   mat-card {
     margin-bottom: 16px;
   }
-  .delivery-info, .order-item {
+  .order-status, .delivery-info, .order-item {
     margin-bottom: 16px;
   }
 }
@@ -14,87 +14,6 @@
   mat-card-title,
   mat-card-subtitle {
     color: white;
-  }
-}
-
-.status-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-.status-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  .label {
-    font-weight: 500;
-  }
-
-  .value {
-    font-weight: 600;
-  }
-}
-
-.items-list {
-  .item-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 0;
-    border-bottom: 1px solid #eee;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  .item-info {
-    display: flex;
-    align-items: center;
-    flex: 1;
-
-    .product-image {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-right: 16px;
-    }
-
-    .product-details {
-      h4 {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 500;
-      }
-
-      .product-variant {
-        margin: 4px 0 0 0;
-        color: #666;
-        font-size: 14px;
-      }
-    }
-  }
-
-  .item-quantity {
-    margin: 0 20px;
-    font-weight: 500;
-  }
-
-  .item-price {
-    .price {
-      font-size: 16px;
-      font-weight: 600;
-      color: #f44336;
-    }
   }
 }
 
