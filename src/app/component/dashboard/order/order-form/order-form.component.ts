@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MaterialModule } from '../../../../shared/modules/material';
-import { catchError, EMPTY, filter, lastValueFrom, map, Observable, switchMap, take } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, EMPTY, filter, lastValueFrom, map, Observable, of, Subscription, switchMap, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../../../../service/api/order.service';
 import { OrderStatus } from '../../../../shared/constant/order.constant';
-import { TOrderStatus } from '../../../../shared/interface/order-response.interface';
+import { TOrderDetailModel, TOrderStatus } from '../../../../shared/interface/order-response.interface';
 import { HeaderPageContainerComponent } from '../../../../shared/component/header-page-container/header-page-container.component';
 import { IDelivery } from '../../../../shared/interface/address.interface';
 import { OrderFormDeliveryComponent } from './order-form-delivery/order-form-delivery.component';
@@ -14,6 +14,7 @@ import { OrderItemEntity, OrderTotalEntity } from '../../../../entity/order.enti
 import { OrderFormTotalComponent } from './order-form-total/order-form-total.component';
 import { OrderFormStatusComponent } from './order-form-status/order-form-status.component';
 import { TPaymentMethod } from '../../../../shared/interface/payment.interface';
+import { IOrderUpdateRequest } from '../../../../shared/interface/order-request.interface';
 
 @Component({
   selector: 'app-order-form',
@@ -32,7 +33,7 @@ import { TPaymentMethod } from '../../../../shared/interface/payment.interface';
   templateUrl: './order-form.component.html',
   styleUrl: './order-form.component.scss'
 })
-export class OrderFormComponent {
+export class OrderFormComponent implements OnDestroy {
   order$ = this.activatedRoute.params.pipe(
     filter(params => !!params['id']),
     map(params => params['id']),
@@ -43,15 +44,33 @@ export class OrderFormComponent {
     })
   );
 
+  private readonly bOrderStatusWillChange: BehaviorSubject<TOrderStatus | null> = new BehaviorSubject<TOrderStatus | null>(null);
+  private readonly bOrderPaymentMethodWillChange: BehaviorSubject<TPaymentMethod | null> = new BehaviorSubject<TPaymentMethod | null>(null);
+  readonly bOrderItemsWillChange: BehaviorSubject<OrderItemEntity | null> = new BehaviorSubject<OrderItemEntity | null>(null);
+  private readonly bDeliveryWillChange: BehaviorSubject<IDelivery | null> = new BehaviorSubject<IDelivery | null>(null);
+  private readonly bTotalWillChange: BehaviorSubject<OrderTotalEntity | null> = new BehaviorSubject<OrderTotalEntity | null>(null);
+
+  private orderUpdateRequest$ = combineLatest([
+    this.bOrderStatusWillChange.asObservable(),
+    this.bOrderPaymentMethodWillChange.asObservable(),
+    this.bOrderItemsWillChange.asObservable(),
+    this.bDeliveryWillChange.asObservable(),
+    this.bTotalWillChange.asObservable()
+  ]);
+
   canProcessOrder$: Observable<boolean> = this.order$?.pipe(
-    map(order => [OrderStatus.PENDING, OrderStatus.CONFIRMED, OrderStatus.SHIPPING].includes(order.status as OrderStatus))
+    map(order => [OrderStatus.PENDING, OrderStatus.CONFIRMED, OrderStatus.SHIPPING].includes(order.status as OrderStatus)),
+    switchMap(canProcess => {
+      if (!canProcess) {
+        of(false);
+      }
+      return this.orderUpdateRequest$.pipe(
+        map(result => result.some(item => item !== null)),
+        catchError(() => of(false))
+      );
+    })
   );
-  
-  orderStatusChange: TOrderStatus | null = null;
-  orderPaymentMethodChange: TPaymentMethod | null = null;
-  orderItemsWillChange: OrderItemEntity | null = null;
-  deliveryWillChange: IDelivery | null = null;
-  totalWillChange: OrderTotalEntity | null = null;
+  private readonly subsciprition: Subscription = new Subscription();
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
@@ -67,26 +86,26 @@ export class OrderFormComponent {
   }
 
   onStatusChange(status: TOrderStatus | null) {
-    this.orderStatusChange = status;
+    this.bOrderStatusWillChange.next(status);
   }
 
   onPaymentMethodChange(paymentMethod: TPaymentMethod | null) {
-    this.orderPaymentMethodChange = paymentMethod;
+    this.bOrderPaymentMethodWillChange.next(paymentMethod);
   }
 
   onChangeOrderItems(orderItems: OrderItemEntity | null) {
-    this.orderItemsWillChange = orderItems;
+    this.bOrderItemsWillChange.next(orderItems);
   }
 
   onChangeDelivery(delivery: IDelivery | null) {
-    this.deliveryWillChange = delivery;
+    this.bDeliveryWillChange.next(delivery);
   }
 
   onOrderTotalChange(orderTotal: OrderTotalEntity | null) {
-    this.totalWillChange = orderTotal;
+    this.bTotalWillChange.next(orderTotal);
   }
 
-  async processOrder(orderId: string) {
+  async processOrder(orderDetail: TOrderDetailModel) {
     const canProcess = await lastValueFrom(this.canProcessOrder$.pipe(
       take(1),
     ));
@@ -95,6 +114,42 @@ export class OrderFormComponent {
       return;
     }
 
-    this.router.navigate(['/dashboard/order/detail', orderId]);
+    this.subsciprition.add(
+      this.orderUpdateRequest$.pipe(
+        switchMap(([status, paymentMethod, orderItems, delivery, total]) => {
+          const data: IOrderUpdateRequest = {};
+          if(status) data.status = status;
+          if(paymentMethod) data.paymentMethod = paymentMethod;
+          if(delivery) data.delivery = delivery;
+          if(total) {
+            if(total.discount != orderDetail.discount) data.discount = total.discount;
+            if(total.deliveryFee != orderDetail.deliveryFee) data.deliveryFee = total.deliveryFee;
+          }
+          if(orderItems) data.orderItems = orderItems.orderItems.map(item => ({ productId: item.productId, quantity: item.quantity }));
+          return this.orderService.updateOrder(orderDetail._id, data)
+        }),
+        take(1),
+      ).subscribe({
+        next: (updatedOrder) => {
+          console.log('Cập nhật đơn hàng thành công:', updatedOrder);
+        },
+        error: (error) => {
+          console.error('Cập nhật đơn hàng thất bại:', error);
+        },
+        complete: () => {
+          this.bOrderStatusWillChange.next(null);
+          this.bOrderPaymentMethodWillChange.next(null);
+          this.bOrderItemsWillChange.next(null);
+          this.bDeliveryWillChange.next(null);
+          this.bTotalWillChange.next(null);
+          this.goBackOrderDetail();
+        }
+      })
+    )
+    // this.router.navigate(['/dashboard/order/detail', orderId]);
+  }
+
+  ngOnDestroy(): void {
+    this.subsciprition.unsubscribe();
   }
 }

@@ -32,6 +32,7 @@ export interface IOrderDetailResponse {
 }
 
 export interface IOrderItem {
+  productId: string;
   productThumbnail: string;
   productCode: string;
   productName: string;

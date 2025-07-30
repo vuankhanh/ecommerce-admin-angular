@@ -6,6 +6,7 @@ import { TOrderDetailModel, TOrderModel } from '../../shared/interface/order-res
 import { IPagination } from '../../shared/interface/pagination.interface';
 import { ISuccess } from '../../shared/interface/success.interface';
 import { map, Observable } from 'rxjs';
+import { IOrderUpdateRequest } from '../../shared/interface/order-request.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,19 @@ export class OrderService {
     params = params.append('id', id);
 
     return this.httpClient.get<OrderDetailResponse>(`${this.url}/detail`, { params }).pipe(
+      map(response => response.metaData)
+    );
+  }
+
+  updateOrder(id: string, data: IOrderUpdateRequest): Observable<TOrderDetailModel> {
+    if (!id) {
+      throw new Error('Order ID là bắt buộc để cập nhật đơn hàng');
+    }
+
+    let params = new HttpParams();
+    params = params.append('id', id);
+
+    return this.httpClient.put<OrderDetailResponse>(`${this.url}`, data, { params }).pipe(
       map(response => response.metaData)
     );
   }

@@ -21,7 +21,7 @@ export class OrderItemEntity {
 
   addItem(orderItem: IOrderItem) {
     // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-    let index = this.orderItems.findIndex((item: IOrderItem) => item.productCode === orderItem.productCode);
+    let index = this.orderItems.findIndex((item: IOrderItem) => item.productId === orderItem.productId);
     if (index !== -1) {
       this.orderItems[index].quantity++;
     }else {
@@ -34,8 +34,8 @@ export class OrderItemEntity {
     this.bIsChangedItems.next(isChangedItem);
   }
 
-  changeQuantity(orderItemProductCode: string, quantity: number) {
-    let index = this.orderItems.findIndex((orderItem: IOrderItem) => orderItem.productCode === orderItemProductCode);
+  changeQuantity(orderItemProductId: string, quantity: number) {
+    let index = this.orderItems.findIndex((orderItem: IOrderItem) => orderItem.productId === orderItemProductId);
     quantity = quantity || 1; // Default to 1 if quantity is not provided
     if (index !== -1) {
       this.orderItems[index].quantity = quantity;
@@ -47,8 +47,8 @@ export class OrderItemEntity {
     }
   }
 
-  removeItem(orderItemProductCode: string) {
-    let index = this.orderItems.findIndex((orderItem: IOrderItem) => orderItem.productCode === orderItemProductCode);
+  removeItem(orderItemProductId: string) {
+    let index = this.orderItems.findIndex((orderItem: IOrderItem) => orderItem.productId === orderItemProductId);
     if (index === -1) {
       throw new Error("Không tìm thấy sản phẩm trong giỏ hàng");
     }
@@ -75,12 +75,12 @@ export class OrderItemEntity {
       const oldItem = this.rawOrderItems[i];
 
       //Kiểm tra xem sản phẩm ở items mới có tồn tại ở items cũ không
-      const existingItem = this.orderItems.some(item => item.productCode === oldItem.productCode);
+      const existingItem = this.orderItems.some(item => item.productId === oldItem.productId);
       if (!existingItem) return true;
 
       //Kiểm tra xem số 2 object có giống nhau không
       // Có thể vị trí sẽ khác nhau
-      const newItem = this.orderItems.find(item => item.productCode === oldItem.productCode);
+      const newItem = this.orderItems.find(item => item.productId === oldItem.productId);
       if (!newItem) return true;
 
       if (oldItem.quantity !== newItem.quantity) return true;

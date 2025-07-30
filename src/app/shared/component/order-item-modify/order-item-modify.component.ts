@@ -70,6 +70,7 @@ export class OrderItemModifyComponent implements OnInit, OnDestroy {
     
     const product = event.option.value as TProductModel;
     const orderItem: IOrderItem = {
+      productId: product._id,
       productThumbnail: product.album?.thumbnailUrl || '',
       productCode: product.code,
       productName: product.name,
@@ -86,7 +87,7 @@ export class OrderItemModifyComponent implements OnInit, OnDestroy {
   }
 
   orderItemsQuantityChange(orderItem: IOrderItem, quantity: number) {
-    this.orderItemEntity?.changeQuantity(orderItem.productCode, quantity);
+    this.orderItemEntity?.changeQuantity(orderItem.productId, quantity);
   }
 
   async onIsZero(orderItem: IOrderItem, cartItemElement: MatListItem) {
@@ -106,7 +107,7 @@ export class OrderItemModifyComponent implements OnInit, OnDestroy {
       this.confirmRemoveOrderItem$(orderItem).subscribe(_ => {
         this.renderer2.addClass(cartItemElement._elementRef.nativeElement, 'cart-item-removed');
         setTimeout(() => {
-          this.orderItemEntity?.removeItem(orderItem.productCode);
+          this.orderItemEntity?.removeItem(orderItem.productId);
         }, 450);
       })
     )

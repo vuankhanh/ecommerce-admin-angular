@@ -41,14 +41,14 @@
   <!-- Order Summary -->
   <div>
     <app-order-form-total [orderDetail]="orderDetail"
-      [orderItemsWillChange]="orderItemsWillChange"
+      [orderItemsWillChange]="bOrderItemsWillChange.getValue()"
       (orderTotalChangeEmit)="onOrderTotalChange($event)"></app-order-form-total>
   </div>
 
   <!-- Action Buttons -->
   <div class="action-buttons">
-    <button mat-raised-button color="primary" (click)="processOrder(orderDetail._id)"
-      [disabled]="!(canProcessOrder$ | async) && (!orderItemsWillChange && !deliveryWillChange)">
+    <button mat-raised-button color="primary" (click)="processOrder(orderDetail)"
+      [disabled]="!(canProcessOrder$ | async)">
       <mat-icon>update</mat-icon>
       Cập nhật
     </button>
