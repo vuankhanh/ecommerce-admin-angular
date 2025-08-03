@@ -46,9 +46,7 @@ export class OrderStatusColorDirective implements OnChanges {
       const textLabel = chip.querySelector('.mdc-evolution-chip__text-label');
       if (textLabel) {
         this.renderer.setStyle(textLabel, 'color', color);
-        // this.renderer.setStyle(textLabel, 'font-weight', 'bold');
       }
     }
   }
-
 }

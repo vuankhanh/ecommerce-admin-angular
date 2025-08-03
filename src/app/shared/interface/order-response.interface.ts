@@ -18,7 +18,8 @@ export interface IOrderResponse {
 }
 export interface IOrderDetailResponse {
   customerId?: string;
-  customer?: IUserInformation;
+  orderFrom: `${OrderFrom}`;
+  customerDetail?: IUserInformation;
   orderCode: string;
   orderItems: IOrderItem[];
   status: TOrderStatus;

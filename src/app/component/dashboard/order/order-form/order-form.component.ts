@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { MaterialModule } from '../../../../shared/modules/material';
-import { BehaviorSubject, catchError, combineLatest, EMPTY, filter, lastValueFrom, map, Observable, of, Subscription, switchMap, take } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, EMPTY, filter, lastValueFrom, map, Observable, of, shareReplay, Subscription, switchMap, take, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../../../../service/api/order.service';
 import { OrderStatus } from '../../../../shared/constant/order.constant';
@@ -15,6 +15,7 @@ import { OrderFormTotalComponent } from './order-form-total/order-form-total.com
 import { OrderFormStatusComponent } from './order-form-status/order-form-status.component';
 import { TPaymentMethod } from '../../../../shared/interface/payment.interface';
 import { IOrderUpdateRequest } from '../../../../shared/interface/order-request.interface';
+import { OrderFromColorDirective } from '../../../../shared/directive/order-from-color.directive';
 
 @Component({
   selector: 'app-order-form',
@@ -27,6 +28,8 @@ import { IOrderUpdateRequest } from '../../../../shared/interface/order-request.
     OrderFormItemComponent,
     OrderFormDeliveryComponent,
     OrderFormTotalComponent,
+
+    OrderFromColorDirective,
 
     MaterialModule
   ],
@@ -41,7 +44,8 @@ export class OrderFormComponent implements OnDestroy {
     catchError(() => {
       this.router.navigate(['/dashboard/order/list']);
       return EMPTY;
-    })
+    }),
+    shareReplay(1)
   );
 
   private readonly bOrderStatusWillChange: BehaviorSubject<TOrderStatus | null> = new BehaviorSubject<TOrderStatus | null>(null);

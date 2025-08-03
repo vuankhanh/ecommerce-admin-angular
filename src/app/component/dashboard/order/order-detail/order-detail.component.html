@@ -1,137 +1,152 @@
 @if (order$ | async; as orderDetail) {
-  <app-header-page-container [title]="'Chi tiết đơn hàng'" (goBack)="goBackOrder()"></app-header-page-container>
-  <div class="order-detail-container">
-    <!-- Header -->
-    <mat-card class="order-header">
-      <mat-card-header>
-        <mat-card-title>Chi tiết đơn hàng</mat-card-title>
-        <mat-card-subtitle>Mã đơn hàng: {{orderDetail.orderCode}}</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
-  
-    <!-- Order Status & Payment -->
-    <mat-card class="order-status">
-      <mat-card-content>
-        <div class="status-row">
-          <div class="status-item">
-            <mat-icon>local_shipping</mat-icon>
-            <span class="label">Trạng thái:</span>
-            <div [appOrderStatusColor]="orderDetail.status">
+<app-header-page-container [title]="'Chi tiết đơn hàng'" (goBack)="goBackOrder()"></app-header-page-container>
+<div class="order-detail-container">
+  <!-- Order Info -->
+  <mat-card class="order-info">
+    <mat-card-content>
+      <div class="order-info-row horizontal-container">
+        <div class="order-info-item horizontal-container">
+          <span class="label">Ngày đặt:</span>
+          <span class="value">{{orderDetail.createdAt | date:'dd/MM/yyyy HH:mm'}}</span>
+        </div>
+        <div class="order-info-item horizontal-container">
+          <span class="label">Người đặt:</span>
+          <span class="value">
+            <div [appOrderFromColor]="orderDetail.orderFrom">
               <mat-chip selected>
-                {{orderDetail.status}}
+                {{orderDetail.orderFrom}}
               </mat-chip>
             </div>
-          </div>
-          <div class="status-item">
-            <mat-icon>payment</mat-icon>
-            <span class="label">Thanh toán:</span>
-            <span class="value">{{orderDetail.paymentMethod}}</span>
+          </span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Order Status & Payment -->
+  <mat-card class="order-status">
+    <mat-card-content>
+      <div class="status-row">
+        <div class="status-item">
+          <mat-icon>local_shipping</mat-icon>
+          <span class="label">Trạng thái:</span>
+          <div [appOrderStatusColor]="orderDetail.status">
+            <mat-chip selected>
+              {{orderDetail.status}}
+            </mat-chip>
           </div>
         </div>
-      </mat-card-content>
-    </mat-card>
-  
-    <!-- Order Items -->
-    <mat-card class="order-items">
-      <mat-card-header>
-        <mat-card-title>Sản phẩm đã đặt</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-list>
-          @for (orderItem of orderDetail.orderItems; track $index) {
-          <mat-list-item (click)="onViewProduct(orderItem)">
-            <div matListItemAvatar class="horizontal-container">
-              <img [src]="orderItem.productThumbnail | prefixBackendStatic" [alt]="orderItem.productName"
-                class="product-image">
-            </div>
-            <div matListItemTitle>
-              <span class="product-name">{{orderItem.productName}}</span>
-            </div>
-            <div matListItemLine>
-              <span>{{orderItem.productCode}}</span>
-            </div>
-            <div matListItemLine>
-              <span>{{'('+(orderItem.price | vndCurrency)+')'}} x {{orderItem.quantity}}</span>
-            </div>
-          </mat-list-item>
-          }
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-  
-    <!-- Delivery Information -->
-    <mat-card class="delivery-info">
-      <mat-card-header>
-        <mat-card-title>Thông tin giao hàng</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="delivery-details">
-          <div class="delivery-row">
-            <mat-icon>person</mat-icon>
-            <span class="label">Người nhận:</span>
-            <span class="value">{{orderDetail.delivery.name}}</span>
+        <div class="status-item">
+          <mat-icon>payment</mat-icon>
+          <span class="label">Thanh toán:</span>
+          <span class="value">{{orderDetail.paymentMethod}}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Order Items -->
+  <mat-card class="order-items">
+    <mat-card-header>
+      <mat-card-title>Sản phẩm đã đặt</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        @for (orderItem of orderDetail.orderItems; track $index) {
+        <mat-list-item (click)="onViewProduct(orderItem)">
+          <div matListItemAvatar class="horizontal-container">
+            <img [src]="orderItem.productThumbnail | prefixBackendStatic" [alt]="orderItem.productName"
+              class="product-image">
           </div>
-          <div class="delivery-row">
-            <mat-icon>phone</mat-icon>
-            <span class="label">Số điện thoại:</span>
-            <span class="value">{{orderDetail.delivery.phoneNumber}}</span>
+          <div matListItemTitle>
+            <span class="product-name">{{orderItem.productName}}</span>
           </div>
-          <div class="delivery-row">
-            <mat-icon>location_on</mat-icon>
-            <span class="label">Địa chỉ:</span>
-            <span class="value">{{orderDetail.delivery.address| address}}</span>
+          <div matListItemLine>
+            <span>{{orderItem.productCode}}</span>
           </div>
-          <!-- <div class="delivery-row" *ngIf="orderDetail.delivery.estimatedDelivery">
+          <div matListItemLine>
+            <span>{{'('+(orderItem.price | vndCurrency)+')'}} x {{orderItem.quantity}}</span>
+          </div>
+        </mat-list-item>
+        }
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Delivery Information -->
+  <mat-card class="delivery-info">
+    <mat-card-header>
+      <mat-card-title>Thông tin giao hàng</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="delivery-details">
+        <div class="delivery-row">
+          <mat-icon>person</mat-icon>
+          <span class="label">Người nhận:</span>
+          <span class="value">{{orderDetail.delivery.name}}</span>
+        </div>
+        <div class="delivery-row">
+          <mat-icon>phone</mat-icon>
+          <span class="label">Số điện thoại:</span>
+          <span class="value">{{orderDetail.delivery.phoneNumber}}</span>
+        </div>
+        <div class="delivery-row">
+          <mat-icon>location_on</mat-icon>
+          <span class="label">Địa chỉ:</span>
+          <span class="value">{{orderDetail.delivery.address| address}}</span>
+        </div>
+        <!-- <div class="delivery-row" *ngIf="orderDetail.delivery.estimatedDelivery">
             <mat-icon>schedule</mat-icon>
             <span class="label">Dự kiến giao:</span>
             <span class="value">{{orderDetail.delivery.estimatedDelivery | date:'dd/MM/yyyy'}}</span>
           </div> -->
-        </div>
-      </mat-card-content>
-    </mat-card>
-  
-    <!-- Order Note -->
-    <mat-card class="order-note" *ngIf="orderDetail.note">
-      <mat-card-header>
-        <mat-card-title>Ghi chú đơn hàng</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>{{orderDetail.note}}</p>
-      </mat-card-content>
-    </mat-card>
-  
-    <!-- Order Summary -->
-    <mat-card class="order-summary">
-      <mat-card-header>
-        <mat-card-title>Tổng kết đơn hàng</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="summary-row">
-          <span class="label">Tạm tính:</span>
-          <span class="value">{{orderDetail.subTotal | currency:'VND':'symbol':'1.0-0'}}</span>
-        </div>
-        <div class="summary-row" *ngIf="orderDetail.discount > 0">
-          <span class="label">Giảm giá:</span>
-          <span class="value discount">-{{orderDetail.discount | currency:'VND':'symbol':'1.0-0'}}</span>
-        </div>
-        <div class="summary-row">
-          <span class="label">Phí giao hàng:</span>
-          <span class="value">{{orderDetail.deliveryFee | currency:'VND':'symbol':'1.0-0'}}</span>
-        </div>
-        <mat-divider></mat-divider>
-        <div class="summary-row total">
-          <span class="label">Tổng cộng:</span>
-          <span class="value">{{orderDetail.total | currency:'VND':'symbol':'1.0-0'}}</span>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-      <button mat-raised-button color="primary" (click)="processOrder(orderDetail._id)" [disabled]="!(canProcessOrder$ | async)">
-        <mat-icon>settings</mat-icon>
-        Xử lý
-      </button>
-    </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Order Note -->
+  <mat-card class="order-note" *ngIf="orderDetail.note">
+    <mat-card-header>
+      <mat-card-title>Ghi chú đơn hàng</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{orderDetail.note}}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Order Summary -->
+  <mat-card class="order-summary">
+    <mat-card-header>
+      <mat-card-title>Tổng kết đơn hàng</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="summary-row">
+        <span class="label">Tạm tính:</span>
+        <span class="value">{{orderDetail.subTotal | currency:'VND':'symbol':'1.0-0'}}</span>
+      </div>
+      <div class="summary-row" *ngIf="orderDetail.discount > 0">
+        <span class="label">Giảm giá:</span>
+        <span class="value discount">-{{orderDetail.discount | currency:'VND':'symbol':'1.0-0'}}</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Phí giao hàng:</span>
+        <span class="value">{{orderDetail.deliveryFee | currency:'VND':'symbol':'1.0-0'}}</span>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="summary-row total">
+        <span class="label">Tổng cộng:</span>
+        <span class="value">{{orderDetail.total | currency:'VND':'symbol':'1.0-0'}}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button mat-raised-button color="primary" (click)="processOrder(orderDetail._id)"
+      [disabled]="!(canProcessOrder$ | async)">
+      <mat-icon>settings</mat-icon>
+      Xử lý
+    </button>
   </div>
+</div>
 }

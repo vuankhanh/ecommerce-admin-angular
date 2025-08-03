@@ -5,6 +5,17 @@
   z-index: 2;
 
   table[mat-table] {
+    .mat-column-orderFrom {
+      mat-chip {
+        min-width: 165px; // hoặc giá trị lớn nhất bạn đo được
+        max-width: 165px;
+
+        ::ng-deep .mdc-evolution-chip__cell {
+          justify-content: center;
+        }
+      }
+    }
+
     .mat-column-status {
       mat-chip {
         min-width: 120px; // hoặc giá trị lớn nhất bạn đo được
@@ -24,6 +35,6 @@
 
 }
 
-mat-paginator{
+mat-paginator {
   margin-top: 16px;
 }

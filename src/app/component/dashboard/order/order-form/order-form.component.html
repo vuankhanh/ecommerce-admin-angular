@@ -1,19 +1,33 @@
 @if (order$ | async; as orderDetail) {
 <app-header-page-container [title]="'Xử lý đơn hàng'" (goBack)="goBackOrderDetail()"></app-header-page-container>
 <div class="order-detail-container">
-  <!-- Header -->
-  <mat-card class="order-header">
-    <mat-card-header>
-      <mat-card-title>Xử lý đơn hàng</mat-card-title>
-      <mat-card-subtitle>Mã đơn hàng: {{orderDetail.orderCode}}</mat-card-subtitle>
-    </mat-card-header>
+  <!-- Order Info -->
+  <mat-card class="order-info">
+    <mat-card-content>
+      <div class="order-info-row horizontal-container">
+        <div class="order-info-item horizontal-container">
+          <span class="label">Ngày đặt:</span>
+          <span class="value">{{orderDetail.createdAt | date:'dd/MM/yyyy HH:mm'}}</span>
+        </div>
+        <div class="order-info-item horizontal-container">
+          <span class="label">Người đặt:</span>
+          <span class="value">
+            <div [appOrderFromColor]="orderDetail.orderFrom">
+              <mat-chip selected>
+                {{orderDetail.orderFrom}}
+              </mat-chip>
+            </div>
+          </span>
+        </div>
+      </div>
+    </mat-card-content>
   </mat-card>
 
   <!-- Order Status & Payment -->
   <div class="order-status">
     <app-order-form-status [status]="orderDetail.status" [paymentMethod]="orderDetail.paymentMethod"
-    (statusChange)="onStatusChange($event)"
-    (paymentMethodChange)="onPaymentMethodChange($event)"></app-order-form-status>
+      (statusChange)="onStatusChange($event)"
+      (paymentMethodChange)="onPaymentMethodChange($event)"></app-order-form-status>
   </div>
 
   <!-- Order Items -->
@@ -40,8 +54,7 @@
 
   <!-- Order Summary -->
   <div>
-    <app-order-form-total [orderDetail]="orderDetail"
-      [orderItemsWillChange]="bOrderItemsWillChange.getValue()"
+    <app-order-form-total [orderDetail]="orderDetail" [orderItemsWillChange]="bOrderItemsWillChange.getValue()"
       (orderTotalChangeEmit)="onOrderTotalChange($event)"></app-order-form-total>
   </div>
 

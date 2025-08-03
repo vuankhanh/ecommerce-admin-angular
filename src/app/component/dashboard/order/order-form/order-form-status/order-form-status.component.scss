@@ -6,6 +6,11 @@ mat-card {
 
     .raw-status-container {
       width: 100%;
+      justify-content: center;
+
+      > .status-item:not(:last-child) {
+        margin-bottom: 12px;
+      }
 
       .status-item {
         gap: 8px;
@@ -59,6 +64,10 @@ mat-card {
   mat-card {
     mat-card-content {
       flex-direction: column;
+
+      .raw-status-container {
+        flex-direction: column;
+      }
 
       .order-status-will-change-container {
         margin-left: 0;

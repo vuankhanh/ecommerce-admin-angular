@@ -3,7 +3,8 @@ import { Component } from '@angular/core';
 import { MaterialModule } from '../../../../shared/modules/material';
 import { OrderService } from '../../../../service/api/order.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, EMPTY, filter, lastValueFrom, map, Observable, startWith, switchMap, take } from 'rxjs';
+import { catchError, EMPTY, filter, lastValueFrom, map, Observable, shareReplay, switchMap, take } from 'rxjs';
+import { OrderFromColorDirective } from '../../../../shared/directive/order-from-color.directive';
 import { OrderStatusColorDirective } from '../../../../shared/directive/order-status-color.directive';
 import { AddressPipe } from '../../../../shared/pipe/address.pipe';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
@@ -24,6 +25,7 @@ import { OrderStatus } from '../../../../shared/constant/order.constant';
     PrefixBackendStaticPipe,
     CurrencyCustomPipe,
 
+    OrderFromColorDirective,
     OrderStatusColorDirective,
 
     HeaderPageContainerComponent,
@@ -41,7 +43,8 @@ export class OrderDetailComponent {
     catchError(() => {
       this.router.navigate(['/dashboard/order/list']);
       return EMPTY;
-    })
+    }),
+    shareReplay(1)
   );
   
   canProcessOrder$: Observable<boolean> = this.order$?.pipe(

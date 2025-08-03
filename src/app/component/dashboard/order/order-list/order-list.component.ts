@@ -1,16 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MaterialModule } from '../../../../shared/modules/material';
 import { RouterLink } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { OrderStatus } from '../../../../shared/constant/order.constant';
 import { IPagination } from '../../../../shared/interface/pagination.interface';
 import { paginationConstant } from '../../../../shared/constant/pagination.constant';
 import { IOrderFilterParams, OrderService } from '../../../../service/api/order.service';
 import { PageEvent } from '@angular/material/paginator';
-import { BehaviorSubject, distinctUntilChanged, map, switchMap, combineLatest, from, startWith } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, switchMap, combineLatest } from 'rxjs';
 import { OrderStatusColorDirective } from '../../../../shared/directive/order-status-color.directive';
 import { BreakpointDetectionService } from '../../../../service/breakpoint-detection.service';
+import { OrderFromColorDirective } from '../../../../shared/directive/order-from-color.directive';
 
 @Component({
   selector: 'app-order-list',
@@ -21,6 +22,7 @@ import { BreakpointDetectionService } from '../../../../service/breakpoint-detec
 
     RouterLink,
 
+    OrderFromColorDirective,
     OrderStatusColorDirective,
 
     MaterialModule
@@ -28,7 +30,7 @@ import { BreakpointDetectionService } from '../../../../service/breakpoint-detec
   templateUrl: './order-list.component.html',
   styleUrl: './order-list.component.scss'
 })
-export class OrderListComponent implements OnInit {
+export class OrderListComponent {
   filterForm: FormGroup = this.formBuilder.group({
     fromDate: [null],
     toDate: [null],
@@ -74,9 +76,6 @@ export class OrderListComponent implements OnInit {
     private orderService: OrderService,
     private readonly breakpointDetectionService: BreakpointDetectionService
   ) { }
-
-  ngOnInit() {
-  }
 
   submit() {
     if (this.filterForm.valid) {

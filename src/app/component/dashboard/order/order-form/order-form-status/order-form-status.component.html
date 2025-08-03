@@ -3,7 +3,7 @@
     <mat-card-title>Trạng thái đơn hàng</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div class="raw-status-container">
+    <div class="raw-status-container vertical-container">
       @if (status) {
       <div class="status-item horizontal-container">
         <span class="label horizontal-container">
@@ -31,7 +31,7 @@
     </div>
 
     @if (orderStatusChange || orderPaymentMethodChange) {
-    <div class="order-status-will-change-container raw-status-container">
+    <div class="order-status-will-change-container raw-status-container vertical-container">
       <button mat-icon-button (click)="onCancelChange()">
         <mat-icon>close</mat-icon>
       </button>
