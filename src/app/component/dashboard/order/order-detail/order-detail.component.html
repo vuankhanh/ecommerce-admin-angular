@@ -124,7 +124,7 @@
         <span class="label">Tạm tính:</span>
         <span class="value">{{orderDetail.subTotal | currency:'VND':'symbol':'1.0-0'}}</span>
       </div>
-      <div class="summary-row" *ngIf="orderDetail.discount > 0">
+      <div class="summary-row">
         <span class="label">Giảm giá:</span>
         <span class="value discount">-{{orderDetail.discount | currency:'VND':'symbol':'1.0-0'}}</span>
       </div>

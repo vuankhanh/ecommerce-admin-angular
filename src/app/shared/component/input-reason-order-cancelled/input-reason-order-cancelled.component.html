@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Lý do hủy đơn hàng</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Nhập lý do hủy đơn hàng</mat-label>
+    <textarea matInput [formControl]="reasonControl" cdkFocusInitial rows="3" required></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="dialogRef.close()">Hủy</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="reasonControl.value" [disabled]="reasonControl.invalid">Xác nhận</button>
+</mat-dialog-actions>

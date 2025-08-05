@@ -10,7 +10,6 @@
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onChooseProductEvent($event, auto); nameOrProductEl.value = ''" >
           @for (option of filteredOptions$ | async; track option) {
           <mat-option [value]="option">
-            
             <div class="product-option">
               <img class="thumbnail" [src]="(option.album?.thumbnailUrl || '') | prefixBackendStatic" alt="">
               <span class="product-name">{{ option.name }}</span>

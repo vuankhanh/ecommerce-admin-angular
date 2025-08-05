@@ -1,13 +1,19 @@
 <div class="container vertical-container">
-  <h2 mat-dialog-title>Trạng thái đơn hàng</h2>
+  <h2 mat-dialog-title>Trạng thái đơn hàng mới</h2>
   <mat-dialog-content>
     <mat-form-field>
       <mat-label>Chọn trạng thái đơn hàng</mat-label>
-      <mat-select [formControl]="statusControl">
+      @if (statuses$ | async; as statuses) {
+      <mat-select [formControl]="statusControl" [disabled]="!statuses.length">
         @for (status of statuses; track $index) {
-        <mat-option [value]="status" [disabled]="status === data">{{status}}</mat-option>
+        <mat-option [value]="status" [appOrderStatusColor]="status">
+          <mat-chip>
+            {{ status }}
+          </mat-chip>
+        </mat-option>
         }
       </mat-select>
+      }
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions>

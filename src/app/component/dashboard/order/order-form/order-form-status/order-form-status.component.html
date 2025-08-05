@@ -30,13 +30,14 @@
       }
     </div>
 
-    @if (orderStatusChange || orderPaymentMethodChange) {
+    <!-- @if (orderStatusChange || orderPaymentMethodChange) { -->
+    @if (orderPaymentMethodChange) {
     <div class="order-status-will-change-container raw-status-container vertical-container">
       <button mat-icon-button (click)="onCancelChange()">
         <mat-icon>close</mat-icon>
       </button>
       <h3>Tổng kết đơn hàng sẽ thay đổi</h3>
-      @if (orderStatusChange) {
+      <!-- @if (orderStatusChange) {
       <div class="status-item horizontal-container">
         <span class="label horizontal-container">
           <mat-icon>local_shipping</mat-icon>
@@ -48,7 +49,7 @@
           </mat-chip>
         </div>
       </div>
-      }
+      } -->
 
       @if(orderPaymentMethodChange){
       <div class="status-item horizontal-container">
@@ -63,12 +64,12 @@
     }
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button (click)="editStatus()">
+    <!-- <button mat-raised-button (click)="editStatus()">
       <mat-icon>edit</mat-icon>
       {{'Sửa trạng thái'}}
-    </button>
+    </button> -->
 
-    <button mat-raised-button (click)="editPaymentMethod()">
+    <button mat-raised-button (click)="editPaymentMethod()" [disabled]="isDisabled">
       <mat-icon>edit</mat-icon>
       {{'Sửa thanh toán'}}
     </button>

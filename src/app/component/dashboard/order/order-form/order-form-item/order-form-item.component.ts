@@ -26,6 +26,7 @@ import { OrderItemEntity } from '../../../../../entity/order.entity';
 })
 export class OrderFormItemComponent implements OnDestroy {
   @Input() orderItems: IOrderItem[] | null = null;
+  @Input() isDisabled: boolean = false;
   @Output() orderItemsWillChangeEmit: EventEmitter<OrderItemEntity | null> = new EventEmitter<OrderItemEntity | null>();
 
   orderItemsWillChange: OrderItemEntity | null = null;

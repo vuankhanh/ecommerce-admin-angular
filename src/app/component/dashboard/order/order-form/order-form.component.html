@@ -26,19 +26,19 @@
   <!-- Order Status & Payment -->
   <div class="order-status">
     <app-order-form-status [status]="orderDetail.status" [paymentMethod]="orderDetail.paymentMethod"
-      (statusChange)="onStatusChange($event)"
+      [isDisabled]="!(canModifyOrderStatus$ | async)"
       (paymentMethodChange)="onPaymentMethodChange($event)"></app-order-form-status>
   </div>
 
   <!-- Order Items -->
   <div class="order-item">
-    <app-order-form-item [orderItems]="orderDetail.orderItems"
+    <app-order-form-item [orderItems]="orderDetail.orderItems" [isDisabled]="!(canModifyOrderStatus$ | async)"
       (orderItemsWillChangeEmit)="onChangeOrderItems($event)"></app-order-form-item>
   </div>
 
   <!-- Delivery Information -->
   <div class="delivery-info">
-    <app-order-form-delivery [orderDelivery]="orderDetail.delivery"
+    <app-order-form-delivery [orderDelivery]="orderDetail.delivery" [isDisabled]="!(canModifyOrderStatus$ | async)"
       (deliveryWillChangeEmit)="onChangeDelivery($event)"></app-order-form-delivery>
   </div>
 
@@ -55,16 +55,35 @@
   <!-- Order Summary -->
   <div>
     <app-order-form-total [orderDetail]="orderDetail" [orderItemsWillChange]="bOrderItemsWillChange.getValue()"
+      [isDisabled]="!(canModifyOrderStatus$ | async)"
       (orderTotalChangeEmit)="onOrderTotalChange($event)"></app-order-form-total>
   </div>
 
   <!-- Action Buttons -->
   <div class="action-buttons">
+    @if(orderParamUpdate$ | async){
     <button mat-raised-button color="primary" (click)="processOrder(orderDetail)"
-      [disabled]="!(canProcessOrder$ | async)">
+      [disabled]="!(canModifyOrderStatus$ | async) && !(orderParamUpdate$ | async)">
       <mat-icon>update</mat-icon>
       Cập nhật
     </button>
+    }@else {
+      @if (nextPossiblestate$ | async; as nextPossiblestate) {
+      @if (nextPossiblestate[0]; as nextStatus) {
+      <button mat-raised-button color="primary" (click)="nextOrderStatus(orderDetail, nextStatus)">
+        <mat-icon>skip_next</mat-icon>
+        Trạng thái tiếp theo ({{ nextStatus }})
+      </button>
+      }
+      @if(nextPossiblestate[1]; as cancelStatus) {
+      <button mat-raised-button color="warn" (click)="cancelOrder(orderDetail)">
+        <mat-icon>cancel</mat-icon>
+        Hủy đơn hàng
+      </button>
+      }
+      }
+    }
+
   </div>
 </div>
 }

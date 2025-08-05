@@ -25,6 +25,7 @@ import { filter, Subscription } from 'rxjs';
 export class OrderFormTotalComponent implements OnChanges, OnDestroy {
   @Input() orderDetail: TOrderDetailModel | null = null;
   @Input() orderItemsWillChange: OrderItemEntity | null = null;
+  @Input() isDisabled: boolean = false;
 
   @Output() orderTotalChangeEmit: EventEmitter<OrderTotalEntity | null> = new EventEmitter<OrderTotalEntity | null>();
 
@@ -37,7 +38,6 @@ export class OrderFormTotalComponent implements OnChanges, OnDestroy {
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.orderItemsWillChange);
     const orderDetailChange = changes['orderDetail'];
     const orderItemsWillChange = changes['orderItemsWillChange'];
 

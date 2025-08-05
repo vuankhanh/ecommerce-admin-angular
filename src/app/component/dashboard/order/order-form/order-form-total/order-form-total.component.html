@@ -53,11 +53,11 @@
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button (click)="editDiscountFee()">
+    <button mat-raised-button (click)="editDiscountFee()" [disabled]="isDisabled">
       <mat-icon>edit</mat-icon>
       {{'Sửa giảm giá'}}
     </button>
-    <button mat-raised-button (click)="editDeliveryFee()">
+    <button mat-raised-button (click)="editDeliveryFee()" [disabled]="isDisabled">
       <mat-icon>edit</mat-icon>
       {{'Sửa phí giao hàng'}}
     </button>

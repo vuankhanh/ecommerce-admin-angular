@@ -1,3 +1,23 @@
+mat-dialog-content {
+  mat-form-field {
+    mat-select {}
+  }
+}
+
+mat-option {
+  ::ng-deep .mdc-list-item__primary-text {
+    width: 100%;
+  }
+  mat-chip {
+    min-width: 100%;
+    max-width: 100%;
+
+    ::ng-deep .mdc-evolution-chip__cell {
+      justify-content: center;
+    }
+  }
+}
+
 mat-dialog-actions {
   justify-content: flex-end;
 }

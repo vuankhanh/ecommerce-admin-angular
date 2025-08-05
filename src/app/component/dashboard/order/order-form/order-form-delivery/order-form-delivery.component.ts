@@ -23,6 +23,7 @@ import { DeliveryComponent } from '../../../../../shared/component/delivery/deli
 })
 export class OrderFormDeliveryComponent implements OnDestroy {
   @Input() orderDelivery: IDelivery | null = null;
+  @Input() isDisabled: boolean = false;
 
   deliveryWillChange: IDelivery | null = null;
 

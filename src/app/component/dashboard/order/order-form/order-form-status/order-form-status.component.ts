@@ -25,11 +25,12 @@ import { filter, Subscription } from 'rxjs';
 export class OrderFormStatusComponent implements OnDestroy {
   @Input() status: TOrderStatus | null = null;
   @Input() paymentMethod: TPaymentMethod | null = null;
+  @Input() isDisabled: boolean = false;
 
-  @Output() statusChange: EventEmitter<TOrderStatus> = new EventEmitter<TOrderStatus>();
-  @Output() paymentMethodChange: EventEmitter<TPaymentMethod> = new EventEmitter<TPaymentMethod>();
+  // @Output() statusChange: EventEmitter<TOrderStatus | null> = new EventEmitter<TOrderStatus | null>();
+  @Output() paymentMethodChange: EventEmitter<TPaymentMethod | null> = new EventEmitter<TPaymentMethod | null>();
 
-  orderStatusChange: TOrderStatus | null = null;
+  // orderStatusChange: TOrderStatus | null = null;
   orderPaymentMethodChange: TPaymentMethod | null = null;
 
   private readonly subscription: Subscription = new Subscription();
@@ -38,28 +39,25 @@ export class OrderFormStatusComponent implements OnDestroy {
   ) { }
 
   onCancelChange() {
-    if (this.orderStatusChange) {
-      this.statusChange.emit(this.orderStatusChange);
-    }
-    if (this.orderPaymentMethodChange) {
-      this.paymentMethodChange.emit(this.orderPaymentMethodChange);
-    }
-    this.orderStatusChange = null;
+    // this.orderStatusChange = null;
     this.orderPaymentMethodChange = null;
+
+    // this.statusChange.emit(this.orderStatusChange);
+    this.paymentMethodChange.emit(this.orderPaymentMethodChange);
   }
 
-  editStatus() {
-    this.subscription.add(
-      this.dialog.open(StatusSelectorComponent, {
-        data: this.status,
-      }).afterClosed().pipe(
-        filter(status => !!status)
-      ).subscribe(status => {
-        this.orderStatusChange = status;
-        this.statusChange.emit(status);
-      })
-    )
-  }
+  // editStatus() {
+  //   this.subscription.add(
+  //     this.dialog.open(StatusSelectorComponent, {
+  //       data: this.status,
+  //     }).afterClosed().pipe(
+  //       filter(status => !!status)
+  //     ).subscribe(status => {
+  //       this.orderStatusChange = status;
+  //       this.statusChange.emit(status);
+  //     })
+  //   )
+  // }
 
   editPaymentMethod() {
     this.subscription.add(

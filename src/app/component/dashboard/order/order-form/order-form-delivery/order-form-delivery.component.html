@@ -48,7 +48,7 @@
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button (click)="onChangeDelivery(orderDelivery)">
+    <button mat-raised-button (click)="onChangeDelivery(orderDelivery)" [disabled]="isDisabled">
       <mat-icon>edit</mat-icon>
       {{'Sửa lại'}}
     </button>

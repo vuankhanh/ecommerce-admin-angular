@@ -55,7 +55,7 @@
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button (click)="onChangeOrderItems(orderItems)">
+    <button mat-raised-button (click)="onChangeOrderItems(orderItems)" [disabled]="isDisabled">
       <mat-icon>edit</mat-icon>
       {{'Sửa lại'}}
     </button>
