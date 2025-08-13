@@ -20,7 +20,14 @@ export const showToastInterceptor: HttpInterceptorFn = (
     tap({
       // Operation failed; error is an HttpErrorResponse
       error: (error: HttpErrorResponse) => {
-        toastrService.error(error.error.message, error.error.error);
+        let title = error.error.error;
+        let message = error.error.message;
+        
+        if (error.error.errors && error.error.errors.length > 0) {
+          title = error.error.message;
+          message = error.error.errors.join('. ');
+        }
+        toastrService.error(message, title);
       }
     })
   );

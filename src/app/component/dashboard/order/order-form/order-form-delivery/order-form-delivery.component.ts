@@ -35,6 +35,11 @@ export class OrderFormDeliveryComponent implements OnDestroy {
     private readonly dialog: MatDialog
   ) { }
 
+  ngOnInit(): void {
+    console.log(this.orderDelivery);
+    
+  }
+
   onChangeDelivery(delivery: IDelivery) {
     this.subscription.add(
       this.dialog.open(DeliveryComponent, {
@@ -44,7 +49,11 @@ export class OrderFormDeliveryComponent implements OnDestroy {
         filter((result: Partial<IDelivery>) => !!result),
       ).subscribe((result: Partial<IDelivery>) => {
         const newDelivery: IDelivery = Object.assign({}, this.orderDelivery, result);
-        this.deliveryWillChange = newDelivery;
+        this.deliveryWillChange = {
+          name: newDelivery.name,
+          phoneNumber: newDelivery.phoneNumber,
+          address: newDelivery.address,
+        };
         this.deliveryWillChangeEmit.emit(this.deliveryWillChange);
       })
     )

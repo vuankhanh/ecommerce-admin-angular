@@ -50,18 +50,25 @@ export class OrderService {
     );
   }
 
-  updateStatusOrder(id: string, status: `${OrderStatus}`, reasonForCancallation?: string): Observable<TOrderDetailModel> {
+  updateStatusOrder(id: string, newStatus: `${OrderStatus}`, reasonForCancelReason?: string): Observable<TOrderDetailModel> {
     if (!id) {
       throw new Error('Order ID là bắt buộc để cập nhật trạng thái đơn hàng');
     }
 
-    if (!status) {
+    if (!newStatus) {
       throw new Error('Trạng thái đơn hàng là bắt buộc để cập nhật');
     }
 
     let params = new HttpParams();
     params = params.append('id', id);
-    const data = {status };
+    let data: { status: `${OrderStatus}`; reasonForCancelReason?: string } = { status: newStatus };
+
+    if(newStatus === OrderStatus.CANCELED) {
+      if (!reasonForCancelReason) {
+        throw new Error('Lý do hủy đơn hàng là bắt buộc khi cập nhật trạng thái CANCELED');
+      }
+      data.reasonForCancelReason = reasonForCancelReason;
+    }
 
     return this.httpClient.put<OrderDetailResponse>(`${this.url}/status`, data, { params }).pipe(
       map(response => response.metaData)

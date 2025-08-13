@@ -49,19 +49,31 @@ export class OrderFormTotalComponent implements OnChanges, OnDestroy {
       );
     }
 
-    if (orderItemsWillChange && (orderItemsWillChange.currentValue != orderItemsWillChange.previousValue)) {
-      if (this.orderItemsWillChangeTotal) {
-        if (!orderItemsWillChange.currentValue) {
-          this.orderItemsWillChangeTotal.updateSubTotal(this.rawOrderTotal?.subTotal || 0);
+    if (orderItemsWillChange.currentValue) {
+      if (orderItemsWillChange.currentValue != orderItemsWillChange.previousValue) {
+        console.log('run this...');
+        console.log(orderItemsWillChange.currentValue);
+
+        if (this.orderItemsWillChangeTotal) {
+          if (!orderItemsWillChange.currentValue) {
+            this.orderItemsWillChangeTotal.updateSubTotal(this.rawOrderTotal?.subTotal || 0);
+          } else {
+            this.orderItemsWillChangeTotal.updateSubTotal(orderItemsWillChange.currentValue.subTotal);
+          }
         } else {
-          this.orderItemsWillChangeTotal.updateSubTotal(orderItemsWillChange.currentValue.subTotal);
+          this.orderItemsWillChangeTotal = new OrderTotalEntity(
+            this.rawOrderTotal?.subTotal,
+            this.rawOrderTotal?.discount,
+            this.rawOrderTotal?.deliveryFee
+          );
         }
-      } else {
-        this.orderItemsWillChangeTotal = new OrderTotalEntity(
-          orderItemsWillChange.currentValue.subTotal,
-          orderItemsWillChange.currentValue.discount,
-          orderItemsWillChange.currentValue.deliveryFee
-        );
+      }
+    } else {
+      if (this.orderItemsWillChangeTotal?.deliveryFee === this.rawOrderTotal?.deliveryFee &&
+        this.orderItemsWillChangeTotal?.discount === this.rawOrderTotal?.discount
+      ) {
+        this.orderItemsWillChangeTotal = null;
+        this.orderTotalChangeEmit.emit(null);
       }
     }
   }
@@ -121,7 +133,7 @@ export class OrderFormTotalComponent implements OnChanges, OnDestroy {
   onCancelChange() {
     if (!this.orderItemsWillChange) {
       this.orderItemsWillChangeTotal = null;
-    }else {
+    } else {
       this.orderItemsWillChangeTotal?.updateDiscount(this.rawOrderTotal?.discount || 0);
       this.orderItemsWillChangeTotal?.updateDeliveryFee(this.rawOrderTotal?.deliveryFee || 0);
     }

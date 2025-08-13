@@ -144,7 +144,8 @@ export class OrderFormComponent implements OnDestroy {
                   if (total.deliveryFee != orderDetail.deliveryFee) data.deliveryFee = total.deliveryFee;
                 }
                 if (orderItems) data.orderItems = orderItems.orderItems.map(item => ({ productId: item.productId, quantity: item.quantity }));
-
+                console.log(data);
+                
                 return this.orderService.updateOrder(orderDetail._id, data)
               })
             ))
