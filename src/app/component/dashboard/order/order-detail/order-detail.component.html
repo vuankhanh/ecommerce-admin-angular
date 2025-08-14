@@ -45,6 +45,18 @@
     </mat-card-content>
   </mat-card>
 
+  <!-- Cancel Reason -->
+  @if (orderDetail.status === 'Đã hủy' && orderDetail.reasonForCancellation) {
+    <mat-card class="order-cancel-reason">
+      <mat-card-header>
+        <mat-card-title>Lý do hủy đơn hàng</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p style="white-space: pre-line;">{{orderDetail.reasonForCancellation}}</p>
+      </mat-card-content>
+    </mat-card>
+  }
+
   <!-- Order Items -->
   <mat-card class="order-items">
     <mat-card-header>

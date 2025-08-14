@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MaterialModule } from '../../../../shared/modules/material';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -12,6 +12,7 @@ import { BehaviorSubject, distinctUntilChanged, map, switchMap, combineLatest } 
 import { OrderStatusColorDirective } from '../../../../shared/directive/order-status-color.directive';
 import { BreakpointDetectionService } from '../../../../service/breakpoint-detection.service';
 import { OrderFromColorDirective } from '../../../../shared/directive/order-from-color.directive';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-order-list',
@@ -31,6 +32,8 @@ import { OrderFromColorDirective } from '../../../../shared/directive/order-from
   styleUrl: './order-list.component.scss'
 })
 export class OrderListComponent {
+  @ViewChild('filterExpansionPanel') filterExpansionPanel?: MatExpansionPanel;
+
   filterForm: FormGroup = this.formBuilder.group({
     fromDate: [null],
     toDate: [null],
@@ -69,7 +72,7 @@ export class OrderListComponent {
 
   isMobile$ = this.breakpointDetectionService.isMobile$;
 
-  displayedColumns: string[] = ['code', 'orderFrom', 'createdAt', 'status', 'total', 'actions'];
+  displayedColumns: string[] = ['createdAt', 'status', 'orderFrom', 'total', 'actions'];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -79,6 +82,11 @@ export class OrderListComponent {
 
   submit() {
     if (this.filterForm.valid) {
+      if (this.filterExpansionPanel) {
+        console.log(this.filterExpansionPanel);
+        
+        this.filterExpansionPanel.close(); // Sử dụng API của Angular Material
+      }
       this.bFilterValue.next(this.filterForm.value);
     }
   }

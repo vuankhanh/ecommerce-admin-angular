@@ -19,10 +19,6 @@ export const Menu: TMenu[] = [
       {
         name: 'Danh sách đơn hàng',
         route: '/dashboard/order/list'
-      },
-      {
-        name: 'Chi tiết đơn hàng',
-        route: '/dashboard/order/detail'
       }
     ]
   },

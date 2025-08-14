@@ -23,6 +23,7 @@ export interface IOrderDetailResponse {
   orderCode: string;
   orderItems: IOrderItem[];
   status: TOrderStatus;
+  reasonForCancellation?: string;
   paymentMethod: TPaymentMethod;
   subTotal: number;
   total: number;

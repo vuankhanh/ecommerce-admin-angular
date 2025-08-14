@@ -17,6 +17,11 @@
     mat-icon {
       font-size: 21px;
     }
+    ::ng-deep mat-expansion-panel {
+      mat-expansion-panel-header {
+        padding: 0 !important;
+      }
+    }
     .bottom-container {
       position: absolute;
       bottom: 0;
@@ -61,12 +66,6 @@
 .mat-mdc-list-item.active-menu-item .mdc-list-item__primary-text {
   font-weight: 500;
   color: var(--mat-primary-500);
-}
-
-::ng-deep mat-expansion-panel {
-  mat-expansion-panel-header {
-    padding: 0 !important;
-  }
 }
 
 ::ng-deep .mat-content-hide-toggle {
