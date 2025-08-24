@@ -80,6 +80,20 @@
           overflow-y: auto;
           line-height: 1.5;
         }
+
+        .multi-lang-list {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          margin-top: 2px;
+
+          .lang-label {
+            min-width: 32px;
+            font-weight: 600;
+            color: #1976d2;
+            margin-right: 6px;
+          }
+        }
       }
     }
 

@@ -1,8 +1,7 @@
 <div class="product-category-detail-container">
-  <app-header-page-container
-  [title]="'Chi tiết danh mục sản phẩm'"
-  (goBack)="goBackProducCategory()"
-  ></app-header-page-container>
+  <app-header-page-container [title]="'Chi tiết danh mục sản phẩm'"
+    (goBack)="goBackProducCategory()"></app-header-page-container>
+  @if (productCategory) {
   <div class="content-container">
     <!-- Thông tin cơ bản -->
     <mat-card appearance="outlined" class="info-card">
@@ -16,20 +15,47 @@
         <div class="info-grid">
           <div class="info-item">
             <label>ID:</label>
-            <span>{{productCategory?._id}}</span>
+            <span>{{productCategory._id}}</span>
           </div>
           <div class="info-item">
             <label>Tên danh mục:</label>
-            <span>{{productCategory?.name}}</span>
+            <div class="multi-lang-list">
+              <div class="horizontal-container">
+                <span class="lang-label">VI:</span>
+                <span>{{productCategory.name['vi'] || '---'}}</span>
+              </div>
+              <div class="horizontal-container">
+                <span class="lang-label">EN:</span>
+                <span>{{productCategory.name['en'] || '---'}}</span>
+              </div>
+              <div class="horizontal-container">
+                <span class="lang-label">JA:</span>
+                <span>{{productCategory.name['ja'] || '---'}}</span>
+              </div>
+            </div>
           </div>
           <div class="info-item">
             <label>Slug:</label>
-            <span class="slug">{{productCategory?.slug}}</span>
+            <span class="slug">{{productCategory.slug}}</span>
           </div>
 
           <div class="info-item full-width">
             <label>Mô tả chi tiết:</label>
-            <p class="description">{{productCategory?.description}}</p>
+            <div class="multi-lang-list">
+              <div class="vertical-container">
+                <span class="lang-label">VI:</span>
+                <p class="description">{{productCategory.description?.['vi'] || '---'}}</p>
+              </div>
+              <div class="vertical-container">
+                <span class="lang-label">EN:</span>
+                <p class="description">{{productCategory.description?.['en'] || '---'}}</p>
+              </div>
+              <div class="vertical-container">
+                <span class="lang-label">JA:</span>
+                <p class="description">{{productCategory.description?.['ja'] || '---'}}</p>
+              </div>
+            </div>
+            
           </div>
         </div>
       </mat-card-content>
@@ -48,8 +74,8 @@
           <div class="media-item">
             <label>Thumbnail:</label>
             <div class="image-container">
-              <img [src]="(productCategory?.album?.thumbnailUrl || '') | prefixBackendStatic"
-                [alt]="productCategory?.name" class="thumbnail-image">
+              <img [src]="(productCategory.album.thumbnailUrl || '') | prefixBackendStatic" [alt]="productCategory.name"
+                class="thumbnail-image">
             </div>
           </div>
         </div>
@@ -67,7 +93,7 @@
       <mat-card-content>
         <div class="stats-grid">
           <div class="stat-item">
-            <div class="stat-number">{{productCategory?.productCount || 0}}</div>
+            <div class="stat-number">{{productCategory.productCount || 0}}</div>
             <div class="stat-label">Sản phẩm</div>
           </div>
         </div>
@@ -86,16 +112,17 @@
         <div class="info-grid">
           <div class="info-item">
             <label>Ngày tạo:</label>
-            <span>{{productCategory?.createdAt | date:'dd/MM/yyyy HH:mm'}}</span>
+            <span>{{productCategory.createdAt | date:'dd/MM/yyyy HH:mm'}}</span>
           </div>
           <div class="info-item">
             <label>Cập nhật cuối:</label>
-            <span>{{productCategory?.updatedAt | date:'dd/MM/yyyy HH:mm'}}</span>
+            <span>{{productCategory.updatedAt | date:'dd/MM/yyyy HH:mm'}}</span>
           </div>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
+  }
 
   <mat-card class="footer-card">
     <mat-card-actions>

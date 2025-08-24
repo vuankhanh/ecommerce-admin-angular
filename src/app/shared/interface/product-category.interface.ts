@@ -2,9 +2,9 @@ import { TAlbumModel } from "./album.interface";
 import { IMongodbDocument } from "./mongo.interface";
 
 export interface IProductCategory {
-  name: string;
+  name: { [lang: string]: string };
   slug: string;
-  description?: string;
+  description?: { [lang: string]: string };
   albumId: string;
   album: TAlbumModel;
   parentId?: string;

@@ -37,7 +37,7 @@ export interface IOrderItem {
   productId: string;
   productThumbnail: string;
   productCode: string;
-  productName: string;
+  productName: { [key: string]: string };
   productCategorySlug: string;
   productSlug: string;
   quantity: number;

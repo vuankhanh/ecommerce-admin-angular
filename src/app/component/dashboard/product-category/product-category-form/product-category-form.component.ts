@@ -40,7 +40,7 @@ export class ProductCategoryFormComponent {
         map((value: string) => {
           const filterValue = value.toLowerCase();
           return productCategoriese.filter((productCategory: TProductCategoryModel) => {
-            return productCategory.name.toLowerCase().includes(filterValue);
+            return productCategory.name['vi'].toLowerCase().includes(filterValue);
           });
         }),
       )
@@ -50,9 +50,17 @@ export class ProductCategoryFormComponent {
   private productCategorySelected: TProductCategoryModel | null = null;
 
   formGroup: FormGroup = this.formBuilder.group({
-    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+    name: this.formBuilder.group({
+      vi: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+      en: ['', [Validators.minLength(1), Validators.maxLength(100)]],
+      ja: ['', [Validators.minLength(1), Validators.maxLength(100)]],
+    }),
     albumId: [''],
-    description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)]],
+    description: this.formBuilder.group({
+      vi: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)]],
+      en: ['', [Validators.minLength(10), Validators.maxLength(1000)]],
+      ja: ['', [Validators.minLength(10), Validators.maxLength(1000)]],
+    }),
     parentId: [''],
     isActive: [true, Validators.required]
   });
@@ -81,6 +89,8 @@ export class ProductCategoryFormComponent {
       this.productCategoryService.getDetail(id).subscribe({
         next: (res) => {
           this.productCategory = res;
+          console.log(this.productCategory);
+          
           this.initForm(this.productCategory);
         },
         error: error => {
@@ -92,8 +102,25 @@ export class ProductCategoryFormComponent {
 
   private initForm(productCategory?: TProductCategoryModel) {
     if (productCategory) {
-      this.formGroup.patchValue(productCategory);
+      this.formGroup.patchValue({
+      name: {
+        vi: productCategory.name['vi'] || '',
+        en: productCategory.name['en'] || '',
+        ja: productCategory.name['ja'] || '',
+      },
+      description: {
+        vi: productCategory.description?.['vi'] || '',
+        en: productCategory.description?.['en'] || '',
+        ja: productCategory.description?.['ja'] || '',
+      },
+      albumId: productCategory.albumId || '',
+      parentId: productCategory.parentId || '',
+      isActive: productCategory.isActive ?? true
+    });
     }
+
+    console.log(this.formGroup.value);
+    
 
     this.subscription.add(
       this.formGroup.valueChanges.subscribe((value) => {
@@ -102,7 +129,7 @@ export class ProductCategoryFormComponent {
         Object.keys(value).forEach(key => {
           if (!this.productCategory) return;
           if (value[key] !== this.productCategory[key as keyof TProductCategoryModel]) {
-            if(value[key] === '') return;
+            if (value[key] === '') return;
             changedControls[key] = value[key];
           }
         });

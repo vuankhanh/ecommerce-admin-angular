@@ -47,7 +47,7 @@ export class ProductFormComponent {
         map((value: string) => {
           const filterValue = value.toLowerCase();
           return productCategoriese.filter((productCategory: TProductCategoryModel) => {
-            return productCategory.name.toLowerCase().includes(filterValue);
+            return productCategory.name['vi'].toLowerCase().includes(filterValue);
           });
         }),
       )
@@ -58,9 +58,21 @@ export class ProductFormComponent {
 
   formGroup: FormGroup = this.formBuilder.group({
     // Thông tin sản phẩm cơ bản
-    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-    description: ['', [Validators.required, Validators.minLength(10)]],
-    shortDescription: ['', [Validators.required, Validators.minLength(10)]],
+    name: this.formBuilder.group({
+      vi: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+      en: ['', [Validators.minLength(1), Validators.maxLength(100)]],
+      ja: ['', [Validators.minLength(1), Validators.maxLength(100)]],
+    }),
+    description: this.formBuilder.group({
+      vi: ['', [Validators.required, Validators.minLength(10)]],
+      en: ['', [Validators.minLength(10), Validators.maxLength(10000)]],
+      ja: ['', [Validators.minLength(10), Validators.maxLength(10000)]],
+    }),
+    shortDescription: this.formBuilder.group({
+      vi: ['', [Validators.required, Validators.minLength(10)]],
+      en: ['', [Validators.minLength(10), Validators.maxLength(1000)]],
+      ja: ['', [Validators.minLength(10), Validators.maxLength(1000)]],
+    }),
 
     // Hình ảnh
     albumId: [''],
@@ -110,7 +122,27 @@ export class ProductFormComponent {
 
   private initForm(product?: TProductModel) {
     if (product) {
-      this.formGroup.patchValue(product);
+      this.formGroup.patchValue({
+        name: {
+          vi: product.name['vi'] || '',
+          en: product.name['en'] || '',
+          ja: product.name['ja'] || '',
+        },
+        description: {
+          vi: product.description?.['vi'] || '',
+          en: product.description?.['en'] || '',
+          ja: product.description?.['ja'] || '',
+        },
+        shortDescription: {
+          vi: product.shortDescription?.['vi'] || '',
+          en: product.shortDescription?.['en'] || '',
+          ja: product.shortDescription?.['ja'] || '',
+        },
+        albumId: product.albumId || '',
+        price: product.price || 0,
+        inStock: product.inStock !== undefined ? product.inStock : true,
+        productCategoryId: product.productCategoryId || '',
+      });
     }
 
     this.subscription.add(
@@ -120,7 +152,7 @@ export class ProductFormComponent {
         Object.keys(value).forEach(key => {
           if (!this.product) return;
           if (value[key] !== this.product[key as keyof TProductModel]) {
-            if(value[key] === '') return;
+            if (value[key] === '') return;
             changedControls[key] = value[key];
           }
         });
@@ -139,14 +171,14 @@ export class ProductFormComponent {
   }
 
   onProductCategoryBlur(event: FocusEvent) {
-    const productCategorySelectedName = this.productCategorySelected?.name;
+    const productCategorySelectedName = this.productCategorySelected?.name['vi'];
     this.productCategoryEl.nativeElement.value = productCategorySelectedName ? productCategorySelectedName : '';
   }
 
   onCategoryOptionSelected(event: MatAutocompleteSelectedEvent) {
     const productCategory: TProductCategoryModel = event.option.value;
     this.productCategorySelected = productCategory;
-    this.productCategoryEl.nativeElement.value = productCategory.name;
+    this.productCategoryEl.nativeElement.value = productCategory.name['vi'];
     this.formGroup.get('productCategoryId')?.setValue(productCategory._id);
   }
 

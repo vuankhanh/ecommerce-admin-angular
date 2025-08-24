@@ -4,35 +4,99 @@
   <mat-card-content>
     <div class="horizontal-container">
       <form [formGroup]="formGroup" class="vertical-container">
-        <!-- Thông tin sản phẩm cơ bản -->
-        <mat-form-field>
-          <mat-label>Tên danh mục sản phẩm</mat-label>
-          <input matInput placeholder="Tên danh mục sản phẩm" formControlName="name" required>
-          <mat-error *ngIf="formGroup.get('name')?.hasError('required')">
-            Tên danh mục sản phẩm là bắt buộc
-          </mat-error>
-          <mat-error *ngIf="formGroup.get('name')?.hasError('minlength')">
-            Tên sản phẩm phải có ít nhất 3 ký tự
-          </mat-error>
-          <mat-error *ngIf="formGroup.get('name')?.hasError('maxlength')">
-            Tên sản phẩm không được quá 100 ký tự
-          </mat-error>
-        </mat-form-field>
+        <!-- Nhóm tên danh mục sản phẩm đa ngôn ngữ -->
+        <fieldset>
+          <legend>Tên danh mục sản phẩm</legend>
+          <div class="multi-lang-fields" formGroupName="name">
+            <mat-form-field>
+              <mat-label>Tiếng Việt (VI)</mat-label>
+              <input matInput placeholder="Tên tiếng Việt" formControlName="vi" required>
+              <mat-error *ngIf="formGroup.get('name.vi')?.hasError('required')">
+                Bắt buộc nhập tên tiếng Việt
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('name.vi')?.hasError('minlength')">
+                Tên sản phẩm phải có ít nhất 1 ký tự
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('name.vi')?.hasError('maxlength')">
+                Tên sản phẩm không được quá 100 ký tự
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Tiếng Anh (EN)</mat-label>
+              <input matInput placeholder="Tên tiếng Anh" formControlName="en">
+              <mat-error *ngIf="formGroup.get('name.en')?.hasError('required')">
+                Bắt buộc nhập tên tiếng Anh
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('name.en')?.hasError('minlength')">
+                Tên sản phẩm phải có ít nhất 1 ký tự
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('name.en')?.hasError('maxlength')">
+                Tên sản phẩm không được quá 100 ký tự
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Tiếng Nhật (JA)</mat-label>
+              <input matInput placeholder="Tên tiếng Nhật" formControlName="ja">
+              <mat-error *ngIf="formGroup.get('name.ja')?.hasError('required')">
+                Bắt buộc nhập tên tiếng Nhật
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('name.ja')?.hasError('minlength')">
+                Tên sản phẩm phải có ít nhất 1 ký tự
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('name.ja')?.hasError('maxlength')">
+                Tên sản phẩm không được quá 100 ký tự
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </fieldset>
 
-        <mat-form-field>
-          <mat-label>Mô tả chi tiết</mat-label>
-          <textarea matInput placeholder="Mô tả chi tiết danh mục sản phẩm" formControlName="description"
-            cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="9" required></textarea>
-          <mat-error *ngIf="formGroup.get('description')?.hasError('required')">
-            Mô tả chi tiết là bắt buộc
-          </mat-error>
-          <mat-error *ngIf="formGroup.get('description')?.hasError('minlength')">
-            Mô tả chi tiết phải có ít nhất 10 ký tự
-          </mat-error>
-          <mat-error *ngIf="formGroup.get('description')?.hasError('maxlength')">
-            Mô tả chi tiết không được quá 1000 ký tự
-          </mat-error>
-        </mat-form-field>
+        <fieldset>
+          <legend>Mô tả chi tiết</legend>
+          <div class="multi-lang-fields" formGroupName="description">
+            <mat-form-field>
+              <mat-label>Tiếng Việt (VI)</mat-label>
+              <textarea matInput placeholder="Mô tả tiếng Việt" formControlName="vi" cdkTextareaAutosize
+                cdkAutosizeMinRows="3" cdkAutosizeMaxRows="9" required></textarea>
+              <mat-error *ngIf="formGroup.get('description.vi')?.hasError('required')">
+                Mô tả tiếng Việt là bắt buộc
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('description.vi')?.hasError('minlength')">
+                Mô tả phải có ít nhất 10 ký tự
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('description.vi')?.hasError('maxlength')">
+                Mô tả không được quá 1000 ký tự
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Tiếng Anh (EN)</mat-label>
+              <textarea matInput placeholder="Mô tả tiếng Anh" formControlName="en" cdkTextareaAutosize
+                cdkAutosizeMinRows="3" cdkAutosizeMaxRows="9"></textarea>
+              <mat-error *ngIf="formGroup.get('description.en')?.hasError('required')">
+                Mô tả tiếng Anh là bắt buộc
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('description.en')?.hasError('minlength')">
+                Mô tả phải có ít nhất 10 ký tự
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('description.en')?.hasError('maxlength')">
+                Mô tả không được quá 1000 ký tự
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Tiếng Nhật (JA)</mat-label>
+              <textarea matInput placeholder="Mô tả tiếng Nhật" formControlName="ja" cdkTextareaAutosize
+                cdkAutosizeMinRows="3" cdkAutosizeMaxRows="9"></textarea>
+              <mat-error *ngIf="formGroup.get('description.ja')?.hasError('required')">
+                Mô tả tiếng Nhật là bắt buộc
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('description.ja')?.hasError('minlength')">
+                Mô tả phải có ít nhất 10 ký tự
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('description.ja')?.hasError('maxlength')">
+                Mô tả không được quá 1000 ký tự
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </fieldset>
 
         <mat-form-field appearance="fill">
           <mat-label>Danh mục Cha</mat-label>

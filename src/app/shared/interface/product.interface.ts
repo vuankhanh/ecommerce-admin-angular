@@ -9,10 +9,10 @@ export interface IProductReview {
 }
 
 export interface IProduct {
-  name: string;
+  name: { [key: string]: string }; // Hỗ trợ đa ngôn ngữ, key là mã ngôn ngữ (vi, en, ja,...)
   code: string; // Mã sản phẩm
-  description: string;
-  shortDescription: string;
+  description: { [key: string]: string }; // Hỗ trợ đa ngôn ngữ, key là mã ngôn ngữ (vi, en, ja,...)
+  shortDescription: { [key: string]: string }; // Mô tả ngắn, hỗ trợ đa ngôn ngữ
   albumId?: string; // ID của album chứa ảnh sản phẩm
   album?: TAlbumModel;
   price: number;

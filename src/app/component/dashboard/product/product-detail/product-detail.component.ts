@@ -51,7 +51,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         this.productService.getDetail(id).subscribe({
           next: (res) => {
             this.product = res;
-            this.title.setTitle(`${this.product.name}`);
+            this.title.setTitle(`${this.product.name['vi']}`);
           },
           error: (err) => {
             console.error('Error fetching product details:', err);

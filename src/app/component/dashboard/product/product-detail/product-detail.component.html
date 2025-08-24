@@ -18,11 +18,37 @@
           <div class="info-grid">
             <div class="info-item">
               <label>Tên sản phẩm:</label>
-              <span>{{ product.name }}</span>
+              <div class="multi-lang-list">
+                <div class="horizontal-container">
+                  <span class="lang-label">VI:</span>
+                  <span>{{ product.name['vi'] || '---' }}</span>
+                </div>
+                <div class="horizontal-container">
+                  <span class="lang-label">EN:</span>
+                  <span>{{ product.name['en'] || '---' }}</span>
+                </div>
+                <div class="horizontal-container">
+                  <span class="lang-label">JA:</span>
+                  <span>{{ product.name['ja'] || '---' }}</span>
+                </div>
+              </div>
             </div>
             <div class="info-item">
               <label>Danh mục:</label>
-              <span>{{ product.productCategory?.name }}</span>
+              <div class="multi-lang-list">
+                <div class="horizontal-container">
+                  <span class="lang-label">VI:</span>
+                  <span>{{ product.productCategory?.name?.['vi'] || '---' }}</span>
+                </div>
+                <div class="horizontal-container">
+                  <span class="lang-label">EN:</span>
+                  <span>{{ product.productCategory?.name?.['en'] || '---' }}</span>
+                </div>
+                <div class="horizontal-container">
+                  <span class="lang-label">JA:</span>
+                  <span>{{ product.productCategory?.name?.['ja'] || '---' }}</span>
+                </div>
+              </div>
             </div>
             <div class="info-item">
               <label>Giá:</label>
@@ -65,11 +91,37 @@
           <div class="info-grid">
             <div class="info-item full-width">
               <label>Mô tả ngắn:</label>
-              <p class="description">{{ product.shortDescription }}</p>
+              <div class="multi-lang-list">
+                <div class="vertical-container">
+                  <span class="lang-label">VI:</span>
+                  <p class="description">{{ product.shortDescription['vi'] || '---' }}</p>
+                </div>
+                <div class="vertical-container">
+                  <span class="lang-label">EN:</span>
+                  <p class="description">{{ product.shortDescription['en'] || '---' }}</p>
+                </div>
+                <div class="vertical-container">
+                  <span class="lang-label">JA:</span>
+                  <p class="description">{{ product.shortDescription['ja'] || '---' }}</p>
+                </div>
+              </div>
             </div>
             <div class="info-item full-width">
               <label>Mô tả chi tiết:</label>
-              <p class="description">{{ product.description }}</p>
+              <div class="multi-lang-list">
+                <div class="vertical-container">
+                  <span class="lang-label">VI:</span>
+                  <p class="description">{{ product.description['vi']|| '---' }}</p>
+                </div>
+                <div class="vertical-container">
+                  <span class="lang-label">EN:</span>
+                  <p class="description">{{ product.description['en'] || '---' }}</p>
+                </div>
+                <div class="vertical-container">
+                  <span class="lang-label">JA:</span>
+                  <p class="description">{{ product.description['ja'] || '---' }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </mat-card-content>
@@ -166,6 +218,6 @@
     </mat-card-actions>
   </mat-card>
   }@else {
-    <app-product-detail-skeleton></app-product-detail-skeleton>
+  <app-product-detail-skeleton></app-product-detail-skeleton>
   }
 </div>

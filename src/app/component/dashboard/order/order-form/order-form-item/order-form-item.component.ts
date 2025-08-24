@@ -44,7 +44,7 @@ export class OrderFormItemComponent implements OnDestroy {
   }
 
   private getSlugFromName(orderItem: IOrderItem): string {
-    const toNonAccentVietnamese = VietnameseAccentUtil.toNonAccentVietnamese(orderItem.productName);
+    const toNonAccentVietnamese = VietnameseAccentUtil.toNonAccentVietnamese(orderItem.productName['vi']);
     return VietnameseAccentUtil.replaceSpaceToDash(toNonAccentVietnamese);
   }
 
