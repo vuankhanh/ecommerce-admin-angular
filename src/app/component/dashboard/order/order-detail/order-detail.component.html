@@ -14,7 +14,7 @@
           <span class="value">
             <div [appOrderFromColor]="orderDetail.orderFrom">
               <mat-chip selected>
-                {{orderDetail.orderFrom}}
+                {{orderDetail.orderFrom | orderFromTranslate}}
               </mat-chip>
             </div>
           </span>
@@ -32,7 +32,7 @@
           <span class="label">Trạng thái:</span>
           <div [appOrderStatusColor]="orderDetail.status">
             <mat-chip selected>
-              {{orderDetail.status}}
+              {{orderDetail.status | orderStatusTranslate}}
             </mat-chip>
           </div>
         </div>
@@ -46,7 +46,7 @@
   </mat-card>
 
   <!-- Cancel Reason -->
-  @if (orderDetail.status === 'Đã hủy' && orderDetail.reasonForCancellation) {
+  @if (orderDetail.status === 'CANCELED' && orderDetail.reasonForCancellation) {
     <mat-card class="order-cancel-reason">
       <mat-card-header>
         <mat-card-title>Lý do hủy đơn hàng</mat-card-title>

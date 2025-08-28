@@ -14,6 +14,8 @@ import { IOrderItem } from '../../../../shared/interface/order-response.interfac
 import { VietnameseAccentUtil } from '../../../../shared/utitl/form-validator/vietnamese-accent.util';
 import { environment } from '../../../../../environments/environment.development';
 import { OrderStatus } from '../../../../shared/constant/order.constant';
+import { OrderStatusTranslatePipe } from '../../../../shared/pipe/order-status-translate.pipe';
+import { OrderFromTranslatePipe } from '../../../../shared/pipe/order-from-translate.pipe';
 
 @Component({
   selector: 'app-order-detail',
@@ -24,6 +26,9 @@ import { OrderStatus } from '../../../../shared/constant/order.constant';
     AddressPipe,
     PrefixBackendStaticPipe,
     CurrencyCustomPipe,
+
+    OrderStatusTranslatePipe,
+    OrderFromTranslatePipe,
 
     OrderFromColorDirective,
     OrderStatusColorDirective,
@@ -46,7 +51,7 @@ export class OrderDetailComponent {
     }),
     shareReplay(1)
   );
-  
+
   canProcessOrder$: Observable<boolean> = this.order$?.pipe(
     map(order => [OrderStatus.PENDING, OrderStatus.CONFIRMED, OrderStatus.SHIPPING].includes(order.status as OrderStatus))
   )

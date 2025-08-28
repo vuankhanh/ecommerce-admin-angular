@@ -13,6 +13,8 @@ import { OrderStatusColorDirective } from '../../../../shared/directive/order-st
 import { BreakpointDetectionService } from '../../../../service/breakpoint-detection.service';
 import { OrderFromColorDirective } from '../../../../shared/directive/order-from-color.directive';
 import { MatExpansionPanel } from '@angular/material/expansion';
+import { OrderFromTranslatePipe } from '../../../../shared/pipe/order-from-translate.pipe';
+import { OrderStatusTranslatePipe } from '../../../../shared/pipe/order-status-translate.pipe';
 
 @Component({
   selector: 'app-order-list',
@@ -22,6 +24,9 @@ import { MatExpansionPanel } from '@angular/material/expansion';
     ReactiveFormsModule,
 
     RouterLink,
+
+    OrderStatusTranslatePipe,
+    OrderFromTranslatePipe,
 
     OrderFromColorDirective,
     OrderStatusColorDirective,
@@ -83,8 +88,6 @@ export class OrderListComponent {
   submit() {
     if (this.filterForm.valid) {
       if (this.filterExpansionPanel) {
-        console.log(this.filterExpansionPanel);
-        
         this.filterExpansionPanel.close(); // Sử dụng API của Angular Material
       }
       this.bFilterValue.next(this.filterForm.value);

@@ -215,7 +215,7 @@ export class OrderFormComponent implements OnDestroy {
             data
           }).afterClosed().pipe(
             filter(result => !!result),
-            switchMap(() => this.orderService.updateStatusOrder(orderDetail._id, 'Đã hủy', reason)),
+            switchMap(() => this.orderService.updateStatusOrder(orderDetail._id, OrderStatus.CANCELED, reason)),
           )
         })
       ).subscribe({

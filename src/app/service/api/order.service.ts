@@ -19,10 +19,10 @@ export class OrderService {
 
   getOrders(orderFilterParams?: IOrderFilterParams, page?: number, size?: number): Observable<TOrder> {
     let params = new HttpParams();
-    if (page) {
+    if (page != undefined) {
       params = params.append('page', page)
     }
-    if (size) {
+    if (size != undefined) {
       params = params.append('size', size)
     }
 

@@ -71,3 +71,12 @@
 ::ng-deep .mat-content-hide-toggle {
   margin-right: 0 !important;
 }
+
+@media screen and (max-width: 768px) {
+  .sidenav-container {
+    .content-container {
+      padding: 0;
+    }
+  }
+  
+}
