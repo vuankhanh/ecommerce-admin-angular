@@ -12,7 +12,7 @@
           <mat-option [value]="option">
             <div class="product-option">
               <img class="thumbnail" [src]="(option.album?.thumbnailUrl || '') | prefixBackendStatic" alt="">
-              <span class="product-name">{{ option.name }}</span>
+              <span class="product-name">{{ option.name['vi'] }}</span>
               <span class="product-name">{{ option.inStock ? 'Còn hàng' : 'Hết hàng' }}</span>
               <span class="product-price">{{ option.price | vndCurrency }}</span>
             </div>
@@ -24,11 +24,11 @@
         @for (orderItem of orderItemEntity.orderItems; track orderItem) {
         <mat-list-item #orderItemElement>
           <div matListItemAvatar class="horizontal-container">
-            <img [src]="orderItem.productThumbnail | prefixBackendStatic" [alt]="orderItem.productName"
+            <img [src]="orderItem.productThumbnail | prefixBackendStatic" [alt]="orderItem.productName[lang]"
               class="product-image">
           </div>
           <div matListItemTitle>
-            <span class="product-name">{{orderItem.productName}}</span>
+            <span class="product-name">{{orderItem.productName[lang]}}</span>
           </div>
           <div matListItemLine>
             <span>{{orderItem.productCode}}</span>

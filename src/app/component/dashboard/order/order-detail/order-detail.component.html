@@ -39,7 +39,7 @@
         <div class="status-item">
           <mat-icon>payment</mat-icon>
           <span class="label">Thanh toán:</span>
-          <span class="value">{{orderDetail.paymentMethod}}</span>
+          <span class="value">{{orderDetail.paymentMethod | orderPaymentMethodTranslate}}</span>
         </div>
       </div>
     </mat-card-content>
@@ -67,11 +67,11 @@
         @for (orderItem of orderDetail.orderItems; track $index) {
         <mat-list-item (click)="onViewProduct(orderItem)">
           <div matListItemAvatar class="horizontal-container">
-            <img [src]="orderItem.productThumbnail | prefixBackendStatic" [alt]="orderItem.productName"
+            <img [src]="orderItem.productThumbnail | prefixBackendStatic" [alt]="orderItem.productName[lang]"
               class="product-image">
           </div>
           <div matListItemTitle>
-            <span class="product-name">{{orderItem.productName}}</span>
+            <span class="product-name">{{orderItem.productName[lang]}}</span>
           </div>
           <div matListItemLine>
             <span>{{orderItem.productCode}}</span>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MaterialModule } from '../../../../shared/modules/material';
 import { OrderService } from '../../../../service/api/order.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,6 +16,8 @@ import { environment } from '../../../../../environments/environment.development
 import { OrderStatus } from '../../../../shared/constant/order.constant';
 import { OrderStatusTranslatePipe } from '../../../../shared/pipe/order-status-translate.pipe';
 import { OrderFromTranslatePipe } from '../../../../shared/pipe/order-from-translate.pipe';
+import { OrderPaymentMethodTranslatePipe } from '../../../../shared/pipe/order-payment-method-translate.pipe';
+import { APP_LANGUAGE } from '../../../../shared/constant/lang.constant';
 
 @Component({
   selector: 'app-order-detail',
@@ -29,6 +31,7 @@ import { OrderFromTranslatePipe } from '../../../../shared/pipe/order-from-trans
 
     OrderStatusTranslatePipe,
     OrderFromTranslatePipe,
+    OrderPaymentMethodTranslatePipe,
 
     OrderFromColorDirective,
     OrderStatusColorDirective,
@@ -41,6 +44,7 @@ import { OrderFromTranslatePipe } from '../../../../shared/pipe/order-from-trans
   styleUrl: './order-detail.component.scss'
 })
 export class OrderDetailComponent {
+  readonly lang = inject(APP_LANGUAGE);
   order$ = this.activatedRoute.params.pipe(
     filter(params => !!params['id']),
     map(params => params['id']),

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { MaterialModule } from '../../../../shared/modules/material';
-import { BehaviorSubject, catchError, combineLatest, EMPTY, filter, forkJoin, lastValueFrom, map, Observable, of, shareReplay, Subscription, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, EMPTY, filter, forkJoin, lastValueFrom, map, Observable, of, shareReplay, Subscription, switchMap, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../../../../service/api/order.service';
 import { OrderStatus, OrderStatusTransition } from '../../../../shared/constant/order.constant';
@@ -16,11 +16,12 @@ import { OrderFormStatusComponent } from './order-form-status/order-form-status.
 import { TPaymentMethod } from '../../../../shared/interface/payment.interface';
 import { IOrderUpdateRequest } from '../../../../shared/interface/order-request.interface';
 import { OrderFromColorDirective } from '../../../../shared/directive/order-from-color.directive';
-import { concat } from 'lodash';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../../../../shared/component/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogData } from '../../../../shared/interface/confirmation-dialog.interface';
 import { InputReasonOrderCancelledComponent } from '../../../../shared/component/input-reason-order-cancelled/input-reason-order-cancelled.component';
+import { OrderFromTranslatePipe } from '../../../../shared/pipe/order-from-translate.pipe';
+import { OrderStatusTranslatePipe } from '../../../../shared/pipe/order-status-translate.pipe';
 
 @Component({
   selector: 'app-order-form',
@@ -33,6 +34,9 @@ import { InputReasonOrderCancelledComponent } from '../../../../shared/component
     OrderFormItemComponent,
     OrderFormDeliveryComponent,
     OrderFormTotalComponent,
+
+    OrderFromTranslatePipe,
+    OrderStatusTranslatePipe,
 
     OrderFromColorDirective,
 
@@ -56,7 +60,6 @@ export class OrderFormComponent implements OnDestroy {
   nextPossiblestate$ = this.order$.pipe(
     map(order => {
       const status = order.status as TOrderStatus;
-      console.log(status);
       const statuses = OrderStatusTransition[status];
       return statuses ? statuses : null;
     }),
@@ -90,6 +93,7 @@ export class OrderFormComponent implements OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private dialog: MatDialog,
     private readonly orderService: OrderService,
+    private readonly orderStatusTranslatePipe: OrderStatusTranslatePipe,
   ) { }
 
   async goBackOrderDetail() {
@@ -169,7 +173,7 @@ export class OrderFormComponent implements OnDestroy {
   nextOrderStatus(orderDetail: TOrderDetailModel, nextStatus: TOrderStatus) {
     const data: ConfirmationDialogData = {
       title: 'Xác nhận cập nhật trạng thái đơn hàng',
-      message: `Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này sang ${nextStatus} không?`,
+      message: `Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này sang ${this.orderStatusTranslatePipe.transform(nextStatus)} không?`,
       confirmText: 'Cập nhật',
       cancelText: 'Hủy',
       type: 'info'

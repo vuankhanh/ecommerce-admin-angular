@@ -12,7 +12,7 @@
         </span>
         <div [appOrderStatusColor]="status">
           <mat-chip selected>
-            {{status}}
+            {{status | orderStatusTranslate}}
           </mat-chip>
         </div>
       </div>
@@ -25,7 +25,7 @@
           <mat-icon>payment</mat-icon>
           Thanh toán:
         </span>
-        <span class="value">{{paymentMethod}}</span>
+        <span class="value">{{paymentMethod | orderPaymentMethodTranslate}}</span>
       </div>
       }
     </div>
@@ -57,7 +57,7 @@
           <mat-icon>payment</mat-icon>
           Thanh toán:
         </span>
-        <span class="value">{{orderPaymentMethodChange}}</span>
+        <span class="value">{{orderPaymentMethodChange | orderPaymentMethodTranslate}}</span>
       </div>
       }
     </div>

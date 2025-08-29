@@ -17,6 +17,10 @@ import { showToastInterceptor } from './shared/core/interceptor/show-toast.inter
 import localeVi from '@angular/common/locales/vi';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { provideNgxMask } from 'ngx-mask';
+import { APP_LANGUAGE, Language } from './shared/constant/lang.constant';
+import { OrderFromTranslatePipe } from './shared/pipe/order-from-translate.pipe';
+import { OrderStatusTranslatePipe } from './shared/pipe/order-status-translate.pipe';
+import { OrderPaymentMethodTranslatePipe } from './shared/pipe/order-payment-method-translate.pipe';
 
 registerLocaleData(localeVi);
 
@@ -31,12 +35,16 @@ export const appConfig: ApplicationConfig = {
     { provide: IMAGE_CONFIG, useValue: { disableImageSizeWarning: true, disableImageLazyLoadWarning: true } },
     { provide: LOCALE_ID, useValue: 'vi' },
     { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' },
+    { provide: APP_LANGUAGE, useValue: Language.VI },
     provideToastr(),
     PrefixBackendStaticPipe,
     CurrencyCustomPipe,
     AddressPipe,
     ReplaceNewLinePipe,
     DatePipe,
+    OrderFromTranslatePipe,
+    OrderStatusTranslatePipe,
+    OrderPaymentMethodTranslatePipe,
     provideNgxMask()
   ]
 };

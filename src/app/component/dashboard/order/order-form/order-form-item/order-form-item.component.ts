@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
 import { PrefixBackendStaticPipe } from '../../../../../shared/pipe/prefix-backend.pipe';
 import { CurrencyCustomPipe } from '../../../../../shared/pipe/currency-custom.pipe';
 import { MaterialModule } from '../../../../../shared/modules/material';
@@ -10,6 +10,7 @@ import { filter, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { OrderItemModifyComponent } from '../../../../../shared/component/order-item-modify/order-item-modify.component';
 import { OrderItemEntity } from '../../../../../entity/order.entity';
+import { APP_LANGUAGE } from '../../../../../shared/constant/lang.constant';
 
 @Component({
   selector: 'app-order-form-item',
@@ -29,6 +30,7 @@ export class OrderFormItemComponent implements OnDestroy {
   @Input() isDisabled: boolean = false;
   @Output() orderItemsWillChangeEmit: EventEmitter<OrderItemEntity | null> = new EventEmitter<OrderItemEntity | null>();
 
+  readonly lang = inject(APP_LANGUAGE);
   orderItemsWillChange: OrderItemEntity | null = null;
 
   private readonly subscription = new Subscription();

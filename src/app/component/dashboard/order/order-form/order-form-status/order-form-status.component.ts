@@ -8,12 +8,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { StatusSelectorComponent } from '../../../../../shared/component/status-selector/status-selector.component';
 import { PaymentMethodSelectorComponent } from '../../../../../shared/component/payment-method-selector/payment-method-selector.component';
 import { filter, Subscription } from 'rxjs';
+import { OrderStatusTranslatePipe } from '../../../../../shared/pipe/order-status-translate.pipe';
+import { OrderPaymentMethodTranslatePipe } from '../../../../../shared/pipe/order-payment-method-translate.pipe';
 
 @Component({
   selector: 'app-order-form-status',
   standalone: true,
   imports: [
     CommonModule,
+
+    OrderStatusTranslatePipe,
+    OrderPaymentMethodTranslatePipe,
 
     OrderStatusColorDirective,
 

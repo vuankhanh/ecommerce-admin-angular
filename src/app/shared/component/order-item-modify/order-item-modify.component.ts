@@ -15,6 +15,7 @@ import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, lastValueF
 import { TProductModel } from '../../interface/product.interface';
 import { ProductService } from '../../../service/api/product.service';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { APP_LANGUAGE } from '../../constant/lang.constant';
 
 @Component({
   selector: 'app-order-item-modify',
@@ -33,6 +34,7 @@ import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger }
   styleUrls: ['./order-item-modify.component.scss']
 })
 export class OrderItemModifyComponent implements OnInit, OnDestroy {
+  readonly lang = inject(APP_LANGUAGE);
   private readonly matDialog = inject(MatDialog)
   private readonly dialogRef = inject(MatDialogRef<OrderItemModifyComponent>);
   readonly orderItems = inject<TOrderItem[] | null>(MAT_DIALOG_DATA);
@@ -66,8 +68,6 @@ export class OrderItemModifyComponent implements OnInit, OnDestroy {
   }
 
   onChooseProductEvent(event: MatAutocompleteSelectedEvent, auto: MatAutocomplete) {
-    console.log(event);
-    
     const product = event.option.value as TProductModel;
     const orderItem: IOrderItem = {
       productId: product._id,
@@ -116,7 +116,7 @@ export class OrderItemModifyComponent implements OnInit, OnDestroy {
   private confirmRemoveOrderItem$(orderItem: IOrderItem) {
     const data: ConfirmationDialogData = {
       title: 'Xác nhận xóa sản phẩm',
-      message: `Bạn có chắc chắn muốn xóa sản phẩm "${orderItem.productName}" khỏi đơn hàng này?`,
+      message: `Bạn có chắc chắn muốn xóa sản phẩm "${orderItem.productName[this.lang]}" khỏi đơn hàng này?`,
       confirmText: 'Xóa',
       cancelText: 'Hủy',
       type: 'warning'

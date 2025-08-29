@@ -5,6 +5,7 @@ import { PaymentMethod } from '../../constant/payment.constant';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../modules/material';
 import { AbstractControl, FormControl, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
+import { OrderPaymentMethodTranslatePipe } from '../../pipe/order-payment-method-translate.pipe';
 
 @Component({
   selector: 'app-payment-method-selector',
@@ -13,6 +14,8 @@ import { AbstractControl, FormControl, ReactiveFormsModule, ValidatorFn } from '
     CommonModule,
 
     ReactiveFormsModule,
+
+    OrderPaymentMethodTranslatePipe,
 
     MaterialModule
   ],

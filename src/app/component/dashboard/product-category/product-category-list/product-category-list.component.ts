@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
 import { MaterialModule } from '../../../../shared/modules/material';
 import { BreakpointDetectionService } from '../../../../service/breakpoint-detection.service';
@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { map, Observable, startWith, switchMap } from 'rxjs';
 import { TProductCategoryModel } from '../../../../shared/interface/product-category.interface';
 import { IPagination } from '../../../../shared/interface/pagination.interface';
+import { APP_LANGUAGE } from '../../../../shared/constant/lang.constant';
 
 @Component({
   selector: 'app-product-category-list',
@@ -23,6 +24,7 @@ import { IPagination } from '../../../../shared/interface/pagination.interface';
   styleUrl: './product-category-list.component.scss'
 })
 export class ProductCategoryListComponent {
+  readonly lang = inject(APP_LANGUAGE);
   getData$ = this.productCategoryService.getAll();
   productsCategories$: Observable<TProductCategoryModel[]> = this.getData$.pipe(
     map((res) => res.data)

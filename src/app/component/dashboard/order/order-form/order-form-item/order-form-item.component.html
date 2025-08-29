@@ -8,11 +8,11 @@
         @for (orderItem of orderItems; track $index) {
         <mat-list-item (click)="onViewProduct(orderItem)">
           <div matListItemAvatar class="horizontal-container">
-            <img [src]="orderItem.productThumbnail | prefixBackendStatic" [alt]="orderItem.productName"
+            <img [src]="orderItem.productThumbnail | prefixBackendStatic" [alt]="orderItem.productName[lang]"
               class="product-image">
           </div>
           <div matListItemTitle>
-            <span class="product-name">{{orderItem.productName}}</span>
+            <span class="product-name">{{orderItem.productName['vi']}}</span>
           </div>
           <div matListItemLine>
             <span>{{orderItem.productCode}}</span>
@@ -35,11 +35,11 @@
         @for (orderItem of orderItemsWillChange.orderItems; track $index) {
         <mat-list-item (click)="onViewProduct(orderItem)">
           <div matListItemAvatar class="horizontal-container">
-            <img [src]="orderItem.productThumbnail | prefixBackendStatic" [alt]="orderItem.productName"
+            <img [src]="orderItem.productThumbnail | prefixBackendStatic" [alt]="orderItem.productName[lang]"
               class="product-image">
           </div>
           <div matListItemTitle>
-            <span class="product-name">{{orderItem.productName}}</span>
+            <span class="product-name">{{orderItem.productName['vi']}}</span>
           </div>
           <div matListItemLine>
             <span>{{orderItem.productCode}}</span>

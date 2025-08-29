@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MaterialModule } from '../../../../shared/modules/material';
 import { Router } from '@angular/router';
 import { ProductService } from '../../../../service/api/product.service';
@@ -10,6 +10,7 @@ import { IPagination } from '../../../../shared/interface/pagination.interface';
 import { paginationConstant } from '../../../../shared/constant/pagination.constant';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
 import { CurrencyCustomPipe } from '../../../../shared/pipe/currency-custom.pipe';
+import { APP_LANGUAGE } from '../../../../shared/constant/lang.constant';
 
 @Component({
   selector: 'app-product-list',
@@ -26,6 +27,7 @@ import { CurrencyCustomPipe } from '../../../../shared/pipe/currency-custom.pipe
   styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent {
+  readonly lang = inject(APP_LANGUAGE);
   products?: TProductModel[];
   pagination: IPagination = paginationConstant;
 

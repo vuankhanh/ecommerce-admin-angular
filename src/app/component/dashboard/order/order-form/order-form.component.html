@@ -14,7 +14,7 @@
           <span class="value">
             <div [appOrderFromColor]="orderDetail.orderFrom">
               <mat-chip selected>
-                {{orderDetail.orderFrom}}
+                {{orderDetail.orderFrom | orderFromTranslate}}
               </mat-chip>
             </div>
           </span>
@@ -72,7 +72,7 @@
       @if (nextPossiblestate[0]; as nextStatus) {
       <button mat-raised-button color="primary" (click)="nextOrderStatus(orderDetail, nextStatus)">
         <mat-icon>skip_next</mat-icon>
-        Trạng thái tiếp theo ({{ nextStatus }})
+        Trạng thái tiếp theo ({{ nextStatus | orderStatusTranslate }})
       </button>
       }
       @if(nextPossiblestate[1]; as cancelStatus) {

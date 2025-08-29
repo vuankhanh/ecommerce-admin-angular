@@ -5,7 +5,7 @@
       <mat-label>Chọn trạng thái đơn hàng</mat-label>
       <mat-select [formControl]="paymentMethodControl">
         @for (paymentMethod of paymentMethods; track $index) {
-        <mat-option [value]="paymentMethod" [disabled]="paymentMethod === data">{{paymentMethod}}</mat-option>
+        <mat-option [value]="paymentMethod" [disabled]="paymentMethod === data">{{paymentMethod | orderPaymentMethodTranslate}}</mat-option>
         }
       </mat-select>
     </mat-form-field>
