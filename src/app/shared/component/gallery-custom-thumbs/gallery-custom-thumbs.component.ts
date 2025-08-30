@@ -53,7 +53,7 @@ export class GalleryCustomThumbsComponent implements OnInit, AfterViewInit, OnDe
 
   ngOnInit(): void {
     console.log(this.items);
-    
+
   }
 
   ngAfterViewInit(): void {
@@ -74,7 +74,7 @@ export class GalleryCustomThumbsComponent implements OnInit, AfterViewInit, OnDe
         observer.complete();
       }),
       this.galleryComponent.selection.asObservable().pipe(
-        map(_ => this.galleryComponent.selectedIndex)
+        map(() => this.galleryComponent.selectedIndex)
       )
     );
   }
@@ -131,12 +131,19 @@ export class GalleryCustomThumbsComponent implements OnInit, AfterViewInit, OnDe
     this.galleryComponent.select(index);
   }
 
-  selection(event: GalleryItemEvent){
+  onThumbKeydown(event: KeyboardEvent, index: number) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      this.thumbsClick(index);
+      event.preventDefault();
+    }
+  }
+
+  selection(event: GalleryItemEvent) {
     const data = {
       metaData: this.items,
       selection: event.index
     }
-    
+
     const dialog = this.matDialog.open(SlidesComponent, {
       id: '',
       data: data,
@@ -146,7 +153,7 @@ export class GalleryCustomThumbsComponent implements OnInit, AfterViewInit, OnDe
       maxHeight: '100%',
     })
     this.subscription.add(
-      dialog.afterOpened().subscribe(_=>history.pushState(null, ''))
+      dialog.afterOpened().subscribe(()=> history.pushState(null, ''))
     )
   }
 

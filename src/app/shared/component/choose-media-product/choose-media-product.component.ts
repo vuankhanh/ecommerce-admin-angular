@@ -79,12 +79,12 @@ export class ChooseMediaProductComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.renderer.listen(this.mediaProductEl.nativeElement, 'input', (event: InputEvent) => {
+    this.renderer.listen(this.mediaProductEl.nativeElement, 'input', () => {
       this.bMediaBroductEl.next(this.mediaProductEl.nativeElement.value);
     });
   }
 
-  onMediaProductBlur(event: FocusEvent) {
+  onMediaProductBlur() {
     const mediaProductSelectedName = this.mediaProductSelected?.name;
     this.mediaProductEl.nativeElement.value = mediaProductSelectedName ? mediaProductSelectedName : '';
   }

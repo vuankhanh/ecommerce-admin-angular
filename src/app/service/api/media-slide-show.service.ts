@@ -30,7 +30,7 @@ export class MediaSlideShowService {
 
     const formData = new FormData();
 
-    for (let [index, fileUpload] of fileUploads.entries()) {
+    for (const [index, fileUpload] of fileUploads.entries()) {
       const file = fileUpload.file;
       formData.append('files', file);
 
@@ -54,7 +54,7 @@ export class MediaSlideShowService {
 
     const formData = new FormData();
 
-    for (let [index, fileUpload] of fileUploads.entries()) {
+    for (const [index, fileUpload] of fileUploads.entries()) {
       const file = fileUpload.file;
       formData.append('files', file);
 

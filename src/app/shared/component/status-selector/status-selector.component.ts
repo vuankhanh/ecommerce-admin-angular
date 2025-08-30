@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TOrderStatus } from '../../interface/order-response.interface';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../modules/material';
-import { OrderStatus, OrderStatusTransition } from '../../constant/order.constant';
+import { OrderStatusTransition } from '../../constant/order.constant';
 import { AbstractControl, FormControl, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { OrderStatusColorDirective } from '../../directive/order-status-color.directive';

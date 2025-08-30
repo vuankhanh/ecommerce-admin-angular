@@ -13,7 +13,7 @@ export class GalleryPipe implements PipeTransform {
   ) {
 
   }
-  transform(value?: TAlbumModel | undefined, ...args: unknown[]): GalleryItem[] {
+  transform(value?: TAlbumModel | undefined): GalleryItem[] {
     console.log(value);
     
     if (value && value.media && value.media.length > 0) {

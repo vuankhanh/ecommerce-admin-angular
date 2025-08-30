@@ -21,10 +21,4 @@ import { PrefixBackendStaticPipe } from '../../pipe/prefix-backend.pipe';
 })
 export class MenuHeaderComponent {
   @Input() user!: IJwtDecoded;
-
-  ngOnInit() {
-    console.log(this.user);
-    
-  }
-
 }

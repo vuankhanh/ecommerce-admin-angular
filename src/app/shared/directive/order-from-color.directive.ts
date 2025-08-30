@@ -1,11 +1,11 @@
-import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, Renderer2 } from '@angular/core';
 import { OrderFrom } from '../constant/order.constant';
 
 @Directive({
   selector: '[appOrderFromColor]',
   standalone: true
 })
-export class OrderFromColorDirective {
+export class OrderFromColorDirective implements OnChanges {
   @Input('appOrderFromColor') orderFrom!: `${OrderFrom}`; // Trạng thái đơn hàng
 
   constructor(private el: ElementRef, private renderer: Renderer2) { }

@@ -26,7 +26,7 @@ export class ProductCategoryService {
     if (size != undefined) {
       params = params.append('size', size)
     }
-    return this.httpClient.get<IProductCategoryResponse>(this.url).pipe(
+    return this.httpClient.get<IProductCategoryResponse>(this.url, { params }).pipe(
       map(response => response.metaData)
     )
   }

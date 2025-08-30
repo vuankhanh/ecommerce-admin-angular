@@ -12,7 +12,7 @@
           <mat-list-item>
             <div matListItemAvatar>
               @if (file.url | async; as url) {
-              <img [src]="url">
+              <img [src]="url" [alt]="file.name" />
               }
             </div>
             <div matListItemTitle>{{file.name}}</div>

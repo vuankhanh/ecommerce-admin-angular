@@ -61,7 +61,7 @@ export class OrderService {
 
     let params = new HttpParams();
     params = params.append('id', id);
-    let data: { status: `${OrderStatus}`; reasonForCancelReason?: string } = { status: newStatus };
+    const data: { status: `${OrderStatus}`; reasonForCancelReason?: string } = { status: newStatus };
 
     if(newStatus === OrderStatus.CANCELED) {
       if (!reasonForCancelReason) {

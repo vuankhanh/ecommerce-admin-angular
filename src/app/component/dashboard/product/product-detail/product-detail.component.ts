@@ -95,7 +95,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         panelClass: 'confirmation-dialog'
       }).afterClosed().pipe(
         filter((confirmed: boolean) => confirmed),
-        switchMap(_ => this.productService.remove(this.product!._id))
+        switchMap(() => this.productService.remove(this.product!._id))
       ).subscribe({
         next: () => {
           this.goBackProduct();

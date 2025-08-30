@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
-import { GalleryItem } from '@daelmaak/ngx-gallery';
 import { IGalleryItem } from '../../interface/gallery.interface';
 
 @Component({

@@ -3,7 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MaterialModule } from '../../modules/material';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IInputFeeDialogData } from '../../interface/input-fee-dialog.interface';
-import { AbstractControl, FormControl, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({

@@ -6,8 +6,8 @@
 <div #thumbsElement cdkDropList cdkDropListOrientation="horizontal" class="thumbs-container"
   (cdkDropListDropped)="drop($event)">
   @for (item of items; let i = $index; track item;) {
-  <div class="thumb-item" cdkDrag (click)="thumbsClick(i)" [cdkDragStartDelay]="1000"
-    [ngClass]="{'selected': selectedIndex === i}">
+  <div class="thumb-item" cdkDrag (click)="thumbsClick(i)" (keydown)="onThumbKeydown($event, i)" [cdkDragStartDelay]="1000"
+    [ngClass]="{'selected': selectedIndex === i}" tabindex="0">
     <img [src]="item.thumbSrc" alt="Thumbnail">
   </div>
   }

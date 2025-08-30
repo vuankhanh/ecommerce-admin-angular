@@ -133,7 +133,7 @@ export class MediaProductCategoryService {
       params = params.append('id', id)
     }
 
-    return this.httpClient.delete<MediaProductCategoryResponse>(this.url).pipe(
+    return this.httpClient.delete<MediaProductCategoryResponse>(this.url, { params }).pipe(
       map(res => res.metaData)
     );
   }

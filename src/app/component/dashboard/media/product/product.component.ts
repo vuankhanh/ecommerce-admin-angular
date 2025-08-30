@@ -5,7 +5,7 @@ import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.
 import { MaterialModule } from '../../../../shared/modules/material';
 import { Router } from '@angular/router';
 import { BreakpointDetectionService } from '../../../../service/breakpoint-detection.service';
-import { BehaviorSubject, Observable, startWith, switchMap } from 'rxjs';
+import { Observable, startWith, switchMap } from 'rxjs';
 import { MediaProductService, TAlbumProduct } from '../../../../service/api/media-product.service';
 
 @Component({

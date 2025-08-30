@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { MaterialModule } from '../../../../../shared/modules/material';
 import { IDelivery } from '../../../../../shared/interface/address.interface';
 import { AddressPipe } from '../../../../../shared/pipe/address.pipe';
 import { filter, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { AddressSelectorComponent } from '../../../../../shared/component/address-selector/address-selector.component';
 import { DeliveryComponent } from '../../../../../shared/component/delivery/delivery.component';
 
 @Component({
@@ -34,11 +33,6 @@ export class OrderFormDeliveryComponent implements OnDestroy {
   constructor(
     private readonly dialog: MatDialog
   ) { }
-
-  ngOnInit(): void {
-    console.log(this.orderDelivery);
-    
-  }
 
   onChangeDelivery(delivery: IDelivery) {
     this.subscription.add(

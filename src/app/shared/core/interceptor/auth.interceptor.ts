@@ -41,7 +41,7 @@ export const authInterceptor: HttpInterceptorFn = (
     }
   }
   return next(request);
-};
+}
 
 function handle401Error(
   request: HttpRequest<any>, 

@@ -21,7 +21,7 @@ export class OrderItemEntity {
 
   addItem(orderItem: IOrderItem) {
     // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-    let index = this.orderItems.findIndex((item: IOrderItem) => item.productId === orderItem.productId);
+    const index = this.orderItems.findIndex((item: IOrderItem) => item.productId === orderItem.productId);
     if (index !== -1) {
       this.orderItems[index].quantity++;
     }else {
@@ -35,7 +35,7 @@ export class OrderItemEntity {
   }
 
   changeQuantity(orderItemProductId: string, quantity: number) {
-    let index = this.orderItems.findIndex((orderItem: IOrderItem) => orderItem.productId === orderItemProductId);
+    const index = this.orderItems.findIndex((orderItem: IOrderItem) => orderItem.productId === orderItemProductId);
     quantity = quantity || 1; // Default to 1 if quantity is not provided
     if (index !== -1) {
       this.orderItems[index].quantity = quantity;
@@ -48,7 +48,7 @@ export class OrderItemEntity {
   }
 
   removeItem(orderItemProductId: string) {
-    let index = this.orderItems.findIndex((orderItem: IOrderItem) => orderItem.productId === orderItemProductId);
+    const index = this.orderItems.findIndex((orderItem: IOrderItem) => orderItem.productId === orderItemProductId);
     if (index === -1) {
       throw new Error("Không tìm thấy sản phẩm trong giỏ hàng");
     }

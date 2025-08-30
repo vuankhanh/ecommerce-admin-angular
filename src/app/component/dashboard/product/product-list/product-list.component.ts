@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MaterialModule } from '../../../../shared/modules/material';
 import { Router } from '@angular/router';
 import { ProductService } from '../../../../service/api/product.service';
@@ -26,7 +26,7 @@ import { APP_LANGUAGE } from '../../../../shared/constant/lang.constant';
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit, OnDestroy {
   readonly lang = inject(APP_LANGUAGE);
   products?: TProductModel[];
   pagination: IPagination = paginationConstant;

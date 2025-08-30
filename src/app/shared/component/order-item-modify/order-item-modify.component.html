@@ -60,7 +60,7 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button (click)="onNoClick()">Trở lại</button>
-    <button mat-raised-button color="primary" [disabled]="!(orderItemEntity.isChangedItems$ | async)"
+    <button mat-raised-button color="primary" [disabled]="(orderItemEntity.isChangedItems$ | async) === false"
       (click)="onSaveChanges()">Lưu thay đổi</button>
   </mat-dialog-actions>
 </div>

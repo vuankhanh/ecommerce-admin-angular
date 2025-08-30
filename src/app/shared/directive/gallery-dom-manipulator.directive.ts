@@ -1,11 +1,10 @@
-import { Directive, ElementRef, Renderer2 } from '@angular/core';
-import { GalleryComponent } from '@daelmaak/ngx-gallery';
+import { AfterViewInit, Directive, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: 'gallery',
+  selector: '[appGallery]',
   standalone: true,
 })
-export class GalleryDomManipulatorDirective {
+export class GalleryDomManipulatorDirective implements AfterViewInit {
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 

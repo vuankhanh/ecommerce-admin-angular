@@ -155,7 +155,7 @@
   <!-- Action Buttons -->
   <div class="action-buttons">
     <button mat-raised-button color="primary" (click)="processOrder(orderDetail._id)"
-      [disabled]="!(canProcessOrder$ | async)">
+      [disabled]="(canProcessOrder$ | async) === false">
       <mat-icon>settings</mat-icon>
       Xử lý
     </button>

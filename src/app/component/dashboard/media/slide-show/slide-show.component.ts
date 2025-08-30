@@ -106,7 +106,7 @@ export class SlideShowComponent implements OnInit, OnDestroy {
 
   uploadFiles(): void {
     if (this.formGroup.valid) {
-      const fileUploads: IFileUpload[] = this.filesFormArray.value.map((file: any) => {
+      const fileUploads: IFileUpload[] = this.filesFormArray.value.map((file: IFileUpload) => {
         return {
           file: file.file,
           description: file.description || '',

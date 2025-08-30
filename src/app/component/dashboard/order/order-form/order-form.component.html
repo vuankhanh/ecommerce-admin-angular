@@ -26,19 +26,19 @@
   <!-- Order Status & Payment -->
   <div class="order-status">
     <app-order-form-status [status]="orderDetail.status" [paymentMethod]="orderDetail.paymentMethod"
-      [isDisabled]="!(canModifyOrderStatus$ | async)"
+      [isDisabled]="(canModifyOrderStatus$ | async) === false"
       (paymentMethodChange)="onPaymentMethodChange($event)"></app-order-form-status>
   </div>
 
   <!-- Order Items -->
   <div class="order-item">
-    <app-order-form-item [orderItems]="orderDetail.orderItems" [isDisabled]="!(canModifyOrderStatus$ | async)"
+    <app-order-form-item [orderItems]="orderDetail.orderItems" [isDisabled]="(canModifyOrderStatus$ | async) === false"
       (orderItemsWillChangeEmit)="onChangeOrderItems($event)"></app-order-form-item>
   </div>
 
   <!-- Delivery Information -->
   <div class="delivery-info">
-    <app-order-form-delivery [orderDelivery]="orderDetail.delivery" [isDisabled]="!(canModifyOrderStatus$ | async)"
+    <app-order-form-delivery [orderDelivery]="orderDetail.delivery" [isDisabled]="(canModifyOrderStatus$ | async) === false"
       (deliveryWillChangeEmit)="onChangeDelivery($event)"></app-order-form-delivery>
   </div>
 
@@ -55,7 +55,7 @@
   <!-- Order Summary -->
   <div>
     <app-order-form-total [orderDetail]="orderDetail" [orderItemsWillChange]="bOrderItemsWillChange.getValue()"
-      [isDisabled]="!(canModifyOrderStatus$ | async)"
+      [isDisabled]="(canModifyOrderStatus$ | async) === false"
       (orderTotalChangeEmit)="onOrderTotalChange($event)"></app-order-form-total>
   </div>
 
@@ -63,7 +63,7 @@
   <div class="action-buttons">
     @if(orderParamUpdate$ | async){
     <button mat-raised-button color="primary" (click)="processOrder(orderDetail)"
-      [disabled]="!(canModifyOrderStatus$ | async) && !(orderParamUpdate$ | async)">
+      [disabled]="(canModifyOrderStatus$ | async) === false && (orderParamUpdate$ | async) === false">
       <mat-icon>update</mat-icon>
       Cập nhật
     </button>

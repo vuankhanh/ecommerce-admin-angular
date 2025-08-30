@@ -8,7 +8,7 @@ import { APP_LANGUAGE } from '../constant/lang.constant';
 })
 export class OrderFromTranslatePipe implements PipeTransform {
   private readonly lang = inject(APP_LANGUAGE);
-  transform(value: `${OrderFrom}`, ...args: unknown[]): string {
+  transform(value: `${OrderFrom}`): string {
     return ORDER_FROM_LABEL[value]?.[this.lang] || value;
   }
 }

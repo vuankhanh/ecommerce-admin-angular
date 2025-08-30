@@ -14,7 +14,7 @@ import { BreakpointDetectionService } from '../../../service/breakpoint-detectio
 import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, lastValueFrom, map, Observable, Subscription, switchMap, take } from 'rxjs';
 import { TProductModel } from '../../interface/product.interface';
 import { ProductService } from '../../../service/api/product.service';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { APP_LANGUAGE } from '../../constant/lang.constant';
 
 @Component({
@@ -104,7 +104,7 @@ export class OrderItemModifyComponent implements OnInit, OnDestroy {
 
   removeOrderItem(orderItem: IOrderItem, cartItemElement: MatListItem) {
     this.subscription.add(
-      this.confirmRemoveOrderItem$(orderItem).subscribe(_ => {
+      this.confirmRemoveOrderItem$(orderItem).subscribe(() => {
         this.renderer2.addClass(cartItemElement._elementRef.nativeElement, 'cart-item-removed');
         setTimeout(() => {
           this.orderItemEntity?.removeItem(orderItem.productId);

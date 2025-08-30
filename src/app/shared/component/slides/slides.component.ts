@@ -1,9 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, Inject, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, Inject, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { SwiperContainer, register } from 'swiper/element/bundle';
 import { Swiper } from 'swiper';
 import { MaterialModule } from '../../modules/material';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PinchZoomComponent } from '@meddv/ngx-pinch-zoom';
+import { PinchZoomModule, PinchZoomComponent } from '@meddv/ngx-pinch-zoom';
 
 register();
 
@@ -14,11 +14,11 @@ register();
   standalone: true,
   imports: [
     MaterialModule,
-    PinchZoomComponent
+    PinchZoomModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class SlidesComponent {
+export class SlidesComponent implements AfterViewInit {
   @ViewChild('swiper') swiper!: ElementRef<SwiperContainer>;
   @ViewChildren(PinchZoomComponent) pinchZoomComponents!: QueryList<PinchZoomComponent>;
   currentIndex: number = 0;
@@ -28,8 +28,6 @@ export class SlidesComponent {
   ) {
 
   }
-
-  ngOnInit() { }
 
   ngAfterViewInit() {
     const swiperParams = {

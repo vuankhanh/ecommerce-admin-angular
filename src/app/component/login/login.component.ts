@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -18,7 +18,7 @@ import { LocalStorageKey } from '../../shared/constant/local_storage.constant';
     ReactiveFormsModule,
   ]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   hide = signal(true);
   loginForm!: FormGroup;
   private readonly subscription: Subscription = new Subscription();

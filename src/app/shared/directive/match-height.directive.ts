@@ -1,10 +1,10 @@
-import { Directive, ElementRef } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, OnDestroy } from '@angular/core';
 
 @Directive({
   selector: '[appMatchHeight]',
   standalone: true
 })
-export class MatchHeightDirective {
+export class MatchHeightDirective implements AfterViewInit, OnDestroy {
   private resizeObserver!: ResizeObserver;
   private mutationObserver!: MutationObserver;
 

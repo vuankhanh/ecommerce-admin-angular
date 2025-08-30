@@ -38,7 +38,7 @@ export class NumberInputComponent {
   }
 
   onInputChange(event: any) {
-    let value = event.target.value;
+    const value = event.target.value;
 
     if (value === '' || value === '0') {
       if (this.allowZero) {

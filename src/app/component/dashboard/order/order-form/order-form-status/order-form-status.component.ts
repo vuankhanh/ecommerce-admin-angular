@@ -5,7 +5,6 @@ import { OrderStatusColorDirective } from '../../../../../shared/directive/order
 import { TOrderStatus } from '../../../../../shared/interface/order-response.interface';
 import { TPaymentMethod } from '../../../../../shared/interface/payment.interface';
 import { MatDialog } from '@angular/material/dialog';
-import { StatusSelectorComponent } from '../../../../../shared/component/status-selector/status-selector.component';
 import { PaymentMethodSelectorComponent } from '../../../../../shared/component/payment-method-selector/payment-method-selector.component';
 import { filter, Subscription } from 'rxjs';
 import { OrderStatusTranslatePipe } from '../../../../../shared/pipe/order-status-translate.pipe';
@@ -44,25 +43,9 @@ export class OrderFormStatusComponent implements OnDestroy {
   ) { }
 
   onCancelChange() {
-    // this.orderStatusChange = null;
     this.orderPaymentMethodChange = null;
-
-    // this.statusChange.emit(this.orderStatusChange);
     this.paymentMethodChange.emit(this.orderPaymentMethodChange);
   }
-
-  // editStatus() {
-  //   this.subscription.add(
-  //     this.dialog.open(StatusSelectorComponent, {
-  //       data: this.status,
-  //     }).afterClosed().pipe(
-  //       filter(status => !!status)
-  //     ).subscribe(status => {
-  //       this.orderStatusChange = status;
-  //       this.statusChange.emit(status);
-  //     })
-  //   )
-  // }
 
   editPaymentMethod() {
     this.subscription.add(

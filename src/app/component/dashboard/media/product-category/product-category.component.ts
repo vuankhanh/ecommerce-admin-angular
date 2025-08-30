@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MaterialModule } from '../../../../shared/modules/material';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BreakpointDetectionService } from '../../../../service/breakpoint-detection.service';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, startWith, switchMap } from 'rxjs';
+import { Observable, startWith, switchMap } from 'rxjs';
 import { MediaProductCategoryService, TAlbumProductCategory } from '../../../../service/api/media-product-category.service';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
 

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FileDragAndDropComponent } from '../../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
 import { CommonModule } from '@angular/common';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
@@ -40,7 +40,7 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './product-category-detail.component.html',
   styleUrl: './product-category-detail.component.scss'
 })
-export class ProductCategoryDetailComponent {
+export class ProductCategoryDetailComponent implements OnInit, OnDestroy {
   @ViewChild(FileDragAndDropComponent) childComponentRef!: FileDragAndDropComponent;
   @ViewChild(GalleryComponent, { read: ElementRef }) galleryComponent!: ElementRef;
 

@@ -19,7 +19,7 @@ export function vietnamesePhoneNumberValidator(): ValidatorFn {
     }
 
     // Loại bỏ khoảng trắng và các ký tự đặc biệt (trừ +)
-    const cleanedValue = value.replace(/[\s\-\.]/g, '');
+    const cleanedValue = value.replace(/[\s\-.]/g, '');
     
     // Kiểm tra xem có khớp với bất kỳ pattern nào không
     const isValid = patterns.some(pattern => pattern.test(cleanedValue));
@@ -31,6 +31,6 @@ export function vietnamesePhoneNumberValidator(): ValidatorFn {
 // Export thêm function để kiểm tra phone number
 export function isValidVietnamesePhoneNumber(phoneNumber: string): boolean {
   if (!phoneNumber) return false;
-  const cleanedValue = phoneNumber.replace(/[\s\-\.]/g, '');
+  const cleanedValue = phoneNumber.replace(/[\s\-.]/g, '');
   return patterns.some(pattern => pattern.test(cleanedValue));
 }

@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatCard, MatCardModule } from '@angular/material/card';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, Subscription, switchMap } from 'rxjs';
@@ -22,7 +21,6 @@ import { ConfirmationDialogData } from '../../../../shared/interface/confirmatio
     PrefixBackendStaticPipe,
 
     HeaderPageContainerComponent,
-    ConfirmationDialogComponent,
 
     MaterialModule
   ],
@@ -93,7 +91,7 @@ export class ProductCategoryDetailComponent implements OnInit, OnDestroy {
         panelClass: 'confirmation-dialog'
       }).afterClosed().pipe(
         filter((confirmed: boolean) => confirmed),
-        switchMap(_ =>this.productCategoryService.remove(this.productCategory!._id))
+        switchMap(() =>this.productCategoryService.remove(this.productCategory!._id))
       ).subscribe({
         next: () => {
           this.router.navigate(['/dashboard/product-category/list']);

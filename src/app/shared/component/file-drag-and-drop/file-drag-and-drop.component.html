@@ -2,7 +2,7 @@
 
   <div class="file-drop-container" [ngStyle]="{'display': fileUploads.length > 0 ? 'none' : 'block'}">
     <ngx-file-drop #fileDropRef dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
-      (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [dropZoneClassName]="'ngx-file-drop__drop-zone'"
+      (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave()" [dropZoneClassName]="'ngx-file-drop__drop-zone'"
       [multiple]="isMultiple" [accept]="accepts">
       <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
         <div class="drop-zone-container">

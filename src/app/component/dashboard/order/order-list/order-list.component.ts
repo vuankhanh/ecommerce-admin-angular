@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MaterialModule } from '../../../../shared/modules/material';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -43,7 +43,7 @@ export class OrderListComponent {
     fromDate: [null],
     toDate: [null],
     statuses: [[]]
-  });;
+  });
   readonly statusOptions: `${OrderStatus}`[] = Object.values(OrderStatus);
 
   private readonly bPagination: BehaviorSubject<IPagination> = new BehaviorSubject<IPagination>(paginationConstant);

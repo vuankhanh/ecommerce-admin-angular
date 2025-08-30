@@ -1,13 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormField } from '@angular/material/input';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddressSelectorComponent } from '../address-selector/address-selector.component';
 import { NgxMaskDirective } from 'ngx-mask';
-import { BehaviorSubject, lastValueFrom, map, Observable, take, tap } from 'rxjs';
+import { BehaviorSubject, lastValueFrom, map, Observable, take } from 'rxjs';
 import { vietnamesePhoneNumberValidator } from '../../validator/vietnamese-phone-number.validator';
 import { MaterialModule } from '../../modules/material';
 import { DeliveryEntity } from '../../../entity/deliverty.entity';

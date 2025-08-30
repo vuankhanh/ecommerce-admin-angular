@@ -32,7 +32,7 @@ export class LongPressDirective {
   @HostListener('touchmove')
   @HostListener('touchend')
   @HostListener('touchcancel')
-  onMouseUpOrLeave(event: any): void {
+  onMouseUpOrLeave(): void {
     this.isPressing = false;
     clearTimeout(this.timeout);
   }

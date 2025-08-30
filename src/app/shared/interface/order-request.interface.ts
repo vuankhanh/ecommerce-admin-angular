@@ -1,6 +1,5 @@
 
 import { IDelivery } from "./address.interface";
-import { TOrderStatus } from "./order-response.interface";
 import { TPaymentMethod } from "./payment.interface";
 
 export interface IOrderCreateRequest {

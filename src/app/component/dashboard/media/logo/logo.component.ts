@@ -85,7 +85,7 @@ export class LogoComponent implements OnDestroy {
             return res ? updateApi$ : createApi$;
           })
         ).subscribe({
-          next: (res) => {
+          next: () => {
             this.childComponentRef.reset();
             this.mainLogo$ = this.mediaLogoService.getMain();
           },

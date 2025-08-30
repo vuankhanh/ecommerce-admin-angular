@@ -1,4 +1,4 @@
-import { AbstractControl, FormArray, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, ValidationErrors } from '@angular/forms';
 
 export function filesArrayValidator(control: AbstractControl): ValidationErrors | null {
   if (!(control instanceof FormArray)) {

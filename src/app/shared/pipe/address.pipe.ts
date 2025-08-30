@@ -14,7 +14,7 @@ interface TAddress {
 })
 export class AddressPipe implements PipeTransform {
 
-  transform(value: TAddress, ...args: unknown[]): string {
+  transform(value: TAddress): string {
     if (!this.isValidAddress(value)) {
       throw new Error('Invalid address');
     }

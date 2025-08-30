@@ -26,4 +26,11 @@ export class BottomSheetComponent {
     this.isOpen = false;
     this.closed.emit();
   }
+
+  onBackdropKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      this.close();
+      event.preventDefault();
+    }
+  }
 }

@@ -138,7 +138,7 @@ export class OrderFormComponent implements OnDestroy {
             data
           }).afterClosed().pipe(
             filter((result: boolean) => !!result),
-            switchMap((result) => this.orderUpdateRequest$.pipe(
+            switchMap(() => this.orderUpdateRequest$.pipe(
               switchMap(([paymentMethod, orderItems, delivery, total]) => {
                 const data: IOrderUpdateRequest = {};
                 if (paymentMethod) data.paymentMethod = paymentMethod;

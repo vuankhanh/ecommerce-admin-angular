@@ -56,7 +56,7 @@ export class MediaProductService {
 
     const formData = new FormData();
 
-    for (let [index, fileUpload] of fileUploads.entries()) {
+    for (const [index, fileUpload] of fileUploads.entries()) {
       const file = fileUpload.file;
       formData.append('files', file);
 
@@ -86,7 +86,7 @@ export class MediaProductService {
 
     const formData = new FormData();
 
-    for (let [index, fileUpload] of fileUploads.entries()) {
+    for (const [index, fileUpload] of fileUploads.entries()) {
       const file = fileUpload.file;
       formData.append('files', file);
 
@@ -121,8 +121,7 @@ export class MediaProductService {
     if (id!= undefined) {
       params = params.append('id', id)
     }
-    console.log('newItemIndexChange', newItemIndexChange);
-    
+
     return this.httpClient.patch<MediaProductResponse>(this.url + '/item-index-change', { newItemIndexChange }, { params }).pipe(
       map(res => res.metaData)
     );
@@ -147,7 +146,7 @@ export class MediaProductService {
       params = params.append('id', id)
     }
 
-    return this.httpClient.delete<MediaProductResponse>(this.url).pipe(
+    return this.httpClient.delete<MediaProductResponse>(this.url, { params }).pipe(
       map(res => res.metaData)
     );
   }

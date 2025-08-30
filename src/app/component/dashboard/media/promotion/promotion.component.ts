@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, ViewChild } from '@angular/core';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
 import { FileDragAndDropComponent } from '../../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
 import { TAlbumModel, TMediaModel } from '../../../../shared/interface/album.interface';
@@ -84,7 +84,7 @@ export class PromotionComponent implements OnDestroy {
             return res ? updateApi$ : createApi$;
           })
         ).subscribe({
-          next: (res) => {
+          next: () => {
             this.childComponentRef.reset();
             this.mainPromotion$ = this.mediaPromotionService.getMain();
           },

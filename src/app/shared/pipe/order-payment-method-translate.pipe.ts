@@ -9,7 +9,7 @@ import { APP_LANGUAGE } from '../constant/lang.constant';
 })
 export class OrderPaymentMethodTranslatePipe implements PipeTransform {
   private readonly lang = inject(APP_LANGUAGE);
-  transform(value: TPaymentMethod, ...args: unknown[]): string {
+  transform(value: TPaymentMethod): string {
     return PAYMENT_METHOD_LABEL[value]?.[this.lang] || value;
   }
 }

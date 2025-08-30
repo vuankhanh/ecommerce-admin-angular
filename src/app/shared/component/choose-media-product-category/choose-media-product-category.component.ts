@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -79,12 +79,12 @@ export class ChooseMediaProductCategoryComponent implements OnChanges, AfterView
   }
 
   ngAfterViewInit(): void {
-    this.renderer.listen(this.mediaProductCategoryEl.nativeElement, 'input', (event: InputEvent) => {
+    this.renderer.listen(this.mediaProductCategoryEl.nativeElement, 'input', () => {
       this.bMediaBroductCategoryEl.next(this.mediaProductCategoryEl.nativeElement.value);
     });
   }
 
-  onMediaProductCategoryBlur(event: FocusEvent) {
+  onMediaProductCategoryBlur() {
     const mediaProductCategorySelectedName = this.mediaProductCategorySelected?.name;
     this.mediaProductCategoryEl.nativeElement.value = mediaProductCategorySelectedName ? mediaProductCategorySelectedName : '';
   }

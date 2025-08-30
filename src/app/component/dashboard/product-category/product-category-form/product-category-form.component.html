@@ -101,7 +101,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Danh mục Cha</mat-label>
           <input #productCategoryEl type="text" matInput [matAutocomplete]="productCategoryElAuto"
-            (blur)="onProductCategoryBlur($event)">
+            (blur)="onProductCategoryBlur()">
           <mat-icon matSuffix>category</mat-icon>
           <mat-autocomplete #productCategoryElAuto="matAutocomplete"
             (optionSelected)="onCategoryOptionSelected($event)">
@@ -130,7 +130,7 @@
   <mat-card-actions>
     @if (productCategory?._id) {
     <button mat-raised-button color="primary" type="button" (click)="onSubmit()"
-      [disabled]="formGroup.invalid || !(isFormChanged$ | async)">
+      [disabled]="formGroup.invalid || (isFormChanged$ | async) === false">
       Lưu
     </button>
     }@else {

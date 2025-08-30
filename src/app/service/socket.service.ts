@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { environment } from '../../environments/environment.development';
-import { filter, map, Observable, tap } from 'rxjs';
+import { filter, map, Observable } from 'rxjs';
 import { IAlbum, IMedia } from '../shared/interface/album.interface';
 
 @Injectable({

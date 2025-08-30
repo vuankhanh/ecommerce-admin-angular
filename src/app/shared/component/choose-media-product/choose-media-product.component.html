@@ -2,7 +2,7 @@
   <mat-form-field appearance="fill" subscriptSizing="dynamic">
     <mat-label>Media danh mục</mat-label>
     <input #mediaProductEl type="text" matInput [matAutocomplete]="mediaProductElAuto"
-      (blur)="onMediaProductBlur($event)">
+      (blur)="onMediaProductBlur()">
     <mat-icon matSuffix>photo_library</mat-icon>
     <mat-autocomplete #mediaProductElAuto="matAutocomplete"
       (optionSelected)="onMEdiaOptionSelected($event)">
@@ -10,7 +10,7 @@
       <mat-option [value]="mediaProduct">
         <mat-list-item>
           <div matListItemAvatar>
-            <img [src]="mediaProduct.thumbnailUrl | prefixBackendStatic">
+            <img [src]="mediaProduct.thumbnailUrl | prefixBackendStatic" [alt]="mediaProduct.name">
           </div>
           <div matListItemTitle>{{mediaProduct.name}}</div>
           <div matListItemLine>

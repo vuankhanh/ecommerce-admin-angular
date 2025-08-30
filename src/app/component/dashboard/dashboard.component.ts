@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -7,7 +7,6 @@ import { MaterialModule } from '../../shared/modules/material';
 import { BreakpointDetectionService } from '../../service/breakpoint-detection.service';
 import { AuthStateService } from '../../service/auth_state.service';
 import { RouterEventService } from '../../service/router-event.service';
-import { AuthService } from '../../service/api/auth.service';
 import { MatAccordion } from '@angular/material/expansion';
 import { IJwtDecoded } from '../../shared/interface/user_information.interface';
 import { MenuHeaderComponent } from '../../shared/component/menu-header/menu-header.component';
@@ -46,7 +45,6 @@ export class DashboardComponent implements OnInit {
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly breakpointDetectionService: BreakpointDetectionService,
-    private readonly authService: AuthService,
     private readonly authStateService: AuthStateService,
     private readonly routerEventService: RouterEventService,
   ) {}

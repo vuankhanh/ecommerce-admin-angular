@@ -5,7 +5,7 @@ import { MaterialModule } from '../../../../shared/modules/material';
 import { BreakpointDetectionService } from '../../../../service/breakpoint-detection.service';
 import { ProductCategoryService } from '../../../../service/api/product-category.service';
 import { Router } from '@angular/router';
-import { map, Observable, startWith, switchMap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { TProductCategoryModel } from '../../../../shared/interface/product-category.interface';
 import { IPagination } from '../../../../shared/interface/pagination.interface';
 import { APP_LANGUAGE } from '../../../../shared/constant/lang.constant';

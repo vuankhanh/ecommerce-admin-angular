@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TProductModel } from '../../../../shared/interface/product.interface';
 import { BehaviorSubject, map, Observable, startWith, Subscription, switchMap } from 'rxjs';
@@ -35,7 +35,7 @@ import { ChooseMediaProductComponent } from '../../../../shared/component/choose
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss'
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements OnInit, OnDestroy {
   @ViewChild('productCategoryEl') productCategoryEl!: ElementRef<MatInput>;
 
   private readonly bBroductCategoryEl: BehaviorSubject<string> = new BehaviorSubject<string>('');
@@ -113,7 +113,7 @@ export class ProductFormComponent {
           this.product = res;
           this.initForm(this.product);
         },
-        error: error => {
+        error: () => {
           this.goBackProducDetail();
         }
       })
@@ -170,7 +170,7 @@ export class ProductFormComponent {
     }
   }
 
-  onProductCategoryBlur(event: FocusEvent) {
+  onProductCategoryBlur() {
     const productCategorySelectedName = this.productCategorySelected?.name['vi'];
     this.productCategoryEl.nativeElement.value = productCategorySelectedName ? productCategorySelectedName : '';
   }
@@ -212,7 +212,7 @@ export class ProductFormComponent {
   goBackProducDetail() {
     const commands = this.product?._id ? ['/dashboard/product/detail', this.product?._id] : ['/dashboard/product/list'];
     this.router.navigate(commands);
-  };
+  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FileDragAndDropComponent } from '../../../../shared/component/file-drag-and-drop/file-drag-and-drop.component';
 import { CommonModule } from '@angular/common';
 import { PrefixBackendStaticPipe } from '../../../../shared/pipe/prefix-backend.pipe';
@@ -40,7 +40,7 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
-export class ProductDetailComponent {
+export class ProductDetailComponent implements OnInit, OnDestroy {
   @ViewChild(FileDragAndDropComponent) childComponentRef!: FileDragAndDropComponent;
   @ViewChild(GalleryComponent, { read: ElementRef }) galleryComponent!: ElementRef;
 
@@ -119,7 +119,7 @@ export class ProductDetailComponent {
   uploadFiles(): void {
     if (this.formGroup.valid) {
       const name = this.formGroup.get('name')?.value;
-      const fileUploads: IFileUpload[] = this.filesControl.value.map((file: any) => {
+      const fileUploads: IFileUpload[] = this.filesControl.value.map((file: IFileUpload) => {
         return {
           file: file.file,
           description: file.description || '',

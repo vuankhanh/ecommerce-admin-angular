@@ -1,7 +1,7 @@
 <form [formGroup]="addressForm" class="vertical-container">
   <mat-form-field appearance="fill">
     <mat-label>Tỉnh</mat-label>
-    <input #provinceEl type="text" matInput [matAutocomplete]="provinceAuto" (blur)="onProvinceBlur($event)">
+    <input #provinceEl type="text" matInput [matAutocomplete]="provinceAuto" (blur)="onProvinceBlur()">
     <mat-autocomplete #provinceAuto="matAutocomplete" (optionSelected)="onProvinceOptionSelected($event)">
       @for (province of provinces$ | async; track province) {
       <mat-option [value]="province">{{province.name}}</mat-option>
@@ -10,7 +10,7 @@
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Huyện</mat-label>
-    <input #districtEl type="text" matInput [matAutocomplete]="districtAuto" (blur)="onDistrictBlur($event)">
+    <input #districtEl type="text" matInput [matAutocomplete]="districtAuto" (blur)="onDistrictBlur()">
     <mat-autocomplete #districtAuto="matAutocomplete" (optionSelected)="onDistrictOptionSelected($event)">
       @for (districts of districts$ | async; track districts) {
       <mat-option [value]="districts">{{districts.name}}</mat-option>
@@ -19,7 +19,7 @@
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Phường</mat-label>
-    <input #wardEl type="text" matInput [matAutocomplete]="wardAuto" (blur)="onWardBlur($event)">
+    <input #wardEl type="text" matInput [matAutocomplete]="wardAuto" (blur)="onWardBlur()">
     <mat-autocomplete #wardAuto="matAutocomplete" (optionSelected)="onWardOptionSelected($event)">
       @for (wards of wards$ | async; track wards) {
       <mat-option [value]="wards">{{wards.name}}</mat-option>

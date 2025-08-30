@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../../../shared/modules/material';
 import { MatInput } from '@angular/material/input';
-import { BehaviorSubject, map, Observable, startWith, Subscription, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, startWith, Subscription, switchMap } from 'rxjs';
 import { TProductCategoryModel } from '../../../../shared/interface/product-category.interface';
 import { TAlbumModel } from '../../../../shared/interface/album.interface';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -27,7 +27,7 @@ import { HeaderPageContainerComponent } from '../../../../shared/component/heade
   templateUrl: './product-category-form.component.html',
   styleUrl: './product-category-form.component.scss'
 })
-export class ProductCategoryFormComponent {
+export class ProductCategoryFormComponent implements OnInit, OnDestroy {
   @ViewChild('productCategoryEl') productCategoryEl!: ElementRef<MatInput>;
   @ViewChild(ChooseMediaProductCategoryComponent) chooseMediaProductCategoryComponent!: ChooseMediaProductCategoryComponent;
 
@@ -89,11 +89,9 @@ export class ProductCategoryFormComponent {
       this.productCategoryService.getDetail(id).subscribe({
         next: (res) => {
           this.productCategory = res;
-          console.log(this.productCategory);
-          
           this.initForm(this.productCategory);
         },
-        error: error => {
+        error: () => {
           this.goBackProducCategoryDetail();
         }
       })
@@ -118,9 +116,6 @@ export class ProductCategoryFormComponent {
       isActive: productCategory.isActive ?? true
     });
     }
-
-    console.log(this.formGroup.value);
-    
 
     this.subscription.add(
       this.formGroup.valueChanges.subscribe((value) => {
@@ -147,7 +142,7 @@ export class ProductCategoryFormComponent {
     }
   }
 
-  onProductCategoryBlur(event: FocusEvent) {
+  onProductCategoryBlur() {
     const productCategorySelectedName = this.productCategorySelected?.name;
     this.productCategoryEl.nativeElement.value = productCategorySelectedName ? productCategorySelectedName : '';
   }
@@ -189,7 +184,7 @@ export class ProductCategoryFormComponent {
   goBackProducCategoryDetail() {
     const commands = this.productCategory?._id ? ['/dashboard/product-category/detail', this.productCategory?._id] : ['/dashboard/product-category'];
     this.router.navigate(commands);
-  };
+  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();

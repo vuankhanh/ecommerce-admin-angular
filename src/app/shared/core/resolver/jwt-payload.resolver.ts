@@ -5,7 +5,7 @@ import { LocalStorageKey } from '../../constant/local_storage.constant';
 import { JwtDecodedService } from '../../../service/jwt-decoded.service';
 import { JwtPayload } from 'jwt-decode';
 
-export const jwtPayloadResolver: ResolveFn<JwtPayload | null> = (route, state) => {
+export const jwtPayloadResolver: ResolveFn<JwtPayload | null> = () => {
   const localStorageService = inject(LocalStorageService);
   const jwtDecodedService = inject(JwtDecodedService);
   const accessToken = localStorageService.get(LocalStorageKey.ACCESSTOKEN);

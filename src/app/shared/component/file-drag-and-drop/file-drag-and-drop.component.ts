@@ -1,14 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgxFileDropEntry, NgxFileDropModule } from 'ngx-file-drop';
 import { MaterialModule } from '../../modules/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MatchHeightDirective } from '../../directive/match-height.directive';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { filesArrayValidator } from '../../utitl/form-validator/files_array.validator';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IFile, IFileUpload } from '../../interface/file-upload.interface';
-import { filter, last, map, Observable } from 'rxjs';
-import { FileSizePipe } from '../../pipe/file-size.pipe';
 import { FileInfoComponent } from '../file-info/file-info.component';
 
 @Component({
@@ -20,9 +16,6 @@ import { FileInfoComponent } from '../file-info/file-info.component';
     ReactiveFormsModule,
 
     FileInfoComponent,
-
-    FileSizePipe,
-    MatchHeightDirective,
 
     NgxFileDropModule,
     MaterialModule
@@ -94,7 +87,7 @@ export class FileDragAndDropComponent implements OnInit {
     }
   }
 
-  public fileLeave(event: DragEvent) {
+  public fileLeave() {
     // console.log(event);
     this.isFileOverLimit = false;
   }
@@ -115,16 +108,12 @@ export class FileDragAndDropComponent implements OnInit {
       return file ? this.acceptMIMETypes.includes(file.type) : false;
     });
   }
-
-  ngOnDestroy() {
-
-  }
 }
 
 class FileUploadUtil {
   static async transformFile(droppedFiles: Array<NgxFileDropEntry>): Promise<Array<IFile>> {
     const result: Array<IFile> = [];
-    for (let droppedFile of droppedFiles) {
+    for (const droppedFile of droppedFiles) {
       if (droppedFile.fileEntry.isFile) {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         const file = await this.cbToPromise(fileEntry);
