@@ -30,7 +30,7 @@ if (!projectKey || !token) {
   throw new Error('Missing sonar.projectKey or sonar.token in sonar-project.properties');
 }
 const imageUrl = 'http://localhost:3900/api/sonar-report'; // Đổi thành URL ảnh bạn muốn lấy
-const imageFileName = 'sonar_qube_report.png';
+const imageFileName = 'sonar-qube-report.png';
 const imageFilePath = path.join(__dirname, 'report',imageFileName);
 
 // Tải ảnh về
