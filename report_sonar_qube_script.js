@@ -31,7 +31,7 @@ if (!projectKey || !token) {
 }
 const imageUrl = 'http://localhost:3900/api/sonar-report'; // Đổi thành URL ảnh bạn muốn lấy
 const imageFileName = 'sonar-qube-report.png';
-const imageFilePath = path.join(__dirname, 'report',imageFileName);
+const imageFilePath = path.join(__dirname, 'readme-media/report',imageFileName);
 
 // Tải ảnh về
 function downloadImage(url, dest) {
