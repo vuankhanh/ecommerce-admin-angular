@@ -8,7 +8,8 @@
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "sonar-report-result": "node ./report_sonar_qube_script.js"
   },
   "private": true,
   "dependencies": {

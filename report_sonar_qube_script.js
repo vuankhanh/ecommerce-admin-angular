@@ -1,11 +1,10 @@
-import * as fs from 'fs';
-import * as http from 'http';
-import { fileURLToPath } from 'url';
-import * as path from 'path';
+const fs = require('fs');
+const http = require('http');
+const path = require('path');
 
-// Thêm đoạn này ở đầu file
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// // Thêm đoạn này ở đầu file
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 const sonarConfigFilePath = path.join(process.cwd(), 'sonar-project.properties');
 const contentSonarConfigFile = fs.readFileSync(sonarConfigFilePath, 'utf-8');
@@ -31,13 +30,14 @@ if (!projectKey || !token) {
 }
 const imageUrl = 'http://localhost:3900/api/sonar-report'; // Đổi thành URL ảnh bạn muốn lấy
 const imageFileName = 'sonar-qube-report.png';
-const imageFilePath = path.join(__dirname, 'readme-media/report',imageFileName);
+const imageFilePath = path.join(__dirname, 'readme-media/report', imageFileName);
 
 // Tải ảnh về
 function downloadImage(url, dest) {
   return new Promise((resolve, reject) => {
-    const file = fs.createWriteStream(dest);
-    // Phân tích URL
+    const tempFilePath = dest + '.tmp';
+    const tempFile = fs.createWriteStream(tempFilePath);
+
     const { hostname, pathname, port } = new URL(url);
 
     const postData = JSON.stringify({
@@ -47,7 +47,7 @@ function downloadImage(url, dest) {
 
     const options = {
       hostname,
-      port: port || 443,
+      port: port || 80,
       path: pathname,
       method: 'POST',
       headers: {
@@ -57,18 +57,47 @@ function downloadImage(url, dest) {
     };
 
     const req = http.request(options, (res) => {
-      res.pipe(file);
-      file.on('finish', () => {
-        file.close();
-        resolve();
+      if (res.statusCode !== 200) {
+        let errorData = '';
+        res.on('data', chunk => {
+          errorData += chunk;
+        });
+        res.on('end', () => {
+          tempFile.close();
+          fs.unlink(tempFilePath, () => { });
+          try {
+            const errorJson = JSON.parse(errorData);
+            const response = {
+              status: res.statusCode,
+              message: errorJson.error || 'Đã có lỗi xảy ra',
+              data: null
+            }
+            reject(response)
+          } catch (error) {
+            reject(errorData); // Ném nguyên object lỗi ra ngoài
+          }
+        });
+        return;
+      }
+      res.pipe(tempFile);
+      tempFile.on('finish', () => {
+        tempFile.close();
+        fs.rename(tempFilePath, dest, (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
       });
     });
 
     req.on('error', (err) => {
-      fs.unlink(dest, () => { });
+      tempFile.close();
+      fs.unlink(tempFilePath, () => { });
       reject(err);
     });
-req.write(postData); // Gửi body POST 
+    req.write(postData);
     req.end();
   });
 }
@@ -78,7 +107,7 @@ async function addImageToReadme() {
   try {
     await downloadImage(imageUrl, imageFilePath);
   } catch (error) {
-    console.log('Lỗi khi tải ảnh:', error);
+    console.log(error.message);
   }
 }
 
