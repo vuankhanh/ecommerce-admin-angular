@@ -4,7 +4,7 @@
     <p>{{data.message}}</p>
     <mat-form-field appearance="fill">
       <mat-label>Delivery Fee</mat-label>
-      <input matInput type="number" [formControl]="feeControl" type="tel" inputmode="numeric" mask="separator.0"
+      <input matInput [formControl]="feeControl" type="tel" inputmode="numeric" mask="separator.0"
         thousandSeparator="." suffix=" VND" [allowNegativeNumbers]="false" />
       <mat-error *ngIf="feeControl.invalid">Please enter a valid fee.</mat-error>
     </mat-form-field>
